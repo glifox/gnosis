@@ -1,5 +1,31 @@
-export const text = `# gnosis
----
+export const text = `
+GNOSIS is an extension-pack for codemirror to support WYSIWYG markdown edition. (WYSIWYG markdown) (codemirror markdown plugin)(WYSIWYG codemirror)
+
+## Documentation
+
+### Instalation
+~~~bash
+npm install gnosis-markdown
+~~~
+
+### Minimal setup
+~~~javascript
+import {EditorView, minimalSetup} from "codemirror"
+import { EditorState } from "@codemirror/state";
+
+import { text } from "./text"
+import gnosis from "../src/exports";
+
+const editor = new EditorView({
+    doc: text,
+    extensions: [
+        minimalSetup,
+        EditorView.lineWrapping,
+        gnosis(),
+    ],
+    parent: document.querySelector(".editor")
+});
+~~~
 
 ## TO-DO
 
