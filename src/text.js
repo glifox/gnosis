@@ -1,0 +1,150 @@
+export const text = `# gnosis
+---
+
+## TO-DO
+
+### **Block-level**
+- [x] change: \`paragraph\`
+- [x] change: \`heading\`
+- [x] change: \`hr\`
+- [x] change: \`list\`
+    - [x] change: \`listitem\`
+    - [x] change: \`checkbox\`
+- [x] change: \`code\`
+- [ ] change: \`html\`
+- [ ] change: \`blockquote\`
+- [ ] change: \`table\`
+
+### **Inline-level**
+- [x] change: \`strong\`
+- [x] change: \`em\`
+- [x] change: \`codespan\`
+- [ ] change: \`br\`
+- [x] change: \`del\`
+- [ ] change: \`link\`
+- [ ] change: \`image\`
+- [x] change: \`text\`
+- [ ] change: \`tags\`
+
+### Features
+- [x] change the way mk shows.
+- [x] Auto complete list enters 
+    - [x] Bulleds
+    - [x] ++ Numeric
+    - [x] doble enter -- indent
+- [x] Code highliting
+
+
+# ~~This is based on~~
+
+- [codemirror](https://codemirror.net/)
+- [lang-markdown](https://github.com/codemirror/lang-markdown)
+        [SPACIOS](https://medv.io/codejar/)
+
+img: ![imagen](https://avatars.githubusercontent.com/u/116177764?v=4) this is how the line works.
+        
+espaces:
+    
+~fin spaces~
+
+
+***doble relleno***
+
+    ***doble relleno***
+
+## images
+
+<a href="https://marked.js.org">
+  <img width="60px" height="60px" src="https://marked.js.org/img/logo-black.svg" align="right" />
+</a>
+
+
+[![npm](https://badgen.net/npm/v/marked)](https://www.npmjs.com/package/marked) [![install size](https://badgen.net/packagephobia/install/marked)](https://packagephobia.now.sh/result?p=marked) [![downloads](https://badgen.net/npm/dt/marked)](https://www.npmjs.com/package/marked) [![github actions](https://github.com/markedjs/marked/workflows/Tests/badge.svg)](https://github.com/markedjs/marked/actions) [![snyk](https://snyk.io/test/npm/marked/badge.svg)](https://snyk.io/test/npm/marked)
+
+## tables
+
+| Left columns  | Center                 | Right | 
+| ------------- | :--------------------: | ----- |
+| left foo      | right *foo*            | sadaw | 
+| left bar      | right sadwdwdad        | add s |
+| left baz      | right baz <br>         | wadaw |
+
+<h1><span>span</span></h1>
+<span>span</span>
+<span class="mk"></span></span>
+
+## Ejemplo markdown
+
+### titulo 2 *italic* \`inline code\` **bold**
+
+#### one space
+tinkins of feature
+
+---
+--- s
+
+### Algo de código
+
+#### con ~
+
+   ~~~python
+   # estas son varias
+   # lineas
+   class person:
+     def __init__(self):
+       self.example = true
+   
+   # en python 
+   ~~~
+
+## blockquote
+
+> oneline block quote
+
+> [!Note]
+> # This is a note blockquote
+
+> [!Warning]
+> # this is a 2 level blockquote
+> 
+> some text in the block quote
+> this text is another line
+> 
+> > [!error]
+> > ## this is the second level for the blockquote
+> > 
+> > some description for the blockquote
+> > 
+> spaces (7):
+>        
+> 
+> ~~~python
+> codeblock?
+> ~~~
+> 
+
+### con \`
+
+\`\`\`markdown
+# mas lineas con markdown
+
+- Si markdown dentro de markdown
+\`\`\`
+
+pero entonces
+
+# Un titulo #tag
+## Un titulo
+### Un titulo
+#### Un titulo
+##### Un titulo
+###### Un titulo
+
+# Aqui hay algunos tags: \'
+
+#prueba
+#resplnador #claro-que_si
+#esperanza #depronto 
+
+esto no es un titulo
+`

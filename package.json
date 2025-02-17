@@ -1,0 +1,45 @@
+{
+  "name": "gnosis-markdown",
+  "version": "0.0.4",
+
+  "author": "feraxhp",
+  "license": "MIT",
+  "main": "dist/gnosis.umd.js",
+  "module": "dist/gnosis.mjs",
+  "repository": { "type": "git", "url": "git+https://github.com/feraxhp/gnosis.git" },
+  "bugs": { "url": "https://github.com/feraxhp/gnosis/issues" },
+  "homepage": "https://github.com/feraxhp/gnosis#readme",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+
+  "dependencies": {
+    "@codemirror/lang-markdown": "^6.3.2",
+    "@codemirror/language": "^6.10.8",
+    "@codemirror/language-data": "^6.5.1",
+    "@codemirror/state": "^6.5.1",
+    "@codemirror/view": "^6.36.2",
+    "@lezer/common": "^1.2.3",
+    "@lezer/highlight": "^1.2.1",
+    "@lezer/markdown": "^1.4.0",
+    "codemirror": "^6.0.1"
+  },
+  "devDependencies": {
+    "vite": "^6.0.7"
+  },
+
+  "scripts": {
+    "start": "cd sample && vite --host",
+    "preview": "cd sample && vite --port $PORT",
+    "build": "vite build"
+  },
+
+  "keywords": [
+    "WYSIWYG",
+    "markdown",
+    "editor",
+    "codemirror",
+    "extension"
+  ]
+}
