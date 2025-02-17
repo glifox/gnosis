@@ -1,0 +1,57 @@
+# MIT Licence
+# Copyright 2025 feraxhp
+
+name: Publish Web App
+run-name: 🚀 Publish Web App 🚀
+on:
+    workflow_dispatch:
+    release:
+      types:
+        - created
+
+permissions:
+    contents: read
+    pages: write
+    id-token: write
+  
+concurrency:
+    group: "pages"
+    cancel-in-progress: false
+  
+jobs:
+  sample:
+    name: 📟 Deploy 2 pages
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: 🗃️ Checkout code
+        uses: actions/checkout@v4
+      
+      - name: 📦 Install npm dependencies
+        shell: bash
+        run: npm install
+      
+      - name: 🧩 Build Js
+        shell: bash
+        run: cd sample && npm run build
+
+      - name: 📤 Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "sample/dist"
+
+      - name: 📡 Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: 🎉 Congratulations 🎉
+        run: |
+          echo "Your page is Up"
+          echo "🎉 Congratulations 🎉"
+
+# See LICENCE in the project root
+# for the full licence detail.
