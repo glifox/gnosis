@@ -1,14 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Gnosis</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css" />
     <script defer type="module" src="index.js"></script>
 </head>
 <body>
-    <h1>Gnosis</h1>
-    <div class="editor"></div>
+<div class="cursor"></div>
+<header>
+    <nav>
+        <div class="logo">
+<!--            <span class="logo-text">CM</span>-->
+            <span class="logo-highlight">Gnosis</span>
+        </div>
+<!--        <ul class="nav-links">-->
+<!--            <li><a href="#features">Features</a></li>-->
+<!--            <li><a href="#docs">Documentation</a></li>-->
+<!--            <li><a href="#install">Install</a></li>-->
+<!--        </ul>-->
+    </nav>
+</header>
+
+<main>
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="glitch" data-text="WYSIWYG markdown editor">
+                WYSIWYG markdown editor
+            </h1>
+            <p class="fade-in">A powerful extension that enables WYSIWYG markdown edition</p>
+            <div class="cta-buttons">
+                <a href="#install" class="btn primary">Get Started</a>
+                <a href="#docs" class="btn secondary">Documentation</a>
+            </div>
+        </div>
+        <div class="editor-preview">
+<!--            <div class="window-controls">-->
+<!--                <span></span>-->
+<!--                <span></span>-->
+<!--                <span></span>-->
+<!--            </div>-->
+            <div class="editor"></div>
+        </div>
+    </section>
+
+    <section id="features" class="features">
+        <h2>Extension Features</h2>
+        <div class="feature-grid">
+            <div class="feature-card" data-aos="fade-up">
+                <div class="feature-icon">⚡</div>
+                <h3>Easy Integration</h3>
+                <p>Seamlessly integrates with any CodeMirror 6 setup</p>
+            </div>
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="feature-icon">🪶</div>
+                <h3>Lightweight</h3>
+                <p>Minimal impact on editor performance</p>
+            </div>
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="feature-icon">⚙️</div>
+                <h3>Customizable</h3>
+                <p>Configure the extension to match your needs</p>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <div class="footer-content">
+        <p>&copy; 2025 feraxhp. MIT Licence.</p>
+        <div class="social-links">
+            <a href="https://github.com/feraxhp" class="social-link">GitHub</a>
+            <!-- <a href="#" class="social-link">Twitter</a> -->
+            <!-- <a href="#" class="social-link">Discord</a> -->
+        </div>
+    </div>
+</footer>
 </body>
 </html>
