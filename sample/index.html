@@ -4,7 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Gnosis</title>
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="./styles/colors.css">
+    <link rel="stylesheet" href="./styles/components/header.css">
+    <link rel="stylesheet" href="./styles/components/footer.css">
+    <link rel="stylesheet" href="./styles/components/loader.css">
+    <link rel="stylesheet" href="./styles/pages/home.css" />
+    
     <script defer type="module" src="index.js"></script>
 </head>
 <body>
@@ -12,14 +17,12 @@
 <header>
     <nav>
         <div class="logo">
-<!--            <span class="logo-text">CM</span>-->
+            <span class="logo-text">📇</span>
             <span class="logo-highlight">Gnosis</span>
         </div>
-<!--        <ul class="nav-links">-->
-<!--            <li><a href="#features">Features</a></li>-->
-<!--            <li><a href="#docs">Documentation</a></li>-->
-<!--            <li><a href="#install">Install</a></li>-->
-<!--        </ul>-->
+       <ul class="nav-links">
+           <li><a href="/try/index.html">🧪 Try</a></li>
+       </ul>
     </nav>
 </header>
 
@@ -36,12 +39,18 @@
             </div>
         </div>
         <div class="editor-preview">
-<!--            <div class="window-controls">-->
-<!--                <span></span>-->
-<!--                <span></span>-->
-<!--                <span></span>-->
-<!--            </div>-->
-            <div class="editor"></div>
+            <div class="editor">
+                <div class="wraper-loader">
+                    <div class="loader">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -72,8 +81,6 @@
         <p>&copy; 2025 feraxhp. MIT Licence.</p>
         <div class="social-links">
             <a href="https://github.com/feraxhp" class="social-link">GitHub</a>
-            <!-- <a href="#" class="social-link">Twitter</a> -->
-            <!-- <a href="#" class="social-link">Discord</a> -->
         </div>
     </div>
 </footer>

@@ -1,0 +1,25 @@
+.editor {
+    padding-top: 2rem;
+    min-height: 200px;
+    max-width: 900px;
+    padding-right: 4rem;
+    padding-left: 4rem;
+    padding-bottom: calc(var(--footer-height) + 2rem);
+
+    font-size: x-large;
+}
+
+.wraper-loader{
+    margin-top: 1lh;
+}
+
+main {
+    position: relative;
+    min-height: calc(100dvh - var(--footer-height));
+}
+
+footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
