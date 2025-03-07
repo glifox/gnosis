@@ -1,7 +1,7 @@
 import {EditorView, minimalSetup} from "codemirror"
 import { EditorState } from "@codemirror/state";
 
-import gnosis from "../../src/exports";
+import { gnosis } from "../../src/exports";
 
 export const Editor = (text) => new EditorView({
     doc: text,

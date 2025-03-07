@@ -13,7 +13,7 @@ npm install @glifox/gnosis
 import {EditorView, minimalSetup} from "codemirror"
 import { EditorState } from "@codemirror/state";
 
-import gnosis from "@glifox/gnosis";
+import { gnosis } from "@glifox/gnosis";
 
 const editor = new EditorView({
     doc: "text",
