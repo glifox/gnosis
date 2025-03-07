@@ -1,10 +1,10 @@
 
 import { PluginFactory } from "../common/factory";
 import { decorator } from "./decorations";
-import { coreTheme, inlineTheme } from "./theme";
+import { coreTheme, InlineTheme } from "./theme";
 
 
-export const inlinePlugin = (conf = {}) => {
+export const InlinePlugin = (conf = {}) => {
 
     const { 
         hideMarks = true 
@@ -12,7 +12,7 @@ export const inlinePlugin = (conf = {}) => {
 
     return [
         PluginFactory(decorator, {}),
-        inlineTheme,
+        InlineTheme,
         hideMarks ? coreTheme : [],
     ]
 };

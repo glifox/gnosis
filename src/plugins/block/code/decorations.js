@@ -1,5 +1,4 @@
 import { Decoration } from "@codemirror/view";
-import { Prec } from "@codemirror/state" 
 import { hasSelection, visibleNodes } from "../../common/usefull";
 import { BrWraper } from "./widget";
 

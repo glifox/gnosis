@@ -1,14 +1,14 @@
 {
-  "name": "gnosis-markdown",
-  "version": "0.0.4",
+  "name": "@glifox/gnosis",
+  "version": "0.0.1",
 
   "author": "feraxhp",
   "license": "MIT",
   "main": "dist/gnosis.umd.js",
   "module": "dist/gnosis.mjs",
-  "repository": { "type": "git", "url": "git+https://github.com/feraxhp/gnosis.git" },
-  "bugs": { "url": "https://github.com/feraxhp/gnosis/issues" },
-  "homepage": "https://github.com/feraxhp/gnosis#readme",
+  "repository": { "type": "git", "url": "git+https://github.com/glifox/gnosis.git" },
+  "bugs": { "url": "https://github.com/glifox/gnosis/issues" },
+  "homepage": "https://gnosis.feraxhp.com/",
   "files": [
     "dist",
     "README.md"
@@ -41,5 +41,9 @@
     "editor",
     "codemirror",
     "extension"
-  ]
+  ],
+  
+  "publishConfig": {
+    "access": "public"
+  }
 }

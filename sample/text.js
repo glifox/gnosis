@@ -5,7 +5,7 @@ GNOSIS is an extension-pack for codemirror to support WYSIWYG markdown edition. 
 
 ### Instalation
 ~~~bash
-npm install gnosis-markdown
+npm install @glifox/gnosis
 ~~~
 
 ### Minimal setup
@@ -13,11 +13,10 @@ npm install gnosis-markdown
 import {EditorView, minimalSetup} from "codemirror"
 import { EditorState } from "@codemirror/state";
 
-import { text } from "./text"
-import gnosis from "../src/exports";
+import gnosis from "@glifox/gnosis";
 
 const editor = new EditorView({
-    doc: text,
+    doc: "text",
     extensions: [
         minimalSetup,
         EditorView.lineWrapping,
@@ -65,7 +64,7 @@ const editor = new EditorView({
 
 - [codemirror](https://codemirror.net/)
 - [lang-markdown](https://github.com/codemirror/lang-markdown)
-        [SPACIOS](https://medv.io/codejar/)
+        [SPACIOS]()
 
 img: ![imagen](https://avatars.githubusercontent.com/u/116177764?v=4) this is how the line works.
         

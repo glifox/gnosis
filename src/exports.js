@@ -5,7 +5,7 @@ import { GFM } from "@lezer/markdown"
 import { unsetMarks } from "../src/tags";
 
 import { HrPlugin } from "../src/plugins/block/hr/plugin";
-import { inlinePlugin } from "../src/plugins/inline/plugin";
+import { InlinePlugin } from "../src/plugins/inline/plugin";
 import { ListPlugin } from "../src/plugins/block/list/plugin";
 import { CodePlugin } from "../src/plugins/block/code/plugin";
 import { HeadingPlugin } from "../src/plugins/block/heading/plugin";
@@ -40,7 +40,7 @@ const gnosis = (conf = { markdown: {}}) => {
 
     return [
         markdown(mdconfig),
-        inlinePlugin(inline),
+        InlinePlugin(inline),
         HeadingPlugin(Heading),
         ListPlugin(List),
         HrPlugin(Hr),
@@ -51,19 +51,17 @@ const gnosis = (conf = { markdown: {}}) => {
 export {
     gnosis,
     HrPlugin,
-    inlinePlugin,
+    InlinePlugin,
     ListPlugin,
     CodePlugin,
     HeadingPlugin,
 };
 
-export default gnosis;
-
 if (typeof window !== 'undefined') { 
     window.gnosis = gnosis;
-    window.gnosis = HrPlugin;
+    window.HrPlugin = HrPlugin;
     window.ListPlugin = ListPlugin;
     window.CodePlugin = CodePlugin;
-    window.inlinePlugin = inlinePlugin;
+    window.InlinePlugin = InlinePlugin;
     window.HeadingPlugin = HeadingPlugin;
 }

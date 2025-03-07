@@ -1,6 +1,6 @@
 import { EditorView } from "codemirror";
 
-export const inlineTheme = EditorView.baseTheme({
+export const InlineTheme = EditorView.baseTheme({
     ".it ": { fontStyle: "italic" },    
     ".st ": { fontWeight: "bold" },
     ".sk ": { textDecoration: "line-through" },    
