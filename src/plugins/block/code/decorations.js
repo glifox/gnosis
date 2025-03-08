@@ -8,7 +8,7 @@ export function decorator(view, conf) {
         mode, /* type, mark */
     } = conf;
 
-    const iterable = [ "Document", "Blockquote" ]
+    const iterable = [ "Document", "Blockquote", "ListItem", "BulletList", "OrderedList" ]
     const types = {
         FencedCode: decorationCodeblock,
         CodeBlock: decorationCodeblock,

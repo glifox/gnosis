@@ -1,19 +1,21 @@
 import { EditorView } from "codemirror"
 
 export const codeTheme = EditorView.baseTheme({
-    ".cb-content": { backgroundColor: "#e1e4ea"}
+    "&": { backgroundColor: "rgb(239, 241, 245)" },
+    "& .cb-content": { backgroundColor: "rgba(149, 161, 185, .1)" },
 })
 
 export const coreTheme = () => {
     const marginLeft = 2;
     const paddingLeft = 6;
     const paddingRigth = 2;
+    const borderRadius = "4px";
     const width = "100%";
 
     return EditorView.baseTheme({
-        ".cb-start": { borderRadius: "1ch 1ch 0 0" },
-        ".cb-end  ": { borderRadius: "0 0 1ch 1ch" },
-        ".cb-start.cb-end": { borderRadius: "1ch" },
+        ".cb-start": { borderRadius: `${borderRadius} ${borderRadius} 0 0` },
+        ".cb-end  ": { borderRadius: `0 0 ${borderRadius} ${borderRadius}` },
+        ".cb-start.cb-end": { borderRadius: `${borderRadius}` },
 
         ".cb-line": { display: "flex !important", },
 
