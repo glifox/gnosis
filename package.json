@@ -30,7 +30,7 @@
   },
 
   "scripts": {
-    "start": "cd sample && vite --host",
+    "start": "cd dev && vite --host",
     "preview": "cd sample && vite --port $PORT",
     "build": "vite build"
   },
