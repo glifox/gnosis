@@ -16,6 +16,6 @@ export const coreTheme = (conf) => {
             height: ".2ch",
             backgroundColor: color
         },
-        ".hr.sw::before": { width: "0", height: "0" }
+        "&.cm-focused .hr.sw::before": { width: "0", height: "0" }
     });
 }

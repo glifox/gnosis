@@ -9,8 +9,9 @@ import { InlinePlugin } from "../src/plugins/inline/plugin";
 import { ListPlugin } from "../src/plugins/block/list/plugin";
 import { CodePlugin } from "../src/plugins/block/code/plugin";
 import { HeadingPlugin } from "../src/plugins/block/heading/plugin";
+import { catppuccin, themeVariant } from "./theme/catppuccin";
 
-const gnosis = (conf = { markdown: {}}) => {
+const gnosis = (conf = { markdown: {} }) => {
     const { 
         markdown: {
             defaultCodeLanguage,
@@ -40,6 +41,7 @@ const gnosis = (conf = { markdown: {}}) => {
 
     return [
         markdown(mdconfig),
+        themeVariant.of(catppuccin()),
         InlinePlugin(inline),
         HeadingPlugin(Heading),
         ListPlugin(List),
@@ -55,6 +57,8 @@ export {
     ListPlugin,
     CodePlugin,
     HeadingPlugin,
+    catppuccin,
+    themeVariant,
 };
 
 if (typeof window !== 'undefined') { 

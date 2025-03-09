@@ -25,8 +25,9 @@ export const coreTheme = (conf) => {
             height: ".4em",
             width: ".4em",
         },
-        
-        ".lm.bl.sw, .lm.bl.sw::before": {
+        "&light .lm.bl::before": { backgroundColor: "black", },
+        "&dark .lm.bl::before": { backgroundColor: "white", },
+        "&.cm-focused .lm.bl.sw, &.cm-focused .lm.bl.sw::before": {
             backgroundColor: "transparent",
             color: "inherit",
         },

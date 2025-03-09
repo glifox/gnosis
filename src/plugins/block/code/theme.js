@@ -1,9 +1,4 @@
-import { EditorView } from "codemirror"
-
-export const codeTheme = EditorView.baseTheme({
-    "&": { backgroundColor: "rgb(239, 241, 245)" },
-    "& .cb-content": { backgroundColor: "rgba(149, 161, 185, .1)" },
-})
+import { EditorView } from "codemirror";
 
 export const coreTheme = () => {
     const marginLeft = 2;
@@ -40,6 +35,6 @@ export const coreTheme = () => {
         },
     
         ".cb-mi, .cb-mk": { color: "transparent" },
-        ".cb-content.sw > .cb-mi, .cb-content.sw > .cb-mk": { color: "inherit" },
+        "&.cm-focused .cb-content.sw > .cb-mi, &.cm-focused .cb-content.sw > .cb-mk": { color: "inherit" },
     })
 }

@@ -1,20 +1,24 @@
 {
   "name": "@glifox/gnosis",
   "version": "0.0.1",
-
   "author": "feraxhp",
   "license": "MIT",
   "main": "dist/gnosis.umd.js",
   "module": "dist/gnosis.mjs",
-  "repository": { "type": "git", "url": "git+https://github.com/glifox/gnosis.git" },
-  "bugs": { "url": "https://github.com/glifox/gnosis/issues" },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/glifox/gnosis.git"
+  },
+  "bugs": {
+    "url": "https://github.com/glifox/gnosis/issues"
+  },
   "homepage": "https://gnosis.feraxhp.com/",
   "files": [
     "dist",
     "README.md"
   ],
-
   "dependencies": {
+    "@catppuccin/palette": "^1.7.1",
     "@codemirror/lang-markdown": "^6.3.2",
     "@codemirror/language": "^6.10.8",
     "@codemirror/language-data": "^6.5.1",
@@ -28,13 +32,11 @@
   "devDependencies": {
     "vite": "^6.0.7"
   },
-
   "scripts": {
     "start": "cd dev && vite --host",
     "preview": "cd sample && vite --port $PORT",
     "build": "vite build"
   },
-
   "keywords": [
     "WYSIWYG",
     "markdown",
@@ -42,7 +44,6 @@
     "codemirror",
     "extension"
   ],
-  
   "publishConfig": {
     "access": "public"
   }

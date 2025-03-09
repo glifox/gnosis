@@ -11,5 +11,5 @@ export const headingTheme = EditorView.baseTheme({
 
 export const coreTheme = EditorView.baseTheme({
     ".hg .mk": { fontSize: "0" },
-    ".hg.sw .mk": { fontSize: "inherit" },
+    "&.cm-focused .hg.sw .mk": { fontSize: "inherit" },
 })
