@@ -31,7 +31,7 @@ export function decorator(view, conf) {
             if (mode === "mark" && name in marks) widgets.push(marks[name](from, to))
             
             if (iterable.includes(name) || (name in types)) {
-                stack.unshift({ name, from, to });
+                stack.push({ name, from, to });
                 return true;
             }
             
@@ -39,7 +39,7 @@ export function decorator(view, conf) {
         },
         Leave: ({type: {name}, from, to}) => {
             if (iterable.includes(name) || (name in types)) {
-                stack.shift();
+                stack.pop();
                 return true;
             }
             return false;
@@ -54,8 +54,9 @@ export function decorator(view, conf) {
 
 const decorationCodeblock = (view, from, to) => {
     const decorations = [];
-    const isSpaced = ["BulletList", "OrderedList", "ListItem"].some(s => s === stack[0].name);
-    const isQuoted = ["Blockquote"].some(s => s === stack[0].name);
+    const father = stack[stack.length - 1];
+    const isSpaced = ["BulletList", "OrderedList", "ListItem"].some(s => s === father.name);
+    const isQuoted = ["Blockquote"].some(s => s === father.name);
     
     const startLine = view.state.doc.lineAt(from);
     const offset = from - startLine.from;
@@ -76,7 +77,6 @@ const decorationCodeblock = (view, from, to) => {
         const { from, to } = view.state.doc.line(i)
 
         const start = Math.max(from + offset, 0);
-        const father = stack[0];
 
         if ( start === to ) {
             class_.push("wg");
