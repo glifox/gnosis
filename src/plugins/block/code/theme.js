@@ -3,7 +3,7 @@ import { EditorView } from "codemirror";
 export const coreTheme = () => {
     const marginLeft = 2;
     const paddingLeft = 6;
-    const paddingRigth = 2;
+    const paddingRigth = 0;
     const borderRadius = "4px";
     const width = "100%";
 
@@ -12,11 +12,8 @@ export const coreTheme = () => {
         ".cb-end  ": { borderRadius: `0 0 ${borderRadius} ${borderRadius}` },
         ".cb-start.cb-end": { borderRadius: `${borderRadius}` },
 
-        ".cb-line": { display: "flex !important" },
-
         ".cb-content": { 
             display: "inline-block",
-            flex: "1",
             marginLeft: `${marginLeft}px`, 
             paddingLeft: `${paddingLeft}px`, 
             paddingRigth: `${paddingRigth}px` ,
@@ -34,7 +31,7 @@ export const coreTheme = () => {
             marginLeft: "0", 
             paddingLeft: "0"
         },
-    
+        
         ".cb-mi, .cb-mk": { color: "transparent" },
         "&.cm-focused .cb-content.sw > .cb-mi, &.cm-focused .cb-content.sw > .cb-mk": { color: "inherit" },
         
@@ -44,7 +41,7 @@ export const coreTheme = () => {
             position: "absolute",
             top: "0",
             right: "0",
-            zIndex: "10",
+            zIndex: "100",
             padding: "4px"
         }
     })

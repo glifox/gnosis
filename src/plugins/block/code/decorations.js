@@ -70,6 +70,7 @@ const decorationCodeblock = (view, from, to) => {
     for ( let i = begin; i < lines + begin; i++) {
         const { from, to } = view.state.doc.line(i);
         
+        
         const class_ = ["cb-content"];
         
         if (selected) class_.push("sw");
@@ -80,18 +81,20 @@ const decorationCodeblock = (view, from, to) => {
         
         if ( start === to ) {
             class_.push("wg");
-
-            decorations.push(Decoration.widget({ widget: new BrWraper(class_.join(" ") + " start"), side: 0 }).range(start))   
-            decorations.push(Decoration.widget({ widget: new BrWraper(class_.join(" ") + " end"), side: 1 }).range(start))
-
+            
+            
         } 
         else if (isSpaced || isQuoted) {
-            if (to > start) decorations.push(Decoration.mark({ class: class_.join(" ") }).range(start, to))
+            const attributes = { style: `width: calc(100% - 1.2ch - ${start - from}ch)` }
+            if (to > start) decorations.push(Decoration.mark({ class: class_.join(" "), attributes }).range(start, to))
             
             if (from !== start && isSpaced) decorations.push(Decoration.mark({ class: "cb-spacer" }).range(from, start))
             if (from !== start && isQuoted) decorations.push(Decoration.mark({ class: "cb-quote bq" }).range(from, start))
         }
-        else if ( from !== to ) decorations.push(Decoration.mark({ class: class_.join(" ") }).range(from, to))
+        else if ( from !== to ) {
+            const attributes = { style: `width: calc(100% - 1.2ch)` }   
+            decorations.push(Decoration.mark({ class: class_.join(" "), attributes }).range(from, to))
+        }
         
         decorations.push(Decoration.line({ class: "cb-line" }).range(from))
     }
