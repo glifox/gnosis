@@ -12,15 +12,15 @@ export const coreTheme = () => {
         ".cb-end  ": { borderRadius: `0 0 ${borderRadius} ${borderRadius}` },
         ".cb-start.cb-end": { borderRadius: `${borderRadius}` },
 
-        ".cb-line": { display: "flex !important", },
+        ".cb-line": { display: "flex !important" },
 
         ".cb-content": { 
             display: "inline-block",
-            zIndex: "-1",
             flex: "1",
             marginLeft: `${marginLeft}px`, 
             paddingLeft: `${paddingLeft}px`, 
-            paddingRigth: `${paddingRigth}px` 
+            paddingRigth: `${paddingRigth}px` ,
+            position: "relative"
         },
         
         ".cb-content.wg": { cursor: "text" },
@@ -29,6 +29,7 @@ export const coreTheme = () => {
             Width: "1px",
             paddingLeft: `${paddingLeft-1}px`,
         },
+        
         ".cb-content.wg.end": {
             marginLeft: "0", 
             paddingLeft: "0"
@@ -36,5 +37,15 @@ export const coreTheme = () => {
     
         ".cb-mi, .cb-mk": { color: "transparent" },
         "&.cm-focused .cb-content.sw > .cb-mi, &.cm-focused .cb-content.sw > .cb-mk": { color: "inherit" },
+        
+        "&.cm-focused .cb-content.sw .wg-codeblock": { opacity: "0" },
+        ".wg-codeblock": {
+            display: "inline-block",
+            position: "absolute",
+            top: "0",
+            right: "0",
+            zIndex: "10",
+            padding: "4px"
+        }
     })
 }

@@ -1,7 +1,7 @@
 import { Decoration } from "@codemirror/view";
 import { hasSelection, visibleNodes } from "../../common/usefull";
 import { BrWraper } from "./widget";
-import { LeafBlock } from "@lezer/markdown";
+import { CopyCode } from "./copy/widget";
 
 const stack = [];
 
@@ -18,8 +18,8 @@ export function decorator(view, conf) {
     }
 
     const marks = {
-        CodeMark: (from, to) => Decoration.mark({ class: "cb-mk" }).range(from, to),
-        CodeInfo: (from, to) => Decoration.mark({ class: "cb-mi" }).range(from, to)
+        CodeMark: (view, from, to) => [Decoration.mark({ class: "cb-mk" }).range(from, to)],
+        CodeInfo: (view, from, to) => [Decoration.mark({ class: "cb-mi" }).range(from, to)]
     }
 
     const widgets = [];
@@ -28,19 +28,17 @@ export function decorator(view, conf) {
         enter: ({type: {name}, from, to}) => { 
             
             if (mode === "type" && name in types) widgets.push(... types[name](view, from, to)) 
-            if (mode === "mark" && name in marks) widgets.push(marks[name](from, to))
+            if (mode === "mark" && name in marks) widgets.push(... marks[name](view, from, to))
             
             if (iterable.includes(name) || (name in types)) {
-                stack.push({ name, from, to });
-                return true;
+                stack.push({ name, from, to }); return true;
             }
             
             return false; 
         },
         Leave: ({type: {name}, from, to}) => {
             if (iterable.includes(name) || (name in types)) {
-                stack.pop();
-                return true;
+                stack.pop(); return true;
             }
             return false;
         }
@@ -53,7 +51,9 @@ export function decorator(view, conf) {
 }
 
 const decorationCodeblock = (view, from, to) => {
-    const decorations = [];
+    const decorations = [
+        Decoration.widget({ widget: new CopyCode("view.state.sliceDoc(from, to)", "code"), side: 0 }).range(from+1)
+    ];
     const father = stack[stack.length - 1];
     const isSpaced = ["BulletList", "OrderedList", "ListItem"].some(s => s === father.name);
     const isQuoted = ["Blockquote"].some(s => s === father.name);
@@ -68,16 +68,16 @@ const decorationCodeblock = (view, from, to) => {
         .sliceString(from, to).split('\n').length;
     
     for ( let i = begin; i < lines + begin; i++) {
+        const { from, to } = view.state.doc.line(i);
+        
         const class_ = ["cb-content"];
         
         if (selected) class_.push("sw");
-        if ( i === begin  ) class_.push("cb-start")
+        if ( i === begin  ) class_.push("cb-start");
         if ( i === lines + begin - 1 ) class_.push("cb-end");
-        
-        const { from, to } = view.state.doc.line(i)
 
         const start = Math.max(from + offset, 0);
-
+        
         if ( start === to ) {
             class_.push("wg");
 

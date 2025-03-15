@@ -2,8 +2,7 @@ import { WidgetType } from "@codemirror/view";
 
 export class BrWraper extends WidgetType {
     classes = ""
-    constructor(classes) {
-        super();
+    constructor(classes) { super();
         this.classes = classes;
     }
 
