@@ -1,309 +1,193 @@
 export const text = 
 `
-~~~c++
-// --- MÓDULO & DIRECTIVAS PREPROCESADOR ---
-export module dummy;
-import <iostream>;
-#include <string>
-#include <coroutine>
+~~~css
+/* ========================================================= */
+/* AT-RULES y DIRECTIVAS: AtKeyword (import, charset, namespace, keyframes, media, supports) */
+@import url("styles.css");             /* AtKeyword: import */
+@charset "UTF-8";                      /* AtKeyword: charset */
+@namespace url("http://www.w3.org/1999/xhtml"); /* AtKeyword: namespace */
 
-#define MacroName 100
-#define True true
-#define False false
-// PreProcArg: macro con argumento
-#define PRINT_ARG(x) std::cout << "PreProcArg: " << x << std::endl
-
-#ifdef SOMETHING
-  // LineComment: Este es un comentario de línea dentro de un bloque condicional.
-#endif
-#ifndef SOMETHING_ELSE
-  #define SOMETHING_ELSE 1
-#elif defined(ALTERNATIVE)
-#endif
-
-// La siguiente sección incluye __based en un bloque inactivo (para mostrar la palabra sin afectar la compilación)
-#if 0
-int __based(void)* basedPointer = nullptr;
-#endif
-
-// --- DECLARACIONES DE IDENTIFICADORES Y MODIFICADORES ---
-// Usa tokens de: typedef, struct, union, enum, class, typename, decltype, auto,
-// template, operator, friend, noexcept, namespace, using, requires, concept,
-// import, export, module, __attribute__, __declspec, __based
-
-// Declaración de variable mediante extern (MsCallModifier y MsPointerModifier son identificadores inventados)
-extern int MsCallModifier;
-int MsPointerModifier = 0;
-
-// Para "typedef" usamos un alias simple
-typedef int MyTypedef;
-
-// "TypeSize" y "PrimitiveType" (no son palabras reservadas; se usan aquí como nombres de identificador)
-struct TypeSize { int size; };
-int PrimitiveType = 10;
-
-// "TypeIdentifier" como nombre de un tipo
-class TypeIdentifier { };
-
-// --- DEFINICIONES DE ESTRUCTURAS Y CLASES ---
-// * MyStruct usa la palabra clave struct e incluye un campo llamado FieldIdentifier.
-struct MyStruct {
-    int FieldIdentifier;
-    MyStruct() : FieldIdentifier(0) { }
-};
-
-// * CallExpression: incluye además un método llamado FieldExpression y un campo FieldIdentifier.
-struct CallExpression {
-    void FieldExpression() {
-         std::cout << "CallExpression/FieldExpression/FieldIdentifier invoked" << std::endl;
-    }
-    int FieldIdentifier;
-};
-
-// Definición de una unión (union)
-union MyUnion {
-    int i;
-    float f;
-};
-
-// Definición de un enum
-enum MyEnum { Value1, Value2 };
-
-// Clase MyClass que incorpora "class", un destructor, un método que usa "this", una sobrecarga de operator+ y un friend.
-class MyClass {
-public:
-    MyClass() { }
-    ~MyClass() { }
-    virtual MyClass operator+(const MyClass& rhs) { return MyClass(); }
-    friend void friendFunction(MyClass&);
-    int getMember() { return this->FieldIdentifier; } // uso de "this"
-private:
-    int FieldIdentifier;
-};
-
-void friendFunction(MyClass& obj) { /* implementación vacía */ }
-
-// Función plantilla (template) usando typename, template, noexcept y auto.
-template<typename T>
-T templateFunction(T value) noexcept { return value; }
-
-auto autoVar = 42;
-
-// Definición de un concept (C++20) usando requires y concept.
-template<typename T>
-concept Integral = requires(T x) { x + 1; };
-
-// Función con atributo __attribute__
-int functionWithAttribute() __attribute__((deprecated)) { return 0; }
-
-// Función con __declspec
-__declspec(dllexport) int declspecFunction() { return 0; }
-
-// Una función dummy para "incorporar" __based (se menciona en un comentario)
-int dummyBasedFunction() { 
-    // Aquí aparece el token __based
-    return 0;
+@media screen and (min-width: 768px) {   /* AtKeyword: media; ParenthesizedContent por (min-width: 768px) */
+  /* Uso de KeywordQuery en propiedad */
+  .keyword-query {
+    text-transform: KeywordQuery;     /* Token: KeywordQuery */
+  }
 }
 
-// Uso de "restrict" en una declaración (no estándar en C++, pero muchas veces admitido como extensión)
-int* restrict pointerRestricted = nullptr;
-
-// Uso de _Atomic (estilo C11, disponible como extensión)
-_Atomic int atomicNumber = 10;
-
-// Clase con miembro mutable (mutable aparece aquí)
-class MutableClass {
-public:
-    mutable int mutableVar;
-};
-
-// Uso explícito de constexpr
-constexpr int constExpr = 6;
-
-// Uso explícito de constinit (C++20)
-constinit int constInitVar = 20;
-
-// Función consteval (C++20)
-consteval int computeConstEval() { return 42; }
-
-// Clase VirtualDemo que usa virtual y explicit, e incluye dos miembros con los nombres VirtualSpecifier y Access.
-class VirtualDemo {
-public:
-    explicit VirtualDemo(int x) : value(x), VirtualSpecifier(x), Access(x) { }
-    virtual void demo() { }
-    int VirtualSpecifier;
-    int Access;
-private:
-    int value;
-};
-
-// --- ESPACIOS DE NOMBRE ---
-// * ScopedIdentifier: su función Identifier se usará en llamadas con el operador de resolución de ámbito.
-namespace ScopedIdentifier {
-    void Identifier() {
-         std::cout << "CallExpression/ScopedIdentifier/Identifier invoked" << std::endl;
-    }
+@supports (display: grid) {             /* AtKeyword: supports; se usa paréntesis para contenido */
+  .supportsTest {
+    display: grid;
+  }
 }
 
-// * ModuleName: incluye un miembro Identifier.
-namespace ModuleName {
-    int Identifier = 0;
+@keyframes slideIn {                   /* AtKeyword: keyframes */
+  from {                              /* keyword: from */
+    opacity: 0;
+  }
+  to {                                /* keyword: to */
+    opacity: 1;
+  }
 }
 
-// * NamespaceIdentifier: otro namespace, tal como se solicitó.
-namespace NamespaceIdentifier {
-    int dummy = 0;
+/* Definición de keyframes que usa literal KeyframeName y sirve para incluir KeyframeRangeName */
+@keyframes KeyframeName {             /* Token KeyframeName, t.labelName */
+  0% {
+    transform: translateX(0%);
+  }
+  50% {                             /* Aquí se supone que “50%” ejemplifica el rango, pudiendo verse como KeyframeRangeName */
+    transform: translateX(50%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
 }
 
-// --- LITERAL DEFINIDO POR EL USUARIO ---
-// Se define una función literal para el literal _udl.
-unsigned long long operator"" _udl(unsigned long long x) { return x; }
+/* ========================================================= */
+/* SELECTORES, CLASES, IDS y PSEUDO-CLASES */
 
-// --- CORUTINAS: co_return, co_yield, co_await ---
-// Se define un tipo dummy de coroutine para emplear las palabras clave de corutina.
-struct DummyCoroutine {
-    struct promise_type {
-        DummyCoroutine get_return_object() { return {}; }
-        std::suspend_always initial_suspend() { return {}; }
-        std::suspend_always final_suspend() noexcept { return {}; }
-        void unhandled_exception() { }
-        void return_void() { }
-        std::suspend_always yield_value(int) { return {}; }
-    };
-};
-
-DummyCoroutine myCoroutine() {
-    co_yield 1;
-    co_await std::suspend_always{};
-    co_return;
+/* Selector literal "selector" */
+selector {                           /* Token: selector (keyword) */
+  property: value;                  /* Se usan “:” (puntuación) y “;” (separador) */
 }
 
-// --- OTRA FUNCIÓN (Name: Identifier) ---
-// Se usa para simular "CallExpression/Identifier".
-void Identifier() { std::cout << "CallExpression/Identifier function called" << std::endl; }
-
-// --- FUNCIÓN MAIN ---
-// Aquí se incluyen los tokens de control: if, else, switch, for, while, do, case, default, return, break, continue, goto, throw, try, catch
-int main() {
-    // Uso de control de flujo: if / else
-    if (True) {
-        std::cout << "if branch" << std::endl;
-    } else {
-        std::cout << "else branch" << std::endl;
-    }
-    
-    // switch con case y default; además se usa MacroName (macro y número)
-    switch (MacroName) {
-        case 100:
-            std::cout << "switch case" << std::endl;
-            break;
-        default:
-            std::cout << "default case" << std::endl;
-            break;
-    }
-    
-    // for
-    for (int i = 0; i < 3; i++) {
-        std::cout << "for loop iteration: " << i << std::endl;
-    }
-    
-    // while
-    int count = 0;
-    while (count < 3) {
-        count++;
-    }
-    
-    // do-while
-    do {
-        std::cout << "do while loop executed" << std::endl;
-    } while (False);
-    
-    // try-catch con throw; dentro de try se usa también continue y un bucle for
-    try {
-        if (count > 0) {
-            for (int j = 0; j < 1; j++) {
-                continue;
-            }
-            throw std::runtime_error("throwing error");
-        }
-    } catch (const std::exception& e) {
-        std::cout << "Caught exception: " << e.what() << std::endl;
-        goto StatementIdentifier;
-    }
-    
-    // goto; salto al label PartitionName
-    goto PartitionName;
-    
-PartitionName:
-    std::cout << "Reached PartitionName label" << std::endl;
-    
-StatementIdentifier:
-    std::cout << "Reached StatementIdentifier label" << std::endl;
-    
-    // Uso de new, sizeof, delete, y static_assert
-    int* p = new int(5);
-    static_assert(sizeof(int) >= 2, "Size check");
-    delete p;
-    
-    // Uso de NULL y nullptr
-    int* pNull = NULL;
-    int* pNullptr = nullptr;
-    
-    // Uso de operadores aritméticos, lógicos, bit a bit, de comparación, asignación y actualización:
-    int a = 3 + 4;        // suma (arithmetic operator)
-    a = a * 2 - 1;        // multiplicación y sustracción
-    int b = a / 2;        // división
-    if (a < b) { }        // comparación
-    bool logicFlag = (a > 2 && b < 5) || (a == 3);  // &&, || (logical operators)
-    int bitResult = a & b | (a ^ b);  // bitwise &, |, ^
-    bitResult = ~bitResult;           // bitwise NOT
-    a++;  // incremento (update operator)
-    b--;  // decremento (update operator)
-    
-    // Comentarios: LineComment y BlockComment
-    // This is a line comment
-    /* This is a block comment */
-    
-    // Literales: número, cadena (string), raw string, SystemLibString, caracter (char), secuencias de escape
-    std::string str = "Hello, world!";
-    std::string rawStr = R"(This is a raw string literal with <angle brackets>)";
-    std::string systemLibString = "SystemLibString";
-    char ch = 'A';
-    std::string escapeStr = "Line1\\nLine2\\tTabbed";
-    
-    // Uso de literal definido por el usuario
-    auto udlValue = 123_udl;
-    
-    // Array con corchetes [ ]
-    int arr[5] = {1, 2, 3, 4, 5};
-    
-    // Uso de operadores punto (.) y flecha (->)
-    MyStruct ms;
-    ms.FieldIdentifier = 0;
-    MyStruct* ms_ptr = &ms;
-    ms_ptr->FieldIdentifier = 1;
-    
-    // Llamadas a funciones (se usan paréntesis ( ) )
-    Identifier();
-    ScopedIdentifier::Identifier();
-    
-    // Variables locales con nombres "Identifier" y "DestructorName" (simulando FunctionDeclarator/Identifier y /DestructorName)
-    int Identifier = 5;
-    int DestructorName = 10;
-    // Se vuelve a llamar a Identifier() para incluir la forma call expression.
-    Identifier();
-    
-    // Uso de un objeto CallExpression
-    CallExpression ce;
-    ce.FieldExpression();
-    ce.FieldIdentifier = 123;
-    
-    // Uso del namespace ModuleName y su miembro Identifier
-    std::cout << "ModuleName::Identifier = " << ModuleName::Identifier << std::endl;
-    
-    // Usar el macro que imprime un argumento (PreProcArg)
-    PRINT_ARG(42);
-    
-    return 0; // return
+/* Uso de TagName como selector de elemento (TagName) */
+TagName {
+  font-size: 16px;
 }
+
+/* Uso de .ClassName */
+.ClassName {                        /* Token: ClassName */
+  margin: 10px;
+}
+
+/* Uso de PseudoClassName en selector */
+button:PseudoClassName {             /* Token: PseudoClassName */
+  background-color: lightblue;
+}
+
+/* Uso de ID: #IdName */
+#IdName {                           /* Token: IdName */
+  border: 2px solid #000;
+}
+
+/* ========================================================= */
+/* PROPIEDADES Y ATRIBUTOS */
+
+/* Regla que emplea FeatureName y PropertyName (como nombres de propiedad) */
+.feature {
+  FeatureName: bold;                /* Token: FeatureName */
+  PropertyName: 10px;               /* Token: PropertyName */
+}
+
+/* Seleccionador por atributo con AttributeName */
+[AttributeName="value"] {           /* Token: AttributeName (dentro de [ ]) */
+  padding: 5px;
+}
+
+/* Regla que incluye NumberLiteral en valores numéricos */
+.NumberLiteral {                    /* Token: NumberLiteral */
+  width: 100px;
+  height: 50px;
+}
+
+/* ========================================================= */
+/* EJEMPLOS DE USO DE OTROS TOKENS */
+
+/* Uso de KeywordQuery (además de estar en propiedad) ya aparece aquí también */
+
+/* Regla que “forza” la aparición de UnaryQueryOp */
+.unary {
+  /* Aunque no es un valor CSS válido, lo usamos para resaltar el token */
+  opacity: UnaryQueryOp;
+}
+
+/* Regla para CallTag, y en el contenido se muestra ValueName */
+CallTag {                           /* Token: CallTag (ámbito de CallTag ValueName, t.atom) */
+  content: "ValueName";             /* Se muestra también ValueName */
+}
+
+/* Variable CSS usando VariableName */
+:root {
+  --VariableName: 20px;              /* Token: VariableName */
+}
+
+/* Uso de función en calc() con un comentario que señala Callee */
+.callee {
+  width: calc(100% - 20px /* Callee */);  /* Token: Callee se asocia a operadores en función */
+}
+
+/* Uso de un “unidad” custom: Unit */
+.unit-test {
+  margin-top: 10Unit;               /* Token: Unit */
+}
+
+/* ========================================================= */
+/* SELECTORES UNIVERSAL Y ANIDAMIENTO (Nesting) */
+
+/* UniversalSelector */
+* {                                /* Token: UniversalSelector (selector universal) */
+  box-sizing: border-box;
+}
+
+/* Ejemplo de NestingSelector (estilo anidado, propio de preprocesadores o CSS anidado) */
+.parent {
+  color: black;
+  /* Simulación de anidamiento (NestingSelector) */
+  & .child {
+    color: red;
+  }
+}
+
+/* ========================================================= */
+/* OPERADORES Y COMBINADORES */
+
+/* Uso de MatchOp: se incluye en una propiedad custom */
+.match {
+  --match: MatchOp;                /* Token: MatchOp (compareOperator) */
+}
+
+/* Uso de combinadores: ChildOp, SiblingOp y LogicOp se muestran en contenido */
+.combinators::after {
+  content: "ChildOp, SiblingOp, LogicOp";  /* Tokens: ChildOp, SiblingOp, LogicOp (logicOperator) */
+}
+
+/* Uso de BinOp: se incluye en contenido para resaltar el operador aritmético */
+.calc::before {
+  content: "BinOp";                /* Token: BinOp (arithmeticOperator) */
+}
+
+/* Uso de !important para incluir Important */
+.important {
+  color: blue !important;          /* Token: Important (modifier) */
+}
+
+/* ========================================================= */
+/* COMENTARIOS, COLOR, CADENAS Y MÁS */
+
+/* BlockComment: Ejemplo de comentario de bloque (Comment) */
+ /*
+    Comment: Este es un comentario de bloque usado para tokens.
+ */
+
+/* ColorLiteral: uso de literal de color (hexadecimal) */
+.color-lit {
+  color: #abcdef;                  /* Token: ColorLiteral */
+}
+
+/* ParenthesizedContent y StringLiteral en contenido */
+.quote::after {
+  content: "(ParenthesizedContent StringLiteral)";  /* Ambos tokens en cadena y con paréntesis */
+}
+
+/* PseudoOp y #: uso combinado en un selector (literalmente se muestra “PseudoOp#”) */
+.PseudoOp#example {
+  padding: 5px;
+}
+
+/* Separators ; y ,: Se usan naturalmente en propiedades y en listas de fuentes */
+.list {
+  font-family: "Arial", sans-serif;  /* Se usa , y ; */
+}
+
+/* Los paréntesis ( ) se ven en media queries, [ ] en selectores de atributo y { } en bloques de reglas */
 ~~~`;

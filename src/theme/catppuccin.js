@@ -38,7 +38,6 @@ export const catppuccin = (flavor = "latte") => {
             { tag: t.operatorKeyword, color: colors.mauve.hex },
             { tag: t.definitionKeyword, color: colors.mauve.hex },
             { tag: t.moduleKeyword, color: colors.mauve.hex },
-            //{ tag: t.keyword, color: colors.peach.hex },
             { tag: t.bool, color: colors.peach.hex },
             { tag: t.null, color: colors.peach.hex },
             { tag: t.null, color: colors.peach.hex },
@@ -79,6 +78,17 @@ export const catppuccin = (flavor = "latte") => {
             { tag: t.processingInstruction, color: colors.mauve.hex },
             // { tag: [t.special(t.name)], color: colors.red.hex },
             { tag: t.angleBracket, color: colors.overlay2.hex },
+            // css
+            { tag: t.keyword, color: colors.yellow.hex },
+            { tag: t.tagName, color: colors.blue.hex },
+            { tag: t.className, color: colors.teal.hex },
+            { tag: [t.constant(t.className)], color: colors.teal.hex }, // no necesary good
+            { tag: t.attributeName, color: colors.peach.hex }, // no necesary good
+            { tag: t.atom, color: colors.yellow.hex }, // no necesary good
+            { tag: t.unit, color: colors.yellow.hex },
+            { tag: t.color, color: colors.pink.hex },
+            // Rust
+            { tag:  t.macroName, color: colors.peach.hex },
             
         ]
       })
