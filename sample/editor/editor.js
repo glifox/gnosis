@@ -1,4 +1,4 @@
-import {EditorView, minimalSetup} from "codemirror"
+import { EditorView, minimalSetup } from "codemirror"
 import { EditorState } from "@codemirror/state";
 
 import { gnosis } from "../../src/exports";

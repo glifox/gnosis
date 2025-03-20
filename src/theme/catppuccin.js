@@ -26,8 +26,8 @@ export const catppuccin = (flavor = "latte") => {
           background: base.hex,
           foreground: text,
           caret: colors.rosewater.hex,
-          selection: colors.overlay2.hex,
-          lineHighlight: colors.overlay1.hex,
+          // selection: selection,
+          lineHighlight: rgba(colors.overlay1.rgb, 0.1),
           gutterBackground: base.hex,
           gutterForeground: text,
         },
@@ -92,6 +92,7 @@ export const catppuccin = (flavor = "latte") => {
             
         ]
       }), EditorView.theme({
+        "& .cm-selectionBackground, ::selection": { background: `${rgba(colors.overlay2.rgb, .3)} !important` },
         "& .cb-content, & .ic": { backgroundColor: codebg },
       })
     ];
