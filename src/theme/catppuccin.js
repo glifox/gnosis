@@ -41,7 +41,6 @@ export const catppuccin = (flavor = "latte") => {
             //{ tag: t.keyword, color: colors.peach.hex },
             { tag: t.bool, color: colors.peach.hex },
             { tag: t.null, color: colors.peach.hex },
-            // { tag: t.variableName, color: colors.red.hex },
             { tag: t.null, color: colors.peach.hex },
             { tag: [t.function(t.variableName)], color: colors.blue.hex },
             { tag: [t.function(t.definition(t.variableName))], color: colors.blue.hex },
@@ -52,8 +51,6 @@ export const catppuccin = (flavor = "latte") => {
             { tag: t.number, color: colors.peach.hex },
             { tag: t.string, color: colors.green.hex },
             { tag: [t.special(t.string)], color: colors.green.hex, fontWeight: "600" },
-            // { tag: t.escape, color: colors.red.hex },
-            // { tag: t.updateOperator, color: colors.red.hex },
             { tag: t.arithmeticOperator, color: colors.sky.hex },
             { tag: t.bitwiseOperator, color: colors.sky.hex },
             { tag: t.compareOperator, color: colors.sky.hex },
@@ -65,7 +62,23 @@ export const catppuccin = (flavor = "latte") => {
             { tag: t.brace, color: colors.overlay2.hex },
             { tag: t.derefOperator, color: colors.overlay2.hex },
             { tag: t.separator, color: colors.overlay2.hex },
-            
+            // c++
+            { tag: t.definitionKeyword, color: colors.mauve.hex },
+            { tag: t.self, color: colors.red.hex },
+            { tag: [t.standard(t.typeName)], color: colors.yellow.hex }, // (void, int, ...)
+            { tag: t.typeName, color: colors.yellow.hex }, // no necesary good
+            { tag: t.namespace, color: colors.yellow.hex }, // no necesary good
+            { tag: t.labelName, color: colors.teal.hex }, // no necesary good
+            { tag: t.variableName, color: text }, // no necesary good
+            { tag: t.operator, color: colors.sky.hex },
+            { tag: t.logicOperator, color: colors.sky.hex },
+            { tag: t.updateOperator, color: colors.sky.hex }, // no necesary good
+            { tag: t.character, color: colors.green.hex },
+            { tag: t.escape, color: colors.pink.hex },
+            { tag: t.literal, color: colors.sky.hex },
+            { tag: t.processingInstruction, color: colors.mauve.hex },
+            // { tag: [t.special(t.name)], color: colors.red.hex },
+            { tag: t.angleBracket, color: colors.overlay2.hex },
             
         ]
       })
