@@ -51,9 +51,7 @@ export function decorator(view, conf) {
 }
 
 const decorationCodeblock = (view, from, to) => {
-    const decorations = [
-        Decoration.widget({ widget: new CopyCode("view.state.sliceDoc(from, to)", "code"), side: 0 }).range(from+1)
-    ];
+    const decorations = [];
     const father = stack[stack.length - 1];
     const isSpaced = ["BulletList", "OrderedList", "ListItem"].some(s => s === father.name);
     const isQuoted = ["Blockquote"].some(s => s === father.name);
@@ -62,6 +60,11 @@ const decorationCodeblock = (view, from, to) => {
     const offset = from - startLine.from;
 
     const selected = hasSelection(view, startLine.from, to);
+    if (!selected) {
+        decorations.push(
+            Decoration.widget({ widget: new CopyCode("view.state.sliceDoc(from, to)", "code"), side: 0 }).range(from+1)
+        );
+    }
     
     const begin = startLine.number;
     const lines = view.state.doc
@@ -79,10 +82,33 @@ const decorationCodeblock = (view, from, to) => {
 
         const start = Math.max(from + offset, 0);
         
-        if ( start === to ) {
+        if (to < start) {
+            class_.push("free");
+            
+            decorations.push(
+                Decoration.widget({ 
+                    widget: new BrWraper(
+                        class_.join(" "), 
+                        `calc(${baseWidth} - ${start - from}ch)`,
+                        `calc(${start - to}ch + 2px)`
+                    )
+                    , side: 1 
+                }).range(to)
+            );
+            console.log("Hello World");
+        }
+        else if ( start === to ) {
             class_.push("wg");
             
-            
+            decorations.push(
+                Decoration.widget({ 
+                    widget: new BrWraper(
+                        class_.join(" "), 
+                        `calc(${baseWidth} - ${start - from}ch)`
+                    )
+                    , side: 1 
+                }).range(start)
+            );
         } 
         else if (isSpaced || isQuoted) {
             const attributes = { style: `width: calc(${baseWidth} - ${start - from}ch)` }

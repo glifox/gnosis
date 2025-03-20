@@ -35,7 +35,10 @@ export const coreTheme = () => {
         ".cb-mi, .cb-mk": { color: "transparent" },
         "&.cm-focused .cb-content.sw > .cb-mi, &.cm-focused .cb-content.sw > .cb-mk": { color: "inherit" },
         
-        "&.cm-focused .cb-content.sw .wg-codeblock": { opacity: "0" },
+        "&.cm-focused .cb-content.sw .wg-codeblock": { 
+            display: "none",
+            opacity: "0" 
+        },
         ".wg-codeblock": {
             display: "inline-block",
             position: "absolute",

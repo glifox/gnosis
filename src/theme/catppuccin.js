@@ -91,6 +91,8 @@ export const catppuccin = (flavor = "latte") => {
             { tag:  t.macroName, color: colors.peach.hex },
             
         ]
+      }), EditorView.theme({
+        "& .cb-content, & .ic": { backgroundColor: codebg },
       })
     ];
 
