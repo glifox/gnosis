@@ -3,7 +3,7 @@ GNOSIS is an extension-pack for codemirror to support WYSIWYG markdown edition. 
 
 ## Documentation
 
-### Instalation
+### Installation
 ~~~bash
 npm install @glifox/gnosis
 ~~~
