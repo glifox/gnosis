@@ -11,7 +11,6 @@ export const themeVariant = new Compartment();
 
 export const catppuccin = (flavor = "latte") => {
     const colors = flavors[flavor].colors;
-    console.log(colors);
 
     const base = colors.base;
     const text = flavor === "latte" ? "#484b64" : colors.text.hex;
