@@ -8,10 +8,6 @@ export const coreTheme = () => {
     const width = "100%";
 
     return EditorView.baseTheme({
-        ".cb-start": { borderRadius: `${borderRadius} ${borderRadius} 0 0` },
-        ".cb-end  ": { borderRadius: `0 0 ${borderRadius} ${borderRadius}` },
-        ".cb-start.cb-end": { borderRadius: `${borderRadius}` },
-
         ".cb-content": { 
             display: "inline-block",
             marginLeft: `${marginLeft}px`, 

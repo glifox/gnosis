@@ -53,11 +53,12 @@ export function decorator(view, conf) {
 const decorationCodeblock = (view, from, to) => {
     const decorations = [];
     const father = stack[stack.length - 1];
-    const isSpaced = ["BulletList", "OrderedList", "ListItem"].some(s => s === father.name);
+    const isListed = ["BulletList", "OrderedList", "ListItem"].some(s => s === father.name);
     const isQuoted = ["Blockquote"].some(s => s === father.name);
     
     const startLine = view.state.doc.lineAt(from);
     const offset = from - startLine.from;
+    const isSpaced = offset > 0;
 
     const selected = hasSelection(view, startLine.from, to);
     if (!selected) {
@@ -110,10 +111,11 @@ const decorationCodeblock = (view, from, to) => {
                 }).range(start)
             );
         } 
-        else if (isSpaced || isQuoted) {
+        else if (isListed || isQuoted || isSpaced) {
             const attributes = { style: `width: calc(${baseWidth} - ${start - from}ch)` }
             if (to > start) decorations.push(Decoration.mark({ class: class_.join(" "), attributes }).range(start, to))
             
+            if (from !== start && isListed) decorations.push(Decoration.mark({ class: "cb-listsp" }).range(from, start))
             if (from !== start && isSpaced) decorations.push(Decoration.mark({ class: "cb-spacer" }).range(from, start))
             if (from !== start && isQuoted) decorations.push(Decoration.mark({ class: "cb-quote bq" }).range(from, start))
         }

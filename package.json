@@ -35,7 +35,7 @@
   },
   "scripts": {
     "start": "cd dev && vite --host",
-    "preview": "cd sample && vite --port $PORT",
+    "preview": "cd sample && vite --host",
     "build": "vite build"
   },
   "keywords": [
