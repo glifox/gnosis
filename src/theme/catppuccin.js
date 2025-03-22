@@ -91,8 +91,16 @@ export const catppuccin = (flavor = "latte") => {
             
         ]
       }), EditorView.theme({
+        // Editor
         "& .cm-selectionBackground, ::selection": { background: `${rgba(colors.overlay2.rgb, .3)} !important` },
+        
+        // Code
         "& .cb-content, & .ic": { backgroundColor: codebg },
+        ".cb-icon": { fill: text },
+        ".wg-codeblock-btn:hover": { backgroundColor: rgba(colors.overlay1.rgb, .2) },
+        
+        // 
+        
       }, { dark: flavor !== "latte" })
     ];
 

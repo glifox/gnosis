@@ -1,11 +1,12 @@
 import { WidgetType } from "@codemirror/view";
+import { icon } from "./icon";
 
 export class CopyCode extends WidgetType {
     constructor(type, code) { super();
         this.type = type;
         this.code = code;
     }
-
+    
     toDOM() {        
         let wrap = document.createElement("span")
         wrap.setAttribute("aria-hidden", "true")
@@ -13,7 +14,7 @@ export class CopyCode extends WidgetType {
         
         let btn = document.createElement("button");
         btn.className = "wg-codeblock-btn";
-        btn.textContent = "Copy";
+        btn.innerHTML = icon(".7lh");
         
         wrap.appendChild(btn);
         
