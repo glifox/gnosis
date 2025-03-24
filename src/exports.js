@@ -10,6 +10,7 @@ import { ListPlugin } from "../src/plugins/block/list/plugin";
 import { CodePlugin } from "../src/plugins/block/code/plugin";
 import { HeadingPlugin } from "../src/plugins/block/heading/plugin";
 import { catppuccin, themeVariant } from "./theme/catppuccin";
+import { LinkPlugin } from "./plugins/links/link/plugin";
 
 const gnosis = (conf = { markdown: {} }) => {
     const { 
@@ -47,6 +48,7 @@ const gnosis = (conf = { markdown: {} }) => {
         ListPlugin(List),
         HrPlugin(Hr),
         CodePlugin(Code),
+        LinkPlugin(),
     ]
 }
 
