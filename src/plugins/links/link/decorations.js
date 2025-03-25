@@ -1,5 +1,6 @@
 import {Decoration} from "@codemirror/view";
 import { hasSelection, visibleNodes } from "../../common/usefull";
+import { getTextFromLink } from "../common/text";
 
 export function decorator(view, _) {
     
@@ -26,7 +27,9 @@ export function decorator(view, _) {
     
     const widgets = []; 
     visibleNodes(view, {
-        enter: ({ type: { name }, from, to, node }) => {            
+        enter: ({ type: { name }, from, to, node }) => { 
+            if (name === "URL") widgets.push(decorations.URL(from, to, view.state.sliceDoc(from, to)));
+            
             if (!(name in types)) return !(noIterable.includes(name));
             
             widgets.push(decorations.Link(from, to, hasSelection(view, from, to)));
@@ -44,21 +47,10 @@ export function decorator(view, _) {
             }
             
             if (node.getChild("Image") === null) {
-                const link = view.state.sliceDoc(from, to);
-                const title = link.match(/\[(.*)\]/);
-                if (
-                    title !== null && 
-                    title.length > 1
-                ) {
-                    const text = title[1];
-                    widgets.push(
-                        decorations.TextDec(
-                            from + link.indexOf(text), 
-                            from + 1 + text.length,
-                            tUrl
-                        )
-                    )
-                }
+                const { text: title, from: start, to: end } = getTextFromLink(view, from, to);
+                
+                if ( title !== null && tUrl !== null )
+                    widgets.push(decorations.TextDec(start, end, tUrl))
             }
             
             return false
