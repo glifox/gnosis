@@ -47,7 +47,7 @@ const editor = new EditorView({
 - [ ] change: \`br\`
 - [x] change: \`del\`
 - [x] change: \`link\`
-- [ ] change: \`image\`
+- [x] change: \`image\`
 - [x] change: \`text\`
 - [ ] change: \`tags\`
 

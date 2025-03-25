@@ -32,8 +32,8 @@ I did a lot of online research, and found some _WYSIWYG markdown editors_. Howev
 - [x] change: `codespan`
 - [ ] change: `br`
 - [x] change: `del`
-- [ ] change: `link`
-- [ ] change: `image`
+- [x] change: `link`
+- [x] change: `image`
 - [x] change: `text`
 - [ ] change: `tags`
 
