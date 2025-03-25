@@ -99,7 +99,9 @@ export const catppuccin = (flavor = "latte") => {
         ".cb-icon": { fill: text },
         ".wg-codeblock-btn:hover": { backgroundColor: rgba(colors.overlay1.rgb, .2) },
         
-        // 
+        // Links
+        "& a.url": { color: colors.blue.hex },
+        "& a.url:visited": { color: colors.mauve.hex },
         
       }, { dark: flavor !== "latte" })
     ];
