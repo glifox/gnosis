@@ -11,6 +11,7 @@ import { CodePlugin } from "../src/plugins/block/code/plugin";
 import { HeadingPlugin } from "../src/plugins/block/heading/plugin";
 import { catppuccin, themeVariant } from "./theme/catppuccin";
 import { QuotePlugin } from "./plugins/block/quotes/plugin";
+import { QuoteType } from "./plugins/block/quotes/extension";
 
 const gnosis = (conf = { markdown: {} }) => {
     const { 
@@ -37,7 +38,7 @@ const gnosis = (conf = { markdown: {} }) => {
         base,
         completeHTMLTags,
         htmlTagLanguage,
-        extensions: [ ...extensions, GFM, unsetMarks ],
+        extensions: [ ...extensions, GFM, unsetMarks, QuoteType ],
     }
 
     return [

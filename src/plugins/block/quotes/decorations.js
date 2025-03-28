@@ -24,7 +24,8 @@ export function decorator(view, _) {
     visibleNodes(view, { 
         enter: ({type: {name}, from, to}) => { 
             
-            if (name in marks) widgets.push(marks[name](from, to));
+            // if (name in marks) widgets.push(marks[name](from, to));
+            // if (name === "QuoteTipe") console.log("enter", name, from, to);
             console.log("enter", name, from, to);
             
             // return false; 
