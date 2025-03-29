@@ -1,36 +1,84 @@
 import { Decoration } from "@codemirror/view";
 import { hasSelection, visibleNodes } from "../../common/usefull";
-
-const stack = [];
+import { syntaxTree } from "@codemirror/language";
 
 export function decorator(view, _) {
-
-
-    const iterable = [ "Document", "Blockquote", "ListItem", "BulletList", "OrderedList" ]
-    
+    const iterable = [ "Document", "ListItem", "BulletList", "OrderedList" ]
+    const quoteTypes = {
+        "note":      "bq-note-mark",
+        "tip":       "bq-tip-mark",
+        "warning":   "bq-warning-mark",
+        "important": "bq-important-mark",
+        "caution":   "bq-caution-mark",
+    }
 
     const types = {
         Blockquote: () => { }
     }
     
     const marks = {
-        QuoteMark: (from, to) => Decoration.mark({class: "qt-mk", attributes: { style: "color: red;" }}).range(from, to),
-        LinkMark: (from, to) => Decoration.mark({class: "qt-mk", attributes: { style: "color: blue;" }}).range(from, to),
-        Link:     (from, to) => Decoration.mark({class: "qt-mk", attributes: { style: "color: green;" }}).range(from, to),
+        QuoteMark: (from, to, type) => {
+            const class_ = ["qt-mk"];
+            console.log("QuoteMark", type);
+            if (type in quoteTypes) class_.push(quoteTypes[type]);
+            
+            return Decoration.mark({
+                class: class_.join(" ")
+            }).range(from, to)
+        },
+    }
+    
+    const getDecorations = (view, node, startLine, lines) => {
+        const decorations = [];
+        const { from, to } = node;
+        const begin = startLine.number;
+        
+        const iterator = () => {
+            let marksCount = 0;
+            const stack = [];
+            
+            return {
+                enter({ name, node, from, to }) {
+                    if (name === "Blockquote") stack.push(getQuoteType(view, node));
+                    
+                    if (name === "QuoteMark") {
+                        decorations.push(marks[name](from, to, stack[marksCount]));
+                        marksCount++;
+                    }
+                }
+            }
+        }
+        
+        for ( let index = begin; index < lines + begin; index++) {
+            const { from, to } = view.state.doc.line(index);
+            
+            syntaxTree(view.state).iterate({ from, to, ... iterator() })
+            console.log("line", index);
+        }
+        
+        
+        return decorations
     }
 
     const widgets = [];
-
+    
     visibleNodes(view, { 
-        enter: ({type: {name}, from, to}) => { 
+        enter: ({ name }) => !(name in iterable),
+        leave: ({ name, from, to, node}) => { 
+            if (name !== "Blockquote") return;
             
-            // if (name in marks) widgets.push(marks[name](from, to));
-            // if (name === "QuoteTipe") console.log("enter", name, from, to);
-            console.log("enter", name, from, to);
+            const lines = view.state.sliceDoc(from, to).split("\n");
+            const startLine = view.state.doc.lineAt(from);
             
-            // return false; 
-        }
+            widgets.push(... getDecorations(view, node, startLine, lines.length))
+        },
     });
     
     return Decoration.set(widgets, true)
+}
+
+const getQuoteType = (view, node) => {
+    const node_ = node.getChild("QuoteTypeText");
+    if (!node_) return "none";
+    return view.state.sliceDoc(node_.from, node_.to).toLowerCase();
 }

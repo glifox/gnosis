@@ -99,7 +99,12 @@ export const catppuccin = (flavor = "latte") => {
         ".cb-icon": { fill: text },
         ".wg-codeblock-btn:hover": { backgroundColor: rgba(colors.overlay1.rgb, .2) },
         
-        // 
+        // Blockquote
+        ".bq-note-mark":      {color: colors.blue.hex },
+        ".bq-tip-mark":       {color: colors.green.hex },
+        ".bq-warning-mark":   {color: colors.peach.hex },
+        ".bq-important-mark": {color: colors.mauve.hex },
+        ".bq-caution-mark":   {color: colors.red.hex },
         
       }, { dark: flavor !== "latte" })
     ];
