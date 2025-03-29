@@ -21,6 +21,7 @@ export function decorator(view, _) {
         QuoteMark: (from, to, type) => {
             const class_ = ["qt-mk"];
             if (type in quoteTypes) class_.push(quoteTypes[type]);
+            else class_.push(quoteTypes["none"]);
             
             return Decoration.mark({
                 class: class_.join(" ")
