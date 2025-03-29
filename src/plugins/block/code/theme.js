@@ -8,8 +8,8 @@ export const coreTheme = () => {
     const width = "100%";
     
     // button
-    const buttonSize = "1.15lh";
-    const buttonMargin = "4px";
+    const buttonSize = "1lh";
+    const buttonMargin = ".05lh";
 
     return EditorView.baseTheme({
         ".cb-start": { borderRadius: `${borderRadius} ${borderRadius} 0 0` },
