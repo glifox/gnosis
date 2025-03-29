@@ -1,5 +1,8 @@
 export const text = 
 `
+- this is a message
+    > [!NOTE]
+    > nested note
 
 > [!NOTE]  
 > Highlights information that users should take into account, even when skimming.
@@ -27,5 +30,14 @@ export const text =
 > ~~~javascript
 > console.log("Hello, World!");
 > ~~~
+
+> [!TIP]
+> Critical content demanding immediate user attention due to potential risks.
+> > Normal \`quote\`
+> ~~~javascript
+> console.log("Hello, World!");
+> ~~~
+> > [!NOTE]
+> > nested note
 
 `;
