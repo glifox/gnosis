@@ -97,6 +97,7 @@ export const catppuccin = (flavor = "latte") => {
         ".cb-icon": { fill: text },
         ".wg-codeblock-btn:hover": { backgroundColor: rgba(colors.overlay1.rgb, .2) },
         
+
         // Blockquote
         ".bq-none-mark":      {"--bq-none-mark": text },
         ".bq-note-mark":      {"--bq-note-mark": colors.blue.hex },
@@ -104,6 +105,11 @@ export const catppuccin = (flavor = "latte") => {
         ".bq-warning-mark":   {"--bq-warning-mark": colors.peach.hex },
         ".bq-important-mark": {"--bq-important-mark": colors.mauve.hex },
         ".bq-caution-mark":   {"--bq-caution-mark": colors.red.hex },
+
+        // Links
+        "& a.url": { color: colors.blue.hex },
+        "& a.url:visited": { color: colors.mauve.hex },
+
         
       }, { dark: flavor !== "latte" })
     ];

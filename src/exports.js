@@ -12,6 +12,9 @@ import { HeadingPlugin } from "../src/plugins/block/heading/plugin";
 import { catppuccin, themeVariant } from "./theme/catppuccin";
 import { QuotePlugin } from "./plugins/block/quotes/plugin";
 import { QuoteType } from "./plugins/block/quotes/extension";
+import { LinkPlugin } from "./plugins/links/link/plugin";
+import { ImagePlugin } from "./plugins/links/image/plugin";
+
 
 const gnosis = (conf = { markdown: {} }) => {
     const { 
@@ -50,6 +53,8 @@ const gnosis = (conf = { markdown: {} }) => {
         HrPlugin(Hr),
         CodePlugin(Code),
         QuotePlugin(),
+        LinkPlugin(),
+        ImagePlugin(),
     ]
 }
 
