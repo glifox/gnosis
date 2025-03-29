@@ -5,6 +5,7 @@ import { syntaxTree } from "@codemirror/language";
 export function decorator(view, _) {
     const iterable = [ "Document", "ListItem", "BulletList", "OrderedList" ]
     const quoteTypes = {
+        "none":      "bq-none-mark",
         "note":      "bq-note-mark",
         "tip":       "bq-tip-mark",
         "warning":   "bq-warning-mark",
@@ -19,13 +20,13 @@ export function decorator(view, _) {
     const marks = {
         QuoteMark: (from, to, type) => {
             const class_ = ["qt-mk"];
-            console.log("QuoteMark", type);
             if (type in quoteTypes) class_.push(quoteTypes[type]);
             
             return Decoration.mark({
                 class: class_.join(" ")
             }).range(from, to)
         },
+        BlockquoteLine: (from, selected) => Decoration.line({ class: "bq-line " + (selected ? "sw": "") }).range(from)
     }
     
     const getDecorations = (view, node, startLine, lines) => {
@@ -51,9 +52,11 @@ export function decorator(view, _) {
         
         for ( let index = begin; index < lines + begin; index++) {
             const { from, to } = view.state.doc.line(index);
+            const { from: s, to: e } = node;
+            const selected = hasSelection(view, s, e);
+            decorations.push(marks.BlockquoteLine(from, selected));
             
             syntaxTree(view.state).iterate({ from, to, ... iterator() })
-            console.log("line", index);
         }
         
         

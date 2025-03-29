@@ -5,8 +5,6 @@ import { unblendColor } from "../plugins/common/usefull";
 import { createTheme } from "thememirror";
 import { tags as t } from "@lezer/highlight";
 
-console.log(flavors);
-console.log(t);
 export const themeVariant = new Compartment();
 
 export const catppuccin = (flavor = "latte") => {
@@ -100,11 +98,12 @@ export const catppuccin = (flavor = "latte") => {
         ".wg-codeblock-btn:hover": { backgroundColor: rgba(colors.overlay1.rgb, .2) },
         
         // Blockquote
-        ".bq-note-mark":      {color: colors.blue.hex },
-        ".bq-tip-mark":       {color: colors.green.hex },
-        ".bq-warning-mark":   {color: colors.peach.hex },
-        ".bq-important-mark": {color: colors.mauve.hex },
-        ".bq-caution-mark":   {color: colors.red.hex },
+        ".bq-none-mark":      {"--bq-none-mark": text },
+        ".bq-note-mark":      {"--bq-note-mark": colors.blue.hex },
+        ".bq-tip-mark":       {"--bq-tip-mark": colors.green.hex },
+        ".bq-warning-mark":   {"--bq-warning-mark": colors.peach.hex },
+        ".bq-important-mark": {"--bq-important-mark": colors.mauve.hex },
+        ".bq-caution-mark":   {"--bq-caution-mark": colors.red.hex },
         
       }, { dark: flavor !== "latte" })
     ];
