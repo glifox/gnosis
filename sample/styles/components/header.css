@@ -37,6 +37,11 @@ nav {
     -webkit-text-fill-color: transparent;
 }
 
+#logo-svg {
+    width: 2rem;
+    height: 2rem;
+}
+
 .nav-links {
     display: flex;
     list-style: none;
