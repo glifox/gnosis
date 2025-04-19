@@ -28,7 +28,13 @@ export function decorator(view, _) {
             }).range(from, to)
         },
         BlockquoteLine: (from, selected) => Decoration.line({ class: "bq-line " + (selected ? "sw": "") }).range(from),
-        quoteLine: (from, to) => Decoration.mark({ class: "bq-text-line" }).range(from, to),
+        quoteLine: (from, to, offset) => {
+            const width = `calc(100% - ${Math.max(0, offset) + 1.2}ch)`;
+            return Decoration.mark({
+                class: "bq-text-line",
+                attributes: { style: `width: ${width}` }
+            }).range(from, to)
+        }
     }
     
     const getDecorations = (view, node, startLine, lines) => {
@@ -54,7 +60,7 @@ export function decorator(view, _) {
                 leave({ name, from, to }) {
                     if (name === "Paragraph") {
                         if (marksEnd < end) {
-                            decorations.push(marks.quoteLine(marksEnd, end));
+                            decorations.push(marks.quoteLine(marksEnd, end, marksEnd - start));
                         }
                     }
                 }

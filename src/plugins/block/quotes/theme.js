@@ -1,19 +1,19 @@
 import { EditorView } from "codemirror";
 
 export const coreTheme = () => {
-    const width = "2px";
+    const width = "4px";
     return EditorView.baseTheme({
         "& .qt-mk": {
             // outline: "1px red solid",
             position: "relative",
             color: "transparent",
+            verticalAlign: "top",
         },
         "& .qt-mk::after": {
             position: "absolute",
             content: '" "', // Las comillas dobles dentro de la cadena son necesarias
             backgroundColor: "currentColor",
             top: "-100vh",
-            left: `-${width}`,
             width: width,
             height: "200vh",
             zIndex: "-1",
@@ -25,5 +25,15 @@ export const coreTheme = () => {
         "&.cm-focused .bq-line.sw .bq-warning-mark, .bq-warning-mark::after": { color: "var(--bq-warning-mark)", },
         "&.cm-focused .bq-line.sw .bq-important-mark, .bq-important-mark::after": { color: "var(--bq-important-mark)", },
         "&.cm-focused .bq-line.sw .bq-caution-mark, .bq-caution-mark::after": { color: "var(--bq-caution-mark)", },
+        
+        "& .bq-text-line": { 
+            lineHeight: "1lh",
+            // backgroundColor: "rgba(0, 0, 0, 0.1)",
+            display: "inline-block",
+            // maxWidth: "95%",
+            paddingLeft: "6px",
+            textIndent: "-7px",
+            ariaHidden: "true"
+        },
     });
 };

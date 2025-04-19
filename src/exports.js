@@ -52,9 +52,9 @@ const gnosis = (conf = { markdown: {} }) => {
         ListPlugin(List),
         HrPlugin(Hr),
         CodePlugin(Code),
-        QuotePlugin(),
         LinkPlugin(),
         ImagePlugin(),
+        QuotePlugin(),
     ]
 }
 
