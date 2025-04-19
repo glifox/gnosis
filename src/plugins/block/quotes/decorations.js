@@ -27,7 +27,8 @@ export function decorator(view, _) {
                 class: class_.join(" ")
             }).range(from, to)
         },
-        BlockquoteLine: (from, selected) => Decoration.line({ class: "bq-line " + (selected ? "sw": "") }).range(from)
+        BlockquoteLine: (from, selected) => Decoration.line({ class: "bq-line " + (selected ? "sw": "") }).range(from),
+        quoteLine: (from, to) => Decoration.mark({ class: "bq-text-line" }).range(from, to),
     }
     
     const getDecorations = (view, node, startLine, lines) => {
@@ -35,9 +36,10 @@ export function decorator(view, _) {
         const { from, to } = node;
         const begin = startLine.number;
         
-        const iterator = () => {
+        const iterator = (start, end) => {
             let marksCount = 0;
             const stack = [];
+            let marksEnd = 0;
             
             return {
                 enter({ name, node, from, to }) {
@@ -45,7 +47,15 @@ export function decorator(view, _) {
                     
                     if (name === "QuoteMark") {
                         decorations.push(marks[name](from, to, stack[marksCount]));
+                        marksEnd = to;
                         marksCount++;
+                    }
+                },
+                leave({ name, from, to }) {
+                    if (name === "Paragraph") {
+                        if (marksEnd < end) {
+                            decorations.push(marks.quoteLine(marksEnd, end));
+                        }
                     }
                 }
             }
@@ -57,7 +67,7 @@ export function decorator(view, _) {
             const selected = hasSelection(view, s, e);
             decorations.push(marks.BlockquoteLine(from, selected));
             
-            syntaxTree(view.state).iterate({ from, to, ... iterator() })
+            syntaxTree(view.state).iterate({ from, to, ... iterator(from, to) })
         }
         
         
@@ -82,7 +92,9 @@ export function decorator(view, _) {
 }
 
 const getQuoteType = (view, node) => {
-    const node_ = node.getChild("QuoteTypeText");
-    if (!node_) return "none";
-    return view.state.sliceDoc(node_.from, node_.to).toLowerCase();
+    const node_type = node.getChild("QuoteType");
+    if (!node_type) return "none";
+    const node_text = node_type.getChild("QuoteTypeText");
+    if (!node_text) return "none";
+    return view.state.sliceDoc(node_text.from, node_text.to).toLowerCase();
 }

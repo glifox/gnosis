@@ -34,8 +34,8 @@
     "vite": "^6.0.7"
   },
   "scripts": {
-    "start": "cd dev && vite --host",
-    "preview": "cd sample && vite --host",
+    "dev": "cd dev && vite --host",
+    "sample": "cd sample && vite --host",
     "build": "vite build"
   },
   "keywords": [

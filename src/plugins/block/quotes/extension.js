@@ -17,11 +17,14 @@ const QuoteTypeParser = {
                 const quoteType = match[2];
                 const start = line.text.indexOf(quoteType);
                 const end = start + quoteType.length;
-            
-                cx.addElement(cx.elt("QuoteType", cx.lineStart + start, cx.lineStart + end));
-                cx.addElement(cx.elt("QuoteTypeMark", cx.lineStart + start, cx.lineStart + start + 2));
-                cx.addElement(cx.elt("QuoteTypeText", cx.lineStart + start + 2 , cx.lineStart + end - 1));
-                cx.addElement(cx.elt("QuoteTypeMark", cx.lineStart + end - 1, cx.lineStart + end));
+                
+                const quoteTypeElement = cx.elt("QuoteType", cx.lineStart + start, cx.lineStart + end);
+                quoteTypeElement.children = [
+                    cx.elt("QuoteTypeMark", cx.lineStart + start, cx.lineStart + start + 2),
+                    cx.elt("QuoteTypeText", cx.lineStart + start + 2 , cx.lineStart + end - 1),
+                    cx.elt("QuoteTypeMark", cx.lineStart + end - 1, cx.lineStart + end)
+                ];
+                cx.addElement(quoteTypeElement);
             }
         }
 
