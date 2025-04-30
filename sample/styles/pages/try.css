@@ -41,6 +41,7 @@ footer {
 }
 
 /* Dropdown Button */
+.btn,
 .dropbtn {
  background-color: #303446;
  color: #e6e9ef;
@@ -49,6 +50,16 @@ footer {
  border: none;
  border-radius: 10px;
  margin: 8px;
+}
+
+/* Reset button */
+.btn.reset {
+ background-color: #f38ba8;
+ color: #e6e9ef;
+}
+
+.btn:hover {
+    transform: scale(1.1);
 }
 
 /* The container <div> - needed to position the dropdown content */

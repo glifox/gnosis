@@ -2,7 +2,7 @@ import { catppuccin, themeVariant } from "../../src/exports";
 import { Editor } from "../editor/editor"
 
 
-const editor = Editor("Just write here...")
+const editor = Editor("Just write here...", true, 'gnosis-try-editor-content')
 
 const themes = [
     document.querySelector("#mocha"),
@@ -18,5 +18,12 @@ themes.forEach(theme => {
         })
     })
 })
+
+const reset = document.querySelector(".btn.reset");
+reset.addEventListener("click", () => {
+    editor.dispatch({
+        changes: [{ from: 0, to: editor.state.doc.length, insert: "Just write here..." }]
+    })
+});
 
 document.querySelector(".editor").removeChild(document.querySelector(".wraper-loader"))
