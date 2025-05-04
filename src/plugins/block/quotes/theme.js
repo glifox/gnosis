@@ -18,6 +18,9 @@ export const coreTheme = () => {
             height: "200vh",
             zIndex: "-1",
         },
+        "& .bq-line.sw .qt-mk::after": {
+            opacity: 0.3
+        },
         "& .bq-line": { lineHeight: "1.2lh", overflowY: "hidden" },
         "&.cm-focused .bq-line.sw .bq-none-mark, .bq-none-mark::after": { color: "var(--bq-none-mark)", },
         "&.cm-focused .bq-line.sw .bq-note-mark, .bq-note-mark::after": { color: "var(--bq-note-mark)", },
@@ -28,9 +31,7 @@ export const coreTheme = () => {
         
         "& .bq-text-line": { 
             lineHeight: "1lh",
-            // backgroundColor: "rgba(0, 0, 0, 0.1)",
             display: "inline-block",
-            // maxWidth: "95%",
             paddingLeft: "6px",
             textIndent: "-7px",
             ariaHidden: "true"
