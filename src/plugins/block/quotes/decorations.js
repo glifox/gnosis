@@ -27,6 +27,13 @@ export function decorator(view, _) {
                 class: class_.join(" ")
             }).range(from, to)
         },
+        QuoteType: (from, to) => {
+            const class_ = ["qt-type"];
+            
+            return Decoration.mark({
+                class: class_.join(" ")
+            }).range(from, to)
+        },
         BlockquoteLine: (from, selected) => Decoration.line({ class: "bq-line " + (selected ? "sw": "") }).range(from),
         quoteLine: (from, to, offset) => {
             const width = `calc(100% - ${Math.max(0, offset) + 1.2}ch)`;
@@ -51,7 +58,7 @@ export function decorator(view, _) {
                 enter({ name, node, from, to }) {
                     if (name === "Blockquote") stack.push(getQuoteType(view, node));
                     
-                    if (name === "QuoteMark") {
+                    if (name in marks) {
                         decorations.push(marks[name](from, to, stack[marksCount]));
                         marksEnd = to;
                         marksCount++;
