@@ -18,7 +18,7 @@ export const coreTheme = () => {
             height: "200vh",
             zIndex: "-1",
         },
-        "& .bq-line.sw .qt-mk::after": {
+        "&.cm-focused .bq-line.sw .qt-mk::after": {
             opacity: 0.3
         },
         "& .bq-line": { lineHeight: "1.2lh", overflowY: "hidden" },
