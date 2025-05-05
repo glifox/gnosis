@@ -1,9 +1,10 @@
 import { WidgetType } from "@codemirror/view";
 
 export class HtmlWidget extends WidgetType {
-  constructor(content) {
+  constructor(content, tag = false) {
     super();
     this.content = content;
+    this.tag = tag;
   }
 
   toDOM() {
@@ -17,7 +18,7 @@ export class HtmlWidget extends WidgetType {
       .replace(/```$/, '')
       .trim();
     
-    wrapper.innerHTML = cleanedContent;
+    wrapper.innerHTML = (this.tag ? '<span class="cm-rendered-tag">RTAG</span>' : '') + cleanedContent;
     
     // Deactivate scripts for security
     wrapper.querySelectorAll('script').forEach(script => {
