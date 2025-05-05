@@ -1,12 +1,23 @@
-import { PluginFactory } from "../../common/factory";
-import { decorator } from "./decorations";
-// import { coreTheme } from "./theme";
+import { htmlBlockField, decorator, updateHtmlBlocks } from "./decorations";
+import { EditorView } from "@codemirror/view";
+import { coreTheme } from "./theme";
 
+const htmlPlugin = EditorView.updateListener.of((update) => {
+    if (
+        update.selectionSet || 
+        update.docChanged || 
+        update.focusChanged ||
+        update.geometryChanged
+    ) {
+        const decorations = decorator(update.view);
+        update.view.dispatch({ effects: updateHtmlBlocks.of(decorations) });
+    }
+});
 
 export const HtmlPlugin = (conf = {}) => {
-
-    return [
-        PluginFactory(decorator, {}),
-        // coreTheme,
-    ]
+  return [
+    htmlBlockField,
+    htmlPlugin,
+    coreTheme
+  ]
 };
