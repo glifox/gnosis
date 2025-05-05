@@ -110,7 +110,14 @@ export const catppuccin = (flavor = "latte") => {
         "& a.url": { color: colors.blue.hex },
         "& a.url:visited": { color: colors.mauve.hex },
 
-        
+        // Html
+        "& .cm-rendered-tag": {
+            border: `1px solid ${colors.surface2.hex}`,
+            borderRadius: "4px",
+            fontSize: ".8em",
+            padding: "0px 3px",
+            background: colors.surface0.hex,
+        }
       }, { dark: flavor !== "latte" })
     ];
 

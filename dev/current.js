@@ -1,43 +1,22 @@
 export const text = 
 `
-- this is a message
-    > [!NOTE]
-    > nested note
 
-> [!NOTE]  
-> Highlights information that users should take into account, even when skimming.
+<img height="150px" src="https://avatars.githubusercontent.com/u/202307645?s=200&v=4" alt="example" />
 
-> [!TIP]
-> Optional information to help a user be more successful.
+https://avatars.githubusercontent.com/u/202307645?s=200&v=4
+[sdawda](https://avatars.githubusercontent.com/u/202307645?s=200&v=4)
 
-> [!IMPORTANT]  
-> Crucial information necessary for users to succeed.
+<a href="https://marked.js.org"><img width="60px" height="60px" src="https://marked.js.org/img/logo-black.svg" align="right" /></a>
 
-> [!WARNING]  
-> Critical content demanding immediate user attention due to potential risks.
 
-> [!CAUTION]
-> Negative potential consequences of an action.
 
-> [!WARNING]
-> Critical content demanding immediate user attention due to potential risks.
-> ~~~python
-> print("Hello, World!")
-> ~~~
+~~~html
+<p align="center">
+    <img height="150px"
+    src="https://avatars.githubusercontent.com/u/202307645?s=200&v=4"
+    alt="example" />
+</p>
+~~~
 
-> [!TIP]
-> Critical content demanding immediate user attention due to potential risks.
-> ~~~javascript
-> console.log("Hello, World!");
-> ~~~
-
-> [!TIP]
-> Critical content demanding immediate user attention due to potential risks.
-> > Normal \`quote\`
-> ~~~javascript
-> console.log("Hello, World!");
-> ~~~
-> > [!NOTE]
-> > nested note
 
 `;
