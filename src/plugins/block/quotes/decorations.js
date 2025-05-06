@@ -1,6 +1,7 @@
 import { Decoration } from "@codemirror/view";
 import { hasSelection, visibleNodes } from "../../common/usefull";
 import { syntaxTree } from "@codemirror/language";
+import { Icon } from "./icons/widget";
 
 export function decorator(view, _) {
     const iterable = [ "Document", "ListItem", "BulletList", "OrderedList" ]
@@ -27,12 +28,11 @@ export function decorator(view, _) {
                 class: class_.join(" ")
             }).range(from, to)
         },
-        QuoteType: (from, to) => {
-            const class_ = ["qt-type"];
-            
-            return Decoration.mark({
-                class: class_.join(" ")
-            }).range(from, to)
+        QuoteType: (from, to, type) => {
+            return Decoration.widget({
+                widget: new Icon(type),
+                side: 1
+            }).range(from)
         },
         BlockquoteLine: (from, selected) => Decoration.line({ class: "bq-line " + (selected ? "sw": "") }).range(from),
         quoteLine: (from, to, offset) => {
@@ -58,10 +58,14 @@ export function decorator(view, _) {
                 enter({ name, node, from, to }) {
                     if (name === "Blockquote") stack.push(getQuoteType(view, node));
                     
-                    if (name in marks) {
+                    if (name === "QuoteMark") {
                         decorations.push(marks[name](from, to, stack[marksCount]));
                         marksEnd = to;
                         marksCount++;
+                    }
+                    
+                    if (name === "QuoteType") {
+                        decorations.push(marks[name](from, to, stack[marksCount - 1]));
                     }
                 },
                 leave({ name, from, to }) {

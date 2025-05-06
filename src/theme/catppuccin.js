@@ -105,7 +105,16 @@ export const catppuccin = (flavor = "latte") => {
         ".bq-warning-mark":   {"--bq-warning-mark": colors.peach.hex },
         ".bq-important-mark": {"--bq-important-mark": colors.mauve.hex },
         ".bq-caution-mark":   {"--bq-caution-mark": colors.red.hex },
-
+        
+        ".wg-qt-icon":      {
+            "--bq-none-mark": text,
+            "--bq-note-mark": colors.blue.hex,
+            "--bq-tip-mark": colors.green.hex,
+            "--bq-warning-mark": colors.peach.hex,
+            "--bq-important-mark": colors.mauve.hex,
+            "--bq-caution-mark": colors.red.hex
+        },
+        
         // Links
         "& a.url": { color: colors.blue.hex },
         "& a.url:visited": { color: colors.mauve.hex },

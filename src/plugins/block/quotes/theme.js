@@ -34,7 +34,27 @@ export const coreTheme = () => {
             display: "inline-block",
             paddingLeft: "6px",
             textIndent: "-7px",
-            ariaHidden: "true"
+            ariaHidden: "true",
         },
+        
+        "& .bq-text-line *": {
+            verticalAlign: "middle",
+        },
+        
+        "& .wg-qt-icon": {
+          display: "inline-block",
+        },
+        
+        "& .wg-qt-icon > .qt-icon": {
+          paddingLeft: "1ch",
+          width: "2em",
+          height: "2em"
+        },
+        
+        "& .wg-qt-icon > .qt-tip": { fill: "var(--bq-tip-mark)" },
+        "& .wg-qt-icon > .qt-note": { fill: "var(--bq-note-mark)" },
+        "& .wg-qt-icon > .qt-important": { fill: "var(--bq-important-mark)" },
+        "& .wg-qt-icon > .qt-warning": { fill: "var(--bq-warning-mark)" },
+        "& .wg-qt-icon > .qt-caution": { fill: "var(--bq-caution-mark)" },
     });
 };
