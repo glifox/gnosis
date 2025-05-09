@@ -1,6 +1,6 @@
 {
   "name": "@glifox/gnosis",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "author": "feraxhp",
   "license": "MIT",
   "main": "dist/gnosis.umd.js",
@@ -36,7 +36,7 @@
   "scripts": {
     "dev": "cd dev && vite --host",
     "sample": "cd sample && vite --host",
-    "build": "vite build"
+    "publish": "vite build && npm publish"
   },
   "keywords": [
     "WYSIWYG",
