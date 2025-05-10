@@ -91,3 +91,28 @@ footer {
 
 /* Show the dropdown menu on hover */
 .dropdown:hover .dropdown-content {display: block;}
+
+@media print {
+    * {
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        &::-webkit-scrollbar { display: none; }
+    }
+
+    body,
+    main
+    {
+        margin: 0;
+        padding: 0;
+    }
+
+    header,
+    main > section > .dropdown,
+    main > section > .btn,
+    main > footer
+    { display: none; }
+
+    .editor { width: 100%; }
+}
