@@ -14,8 +14,9 @@ export const catppuccin = (flavor = "latte") => {
     const text = flavor === "latte" ? "#484b64" : colors.text.hex;
     const codebg = calcBackground(colors.crust.rgb, base.rgb, 0.1);
     
-    const red = "#f00"
-
+    const root = document.querySelector(':root');
+    root.style.setProperty('--editor-background', base.hex);
+    
     return [
       createTheme({
         variant: flavor === "latte" ? "light" : "dark",
