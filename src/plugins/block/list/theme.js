@@ -7,13 +7,13 @@ export const coreTheme = (conf) => {
 
     return EditorView.baseTheme({
         /* Bullet list Point */
-        ".lm.bl": {
+        "& .lm.bl": {
             position: "relative",
             paddingInlineStart: "1ch",
             color: "transparent",
         },
         
-        ".lm.bl::before": {
+        "& .lm.bl::before": {
             content: "\"\"",
             display: "inline",
             position: "absolute",
@@ -32,5 +32,15 @@ export const coreTheme = (conf) => {
             color: "inherit",
         },
         
+        /* list text line */
+        "& .ls-text-line": {
+            display: "inline-block",
+            ariaHidden: "true",
+            // border: "red 1px solid"
+        },
+        
+        "& .cm-line .lm, & .cm-line .TaskMark, & .cm-line .tm, & .cm-line .ls-text-line": {
+            verticalAlign: "top",
+        }
     });
 }
