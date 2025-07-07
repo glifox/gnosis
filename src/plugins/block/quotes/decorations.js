@@ -46,7 +46,6 @@ export function decorator(view, _) {
     
     const getDecorations = (view, node, startLine, lines) => {
         const decorations = [];
-        const { from, to } = node;
         const begin = startLine.number;
         
         const iterator = (start, end) => {
@@ -94,14 +93,14 @@ export function decorator(view, _) {
     const widgets = [];
     
     visibleNodes(view, { 
-        enter: ({ name }) => !(name in iterable),
-        leave: ({ name, from, to, node}) => { 
-            if (name !== "Blockquote") return;
-            
-            const lines = view.state.sliceDoc(from, to).split("\n");
-            const startLine = view.state.doc.lineAt(from);
-            
-            widgets.push(... getDecorations(view, node, startLine, lines.length))
+        enter: ({ name, from, to, node}) => { 
+            if (name === "Blockquote") {
+                const lines = view.state.sliceDoc(from, to).split("\n");
+                const startLine = view.state.doc.lineAt(from);
+                
+                widgets.push(...getDecorations(view, node, startLine, lines.length))
+            }
+            return iterable.includes(name);
         },
     });
     

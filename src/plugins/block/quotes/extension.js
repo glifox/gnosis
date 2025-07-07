@@ -25,7 +25,6 @@ const QuoteTypeParser = {
                     cx.elt("QuoteTypeMark", cx.lineStart + end - 1, cx.lineStart + end)
                 ];
                 cx.addElement(quoteTypeElement);
-                console.log(cx);
             }
         }
 
