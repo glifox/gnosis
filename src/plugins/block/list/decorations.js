@@ -8,6 +8,7 @@ export function decorator(view, _) {
         "Document",
         "ListItem",
         "Task",
+        "Blockquote"
     ]
     
     const types = {
