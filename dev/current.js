@@ -29,6 +29,4 @@ https://avatars.githubusercontent.com/u/202307645?s=200&v=4
     alt="example" />
 </p>
 ~~~
-
-
 `;
