@@ -1,6 +1,7 @@
 import { Decoration } from "@codemirror/view";
 import { hasSelection, visibleNodes } from "../../common/usefull";
 import { syntaxTree } from "@codemirror/language";
+import { Icon } from "./icons/widget";
 
 export function decorator(view, _) {
     const iterable = [ "Document", "ListItem", "BulletList", "OrderedList" ]
@@ -27,6 +28,12 @@ export function decorator(view, _) {
                 class: class_.join(" ")
             }).range(from, to)
         },
+        QuoteType: (from, to, type) => {
+            return Decoration.widget({
+                widget: new Icon(type),
+                side: 1
+            }).range(from)
+        },
         BlockquoteLine: (from, selected) => Decoration.line({ class: "bq-line " + (selected ? "sw": "") }).range(from),
         quoteLine: (from, to, offset) => {
             const width = `calc(100% - ${Math.max(0, offset) + 1.2}ch)`;
@@ -39,7 +46,6 @@ export function decorator(view, _) {
     
     const getDecorations = (view, node, startLine, lines) => {
         const decorations = [];
-        const { from, to } = node;
         const begin = startLine.number;
         
         const iterator = (start, end) => {
@@ -55,6 +61,10 @@ export function decorator(view, _) {
                         decorations.push(marks[name](from, to, stack[marksCount]));
                         marksEnd = to;
                         marksCount++;
+                    }
+                    
+                    if (name === "QuoteType") {
+                        decorations.push(marks[name](from, to, stack[marksCount - 1]));
                     }
                 },
                 leave({ name, from, to }) {
@@ -83,14 +93,14 @@ export function decorator(view, _) {
     const widgets = [];
     
     visibleNodes(view, { 
-        enter: ({ name }) => !(name in iterable),
-        leave: ({ name, from, to, node}) => { 
-            if (name !== "Blockquote") return;
-            
-            const lines = view.state.sliceDoc(from, to).split("\n");
-            const startLine = view.state.doc.lineAt(from);
-            
-            widgets.push(... getDecorations(view, node, startLine, lines.length))
+        enter: ({ name, from, to, node}) => { 
+            if (name === "Blockquote") {
+                const lines = view.state.sliceDoc(from, to).split("\n");
+                const startLine = view.state.doc.lineAt(from);
+                
+                widgets.push(...getDecorations(view, node, startLine, lines.length))
+            }
+            return iterable.includes(name);
         },
     });
     

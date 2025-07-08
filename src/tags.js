@@ -25,7 +25,8 @@ const umarks = styleTags({
     "HeaderMark HardBreak QuoteMark ListMark LinkMark EmphasisMark CodeMark StrikethroughMark": none,
     "CodeInfo LinkLabel TaskMarker TableDelimiter": none,
     LinkTitle: none,
-    Paragraph: none
+    Paragraph: none,
+    "QuoteType/.. QuoteTypeMark QuoteTypeText": none
 });
 
 export const unsetMarks = { props: [umarks] };
