@@ -14,8 +14,9 @@ export const catppuccin = (flavor = "latte") => {
     const text = flavor === "latte" ? "#484b64" : colors.text.hex;
     const codebg = calcBackground(colors.crust.rgb, base.rgb, 0.1);
     
-    const red = "#f00"
-
+    const root = document.querySelector(':root');
+    root.style.setProperty('--editor-background', base.hex);
+    
     return [
       createTheme({
         variant: flavor === "latte" ? "light" : "dark",
@@ -119,7 +120,14 @@ export const catppuccin = (flavor = "latte") => {
         "& a.url": { color: colors.blue.hex },
         "& a.url:visited": { color: colors.mauve.hex },
 
-        
+        // Html
+        "& .cm-rendered-tag": {
+            border: `1px solid ${colors.surface2.hex}`,
+            borderRadius: "4px",
+            fontSize: ".8em",
+            padding: "0px 3px",
+            background: colors.surface0.hex,
+        }
       }, { dark: flavor !== "latte" })
     ];
 

@@ -5,3 +5,4 @@ import { text } from "./text"
 const editor = Editor(text);
 
 document.querySelector(".editor").removeChild(document.querySelector(".wraper-loader"))
+document.querySelector(".editor").style.height = "90%";

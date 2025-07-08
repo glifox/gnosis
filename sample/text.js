@@ -78,9 +78,15 @@ img: ![imagen](https://avatars.githubusercontent.com/u/116177764?v=4) this is ho
 
 [![npm](https://badgen.net/npm/v/marked)](https://www.npmjs.com/package/marked) [![install size](https://badgen.net/packagephobia/install/marked)](https://packagephobia.now.sh/result?p=marked) [![downloads](https://badgen.net/npm/dt/marked)](https://www.npmjs.com/package/marked) [![github actions](https://github.com/markedjs/marked/workflows/Tests/badge.svg)](https://github.com/markedjs/marked/actions) [![snyk](https://snyk.io/test/npm/marked/badge.svg)](https://snyk.io/test/npm/marked)
 
+## Html block
+
 <a href="https://marked.js.org">
-  <img width="60px" height="60px" src="https://marked.js.org/img/logo-black.svg" align="right" />
+<img width="60px" height="60px" src="https://marked.js.org/img/logo-black.svg" align="right" />
 </a>
+
+## Html inline
+
+<a><img width="60px" height="60px" src="https://marked.js.org/img/logo-black.svg" align="right" /></a>
 
 #### con ~
 
