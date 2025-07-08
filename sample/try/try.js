@@ -19,6 +19,8 @@ themes.forEach(theme => {
     })
 })
 
+document.querySelector(".editor").removeChild(document.querySelector(".wraper-loader"));
+
 const reset = document.querySelector(".btn.reset");
 reset.addEventListener("click", () => {
     editor.dispatch({
@@ -26,4 +28,7 @@ reset.addEventListener("click", () => {
     })
 });
 
-document.querySelector(".editor").removeChild(document.querySelector(".wraper-loader"))
+const print = document.querySelector(".btn.print");
+print.addEventListener("click", () => {
+    window.print();
+})

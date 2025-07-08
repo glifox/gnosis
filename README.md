@@ -22,15 +22,15 @@ I did a lot of online research, and found some _WYSIWYG markdown editors_. Howev
     - [x] change: `listitem`
     - [x] change: `checkbox`
 - [x] change: `code`
-- [ ] change: `html`
-- [ ] change: `blockquote`
+- [x] change: `html`
+- [x] change: `blockquote`
 - [ ] change: `table`
 
 ### **Inline-level**
 - [x] change: `strong`
 - [x] change: `em`
 - [x] change: `codespan`
-- [ ] change: `br`
+- [x] change: `br`
 - [x] change: `del`
 - [x] change: `link`
 - [x] change: `image`
