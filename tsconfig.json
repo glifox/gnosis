@@ -10,7 +10,8 @@
     "moduleResolution": "node",
     "declaration": true,
     "declarationDir": "types",
-    "allowJs": true
+    "allowJs": true,
+    "outDir": "dist"
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts"], // Archivos a incluir en la compilación
   "exclude": ["node_modules", "dist"] // Archivos a excluir
