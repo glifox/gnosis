@@ -1,9 +1,11 @@
 import { defineConfig } from 'vite';
+import dts from 'vite-plugin-dts';
 
 export default defineConfig({
+  plugins: [dts()],
   build: {
     lib: {
-      entry: 'src/exports.js',
+      entry: 'src/exports.ts',
       name: 'gnosis',
       fileName: 'gnosis',
       formats: ['umd', 'es'],

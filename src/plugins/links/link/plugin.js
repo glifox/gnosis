@@ -5,12 +5,7 @@ import { mousedown } from "./events";
 import { coreTheme } from "./theme";
 
 
-export const LinkPlugin = (conf = {}) => {
-
-    const { 
-        hideMarks = true 
-    } = conf;
-
+export const LinkPlugin = () => {
     return [
         PluginFactory(decorator, {},{eventHandlers: { mousedown }}),
         coreTheme,

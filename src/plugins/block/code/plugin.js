@@ -4,7 +4,7 @@ import { decorator } from "./decorations";
 import { coreTheme } from "./theme";
 
 
-export const CodePlugin = (conf) => {
+export const CodePlugin = () => {
     
     return [
         PluginFactory(decorator, { mode: "mark"}),

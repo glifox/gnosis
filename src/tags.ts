@@ -1,7 +1,7 @@
 import {styleTags, Tag} from "@lezer/highlight"
 
-const none = Tag.define("none")
-const umarks = styleTags({
+const none: Tag = Tag.define("none")
+const umarks  = styleTags({
     "Blockquote/...": none,
     HorizontalRule: none,
     "ATXHeading1/... SetextHeading1/...": none,

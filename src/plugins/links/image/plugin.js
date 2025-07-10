@@ -5,12 +5,7 @@ import { mousedown } from "./events";
 import { coreTheme } from "./theme";
 
 
-export const ImagePlugin = (conf = {}) => {
-
-    const { 
-        hideMarks = true 
-    } = conf;
-
+export const ImagePlugin = () => {
     return [
         PluginFactory(decorator, {}, { eventHandlers: {  mousedown }}),
         coreTheme

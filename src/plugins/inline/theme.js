@@ -13,5 +13,5 @@ export const InlineTheme = EditorView.baseTheme({
 
 export const coreTheme = EditorView.baseTheme({
     ".il .mkl": { fontSize: "0" },
-    "&.cm-focused .il.sw .mkl": { fontSize: "inherit" },
+    "&.cm-focused .il.sw > .mkl": { fontSize: "inherit" },
 })

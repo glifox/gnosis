@@ -3,7 +3,7 @@ import { decorator } from "./decorations";
 import { coreTheme, headingTheme } from "./theme";
 
 
-export const HeadingPlugin = (conf = {}) => {
+export const HeadingPlugin = () => {
 
     return [
         PluginFactory(decorator, {}),

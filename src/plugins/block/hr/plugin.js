@@ -3,10 +3,10 @@ import { decorator } from "./decorations";
 import { coreTheme } from "./theme";
 
 
-export const HrPlugin = (conf = {}) => {
+export const HrPlugin = () => {
 
     return [
         PluginFactory(decorator, {}),
-        coreTheme(conf?.color),
+        coreTheme(),
     ]
 };

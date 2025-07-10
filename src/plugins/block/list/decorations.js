@@ -39,7 +39,6 @@ export function decorator(view, _) {
     
     const blocks = {
         ListItem: (from, to, type, isTask) => {
-            // console.log({from, to, type, isTask})
             const offset = type.offset + (isTask ? 4 : 0);
             const start = from + offset;
             const width = `calc(100% - ${Math.max(0, offset) + 4}ch)`;
@@ -70,7 +69,7 @@ export function decorator(view, _) {
             ))
             
             if (name in blocks) {
-                console.log({node, name}); widgets.push(...blocks[name](
+                widgets.push(...blocks[name](
                     from, to,
                     types[listStack.slice(-1)[0].name],
                     node.getChild("Task") !== null

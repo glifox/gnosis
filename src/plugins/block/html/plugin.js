@@ -14,7 +14,7 @@ const htmlPlugin = EditorView.updateListener.of((update) => {
     }
 });
 
-export const HtmlPlugin = (conf = {}) => {
+export const HtmlPlugin = () => {
   return [
     htmlBlockField,
     htmlPlugin,

@@ -1,5 +1,7 @@
 export const text = 
 `
+- list 
+
 > [!NOTE]
 > > nested note
 > 

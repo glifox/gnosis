@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "lib": ["dom", "esnext"],
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node",
+    "declaration": true,
+    "declarationDir": "types",
+    "allowJs": true
+  },
+  "include": ["src/**/*.ts", "src/**/*.d.ts"], // Archivos a incluir en la compilación
+  "exclude": ["node_modules", "dist"] // Archivos a excluir
+}

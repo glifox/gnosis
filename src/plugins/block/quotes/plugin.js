@@ -3,10 +3,10 @@ import { decorator } from "./decorations";
 import { coreTheme } from "./theme";
 
 
-export const QuotePlugin = (conf) => {
+export const QuotePlugin = () => {
     
     return [
-        PluginFactory(decorator, conf),
+        PluginFactory(decorator, {}),
         coreTheme(),
     ]
 };
