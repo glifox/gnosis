@@ -2,7 +2,16 @@ import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
 
 export default defineConfig({
-  plugins: [dts()],
+  plugins: [dts({
+      beforeWriteFile: (filePath, content) => {
+          let path = filePath
+          
+          if (filePath.endsWith("dist/exports.d.ts"))
+              path = filePath.replace("exports.d.ts", "gnosis.d.ts")
+          
+          return { filePath: path, content }
+      }
+  })],
   build: {
     lib: {
       entry: 'src/exports.ts',

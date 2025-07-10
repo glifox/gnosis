@@ -13,6 +13,6 @@
     "allowJs": true,
     "outDir": "dist"
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts"], // Archivos a incluir en la compilación
-  "exclude": ["node_modules", "dist"] // Archivos a excluir
+  "include": ["src/exports.ts"],
+  "exclude": ["node_modules", "dist"],
 }
