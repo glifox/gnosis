@@ -30,7 +30,7 @@ interface MarkdownConfig {
 }
 
 interface GnosisConfig {
-    markdown: MarkdownConfig,
+    markdown?: MarkdownConfig,
     // theme?: string
 }
 
@@ -88,34 +88,3 @@ export {
     // catppuccin,
     // themeVariant,
 };
-
-
-declare global {
-    interface Window {
-        gnosis: typeof gnosis;
-        HrPlugin: typeof HrPlugin;
-        InlinePlugin: typeof InlinePlugin;
-        ListPlugin: typeof ListPlugin;
-        CodePlugin: typeof CodePlugin;
-        HeadingPlugin: typeof HeadingPlugin;
-        LinkPlugin: typeof LinkPlugin;
-        QuotePlugin: typeof QuotePlugin;
-        QuoteType: typeof QuoteType;
-        ImagePlugin: typeof ImagePlugin;
-        HtmlPlugin: typeof HtmlPlugin;
-    }
-}
-
-if (typeof window !== 'undefined') {
-    window.gnosis = gnosis;
-    window.HrPlugin = HrPlugin;
-    window.InlinePlugin = InlinePlugin;
-    window.ListPlugin = ListPlugin;
-    window.CodePlugin = CodePlugin;
-    window.HeadingPlugin = HeadingPlugin;
-    window.LinkPlugin = LinkPlugin;
-    window.QuotePlugin = QuotePlugin;
-    window.QuoteType = QuoteType;
-    window.ImagePlugin = ImagePlugin;
-    window.HtmlPlugin = HtmlPlugin;
-}
