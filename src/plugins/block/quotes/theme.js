@@ -25,7 +25,7 @@ export const coreTheme = () => {
         "& .bq-line.sw .bq-none-mark, .bq-none-mark::after": { color: "var(--bq-none-mark, light-dark(black, white))", },
         "&.cm-focused .bq-line.sw .bq-note-mark, .bq-note-mark::after": { color: "var(--bq-note-mark, blue)", },
         "&.cm-focused .bq-line.sw .bq-tip-mark, .bq-tip-mark::after": { color: "var(--bq-tip-mark, green)", },
-        "&.cm-focused .bq-line.sw .bq-warning-mark, .bq-warning-mark::after": { color: "var(--bq-warning-mark, peach)", },
+        "&.cm-focused .bq-line.sw .bq-warning-mark, .bq-warning-mark::after": { color: "var(--bq-warning-mark, peru)", },
         "&.cm-focused .bq-line.sw .bq-important-mark, .bq-important-mark::after": { color: "var(--bq-important-mark, rebeccapurple)", },
         "&.cm-focused .bq-line.sw .bq-caution-mark, .bq-caution-mark::after": { color: "var(--bq-caution-mark, red)", },
         
@@ -54,7 +54,7 @@ export const coreTheme = () => {
         "& .wg-qt-icon > .qt-tip": { fill: "var(--bq-tip-mark, green)" },
         "& .wg-qt-icon > .qt-note": { fill: "var(--bq-note-mark, blue)" },
         "& .wg-qt-icon > .qt-important": { fill: "var(--bq-important-mark, rebeccapurple)" },
-        "& .wg-qt-icon > .qt-warning": { fill: "var(--bq-warning-mark, peach)" },
+        "& .wg-qt-icon > .qt-warning": { fill: "var(--bq-warning-mark, peru)" },
         "& .wg-qt-icon > .qt-caution": { fill: "var(--bq-caution-mark, red)" },
     });
 };
