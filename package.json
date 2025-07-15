@@ -39,7 +39,7 @@
     "dev": "cd dev && vite --host",
     "sample": "cd sample && vite --host",
     "build": "vite build",
-    "publish": "vite build && npm publish"
+    "pub": "vite build && npm publish"
   },
   "keywords": [
     "WYSIWYG",
