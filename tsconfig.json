@@ -14,7 +14,8 @@
   },
   "include": [
     "src/**/*.ts",
-    "src/**/plugin.js"
+    "src/**/plugin.js",
+    "src/**/extension.js"
   ],
   "exclude": ["node_modules", "dist"]
 }

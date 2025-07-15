@@ -29,7 +29,15 @@ export default defineConfig({
       ],
       output: {
         globals: {
-            gnosis: 'gnosis'
+            gnosis: 'gnosis',
+            '@codemirror/language-data': 'languageData',
+            '@codemirror/lang-markdown': 'langMarkdown',
+            '@lezer/markdown': 'markdown',
+            '@lezer/highlight': 'highlight',
+            '@codemirror/view': 'view',
+            '@codemirror/language': 'language',
+            'codemirror': 'CodeMirror',
+            '@codemirror/state': 'state',
         }
       }
     }

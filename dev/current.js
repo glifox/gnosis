@@ -1,5 +1,12 @@
 export const text = 
 `
+# titulo
+## titulo
+### titulo
+#### titulo
+##### titulo
+###### titulo 
+
 - list 
 
 > [!NOTE]
