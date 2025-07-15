@@ -1,4 +1,4 @@
-import { catppuccin, themeVariant } from "../../src/exports";
+// import { catppuccin, themeVariant } from "../../src/exports";
 import { Editor } from "../editor/editor"
 
 
@@ -11,13 +11,13 @@ const themes = [
     document.querySelector("#macchiato")
 ];
 
-themes.forEach(theme => { 
-    theme.addEventListener("click", () => { 
-        editor.dispatch({
-            effects: themeVariant.reconfigure(catppuccin(theme.id))
-        })
-    })
-})
+// themes.forEach(theme => { 
+//     theme.addEventListener("click", () => { 
+//         editor.dispatch({
+//             effects: themeVariant.reconfigure(catppuccin(theme.id))
+//         })
+//     })
+// })
 
 document.querySelector(".editor").removeChild(document.querySelector(".wraper-loader"));
 

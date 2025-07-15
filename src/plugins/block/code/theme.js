@@ -5,7 +5,6 @@ export const coreTheme = () => {
     const paddingLeft = 6;
     const paddingRigth = 0;
     const borderRadius = "4px";
-    const width = "100%";
     
     // button
     const buttonSize = "1lh";
@@ -87,6 +86,10 @@ export const coreTheme = () => {
             boxSizing: "border-box",
             maxHeight: "100%",
             width: "5ch",
+        },
+        
+        "& .cb-content": {
+            backgroundColor: "var(--cm-ic-background, hsl(from black h s l / .1))"
         },
     })
 }
