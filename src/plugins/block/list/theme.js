@@ -41,6 +41,10 @@ export const coreTheme = () => {
         
         "& .cm-line .lm, & .cm-line .TaskMark, & .cm-line .tm, & .cm-line .ls-text-line": {
             verticalAlign: "top",
-        }
+        },
+        
+        "& .cb-content .ls-text-line, & .cb-spacer .ls-text-line": {
+            width: "unset !important",
+        },
     });
 }
