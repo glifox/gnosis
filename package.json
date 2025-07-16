@@ -5,6 +5,7 @@
   "license": "MIT",
   "main": "dist/gnosis.umd.js",
   "module": "dist/gnosis.mjs",
+  "types": "dist/gnosis.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/glifox/gnosis.git"

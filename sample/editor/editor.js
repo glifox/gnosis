@@ -1,7 +1,7 @@
 import { EditorView, minimalSetup } from "codemirror"
 import { EditorState } from "@codemirror/state";
 
-import { gnosis } from "../../src/exports";
+import { gnosis } from "../../dist/gnosis";
 
 export const Editor = (text, save = false, key = 'gnosis-editor-content') => {
     const savedContent = localStorage.getItem(key);
