@@ -13,9 +13,9 @@ export const coreTheme = () => {
             display: "inline",
             position: "absolute",
             borderRadius: "50%",
-            top: "50%",
+            top: "0",
             left: ".5ch",
-            transform: "translate(0, -50%)",
+            transform: "translate(0, .4lh)",
             height: ".4em",
             width: ".4em",
         },
@@ -35,16 +35,14 @@ export const coreTheme = () => {
         
         /* list text line */
         "& .ls-text-line": {
-            display: "inline-block",
+            
             ariaHidden: "true",
         },
         
-        "& .cm-line .lm, & .cm-line .TaskMark, & .cm-line .tm, & .cm-line .ls-text-line": {
-            verticalAlign: "top",
-        },
-        
-        "& .cb-content .ls-text-line, & .cb-spacer .ls-text-line": {
-            width: "unset !important",
+        "& .cm-line:has(.lm)": {
+            display: "list-item flow-root",
+            backgroundColor: "hsl(from red h s l / .05)",
+            ariaHidden: "true",
         },
     });
 }

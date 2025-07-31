@@ -22,7 +22,7 @@ export const text =
     hatch test
     ~~~
 
-- Run pre-commit checks before submitting a PR: \`pre-commit run --all-files\`
+- Run pre-commit checks before submitting a PR: \`pre-commit run --all-files\` Run pre-commit checks before submitting a PR: \`pre-commit run --all-files\`Run pre-commit checks before submitting a PR: \`pre-commit run --all-files\`Run pre-commit checks before submitting a PR: \`pre-commit run --all-files\`Run pre-commit checks before submitting a PR: \`pre-commit run --all-files\`Run pre-commit checks before submitting a PR: \`pre-commit run --all-files\`Run pre-commit checks before submitting a PR: \`pre-commit run --all-files\`Run pre-commit checks before submitting a PR: \`pre-commit run --all-files\`
 
 ### Contributing 3rd-party Plugins
 
