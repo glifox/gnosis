@@ -4,7 +4,7 @@ export const coreTheme = () => {
     return EditorView.baseTheme({
         "& .lm.bl": {
             position: "relative",
-            paddingInlineStart: "1ch",
+            // paddingInlineStart: "1ch",
             color: "transparent",
         },
         

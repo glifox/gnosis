@@ -38,10 +38,10 @@ export function decorator(view, _) {
     }
     
     const blocks = {
-        ListItem: (from, to, type, isTask) => {
+        ListItem: (from, to, type, isTask, offset_) => {
             const offset = type.offset + (isTask ? 4 : 0);
             const start = from + offset;
-            const width = `calc(100% - ${Math.max(0, offset) + 4}ch)`;
+            const width = `calc(100% - ${Math.max(0, offset + offset_) + 4}ch)`;
             if (start >= to) return [];
             return [
                 Decoration.mark({
@@ -69,11 +69,13 @@ export function decorator(view, _) {
             ))
             
             if (name in blocks) {
-                widgets.push(...blocks[name](
-                    from, to,
-                    types[listStack.slice(-1)[0].name],
-                    node.getChild("Task") !== null
-                ))
+              const line = view.state.doc.lineAt(from)
+              widgets.push(...blocks[name](
+                  from, line.to,
+                  types[listStack.slice(-1)[0].name],
+                  node.getChild("Task") !== null,
+                  from - line.from
+              ))
             }
             
             return iterable.includes(name); 
