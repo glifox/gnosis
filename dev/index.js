@@ -1,4 +1,4 @@
-import { Editor } from "../sample/editor/editor"
+import { Editor } from "./editor/editor"
 // import { catppuccin, themeVariant } from "../src/exports";
 import { text } from "./current"
 
