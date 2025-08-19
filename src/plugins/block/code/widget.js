@@ -11,7 +11,7 @@ export class BrWraper extends WidgetType {
     toDOM() {
         let wrap = document.createElement("span")
         wrap.setAttribute("aria-hidden", "true")
-        wrap.className = this.classes + " vacio";
+        wrap.className = this.classes + " empty";
         wrap.textContent = " "
         
         wrap.style.width = this.width;

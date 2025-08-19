@@ -61,11 +61,9 @@ const decorationCodeblock = (view, from, to) => {
     const isSpaced = offset > 0;
 
     const selected = hasSelection(view, startLine.from, to);
-    if (!selected) {
-        decorations.push(
-            Decoration.widget({ widget: new CopyCode("view.state.sliceDoc(from, to)", "code"), side: 0 }).range(from+1)
-        );
-    }
+    decorations.push(
+        Decoration.widget({ widget: new CopyCode("view.state.sliceDoc(from, to)", "code"), side: 0 }).range(from+1)
+    );
     
     const begin = startLine.number;
     const lines = view.state.doc
@@ -83,20 +81,25 @@ const decorationCodeblock = (view, from, to) => {
 
         const start = Math.max(from + offset, 0);
         
-        if (to < start) {
-            class_.push("free");
-            
-            decorations.push(
-                Decoration.widget({ 
-                    widget: new BrWraper(
-                        class_.join(" "), 
-                        `calc(${baseWidth} - ${start - from}ch)`,
-                        `calc(${start - to}ch + 2px)`
-                    )
-                    , side: 1 
-                }).range(to)
-            );
-            console.log("Hello World");
+        if (to < start) {}
+        else if ( from === to && from === start ) {
+          decorations.push(...[
+              Decoration.widget({ 
+                  widget: new BrWraper(
+                      class_.join(" "), 
+                      `2px`
+                  )
+                  , side: 0 
+              }).range(to),
+              Decoration.widget({ 
+                  widget: new BrWraper(
+                    class_.join(" "),
+                      `calc(${baseWidth} - ${start - from}ch - 8px)`,
+                      "0"
+                  )
+                  , side: 1 
+              }).range(start)
+          ]);
         }
         else if ( start === to ) {
             class_.push("wg");
