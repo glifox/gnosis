@@ -99,8 +99,12 @@ export const coreTheme = (options) => {
             backgroundColor: "var(--cm-ic-background, hsl(from black h s l / .1))"
         },
         
-        // "& .empty.left":{
-        //     padding: paddingLeft
-        // },
+        "& .cb-error.left":{ padding: "0" },
+        "& .cb-error.right":{ paddingRight: `${marginLeft}px` },
+        "& .cb-error":{
+          display: "inline-block",
+          backgroundColor: "var(--cm-ic-error, hsl(from red h s l / .5))",
+        },
+        
     })
 }

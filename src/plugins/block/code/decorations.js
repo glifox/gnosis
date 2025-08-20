@@ -96,7 +96,24 @@ const decorationCodeblock = (view, from, to, options) => {
 
         const start = Math.max(from + offset, 0);
         
-        if (to < start) {}
+        if (to < start) {
+          decorations.push(...[
+              Decoration.widget({ 
+                  widget: new BrWraper(
+                      ["left", "cb-error"].join(" "), 
+                      `0.1px`,
+                  )
+                  , side: 0 
+              }).range(to),
+              Decoration.widget({ 
+                  widget: new BrWraper(
+                    ["cb-error", "right"].join(" "),
+                    ``, ``, start - to
+                  )
+                  , side: 1 
+              }).range(to)
+          ]);
+        }
         else if ( from === to && from === start ) {
           decorations.push(...[
               Decoration.widget({ 
