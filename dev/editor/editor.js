@@ -23,7 +23,7 @@ export const Editor = (text, save = false, key = 'gnosis-editor-content') => {
             }) : [],
             EditorView.theme({
                 "& .cm-line": {
-                    // fontFamily: "Times New Roman, serif !important",
+                    fontFamily: "Times New Roman, serif !important",
                 }
             }),
         ],
