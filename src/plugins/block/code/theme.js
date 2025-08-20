@@ -1,8 +1,15 @@
 import { EditorView } from "codemirror";
 
-export const coreTheme = () => {
-    const marginLeft = 2;
-    const paddingLeft = 6;
+/**
+ * 
+ * @param {object} options 
+ * @param {number} options.marginLeft - The left margin for the content.
+ * @param {number} options.paddingLeft - The left padding for the content.
+ * @returns 
+ */
+export const coreTheme = (options) => {
+    const marginLeft = options.marginLeft;
+    const paddingLeft = options.paddingLeft;
     const paddingRigth = 0;
     const borderRadius = "4px";
     
@@ -91,5 +98,9 @@ export const coreTheme = () => {
         "& .cb-content": {
             backgroundColor: "var(--cm-ic-background, hsl(from black h s l / .1))"
         },
+        
+        // "& .empty.left":{
+        //     padding: paddingLeft
+        // },
     })
 }

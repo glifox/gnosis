@@ -21,6 +21,11 @@ export const Editor = (text, save = false, key = 'gnosis-editor-content') => {
                     localStorage.setItem(key, content);
                 }
             }) : [],
+            EditorView.theme({
+                "& .cm-line": {
+                    // fontFamily: "Times New Roman, serif !important",
+                }
+            }),
         ],
         parent: document.querySelector(".editor")
     });
