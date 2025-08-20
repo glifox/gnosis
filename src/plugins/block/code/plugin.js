@@ -5,10 +5,13 @@ import { coreTheme } from "./theme";
 
 
 export const CodePlugin = () => {
-    
+    const options = {
+      marginLeft: 2,
+      paddingLeft: 6,
+    }
     return [
         PluginFactory(decorator, { mode: "mark"}),
-        PluginFactory(decorator, { mode: "type"}, {eventHandlers: { mousedown }}),
-        coreTheme(),
+        PluginFactory(decorator, { mode: "type", options }, {eventHandlers: { mousedown }}),
+        coreTheme(options),
     ]
 };

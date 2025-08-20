@@ -1,4 +1,5 @@
 # gnosis
+[![Publish Web App](https://github.com/glifox/gnosis/actions/workflows/Pages.yml/badge.svg)](https://github.com/glifox/gnosis/actions/workflows/Pages.yml)
 
 _GNOSIS_ is an extension-pack for codemirror to support WYSIWYG markdown edition. 
 

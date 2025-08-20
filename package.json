@@ -1,10 +1,11 @@
 {
   "name": "@glifox/gnosis",
-  "version": "0.0.12",
+  "version": "0.0.18",
   "author": "feraxhp",
   "license": "MIT",
   "main": "dist/gnosis.umd.js",
   "module": "dist/gnosis.mjs",
+  "types": "dist/gnosis.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/glifox/gnosis.git"

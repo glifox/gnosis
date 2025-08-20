@@ -4,7 +4,7 @@ export const coreTheme = () => {
     return EditorView.baseTheme({
         "& .lm.bl": {
             position: "relative",
-            paddingInlineStart: "1ch",
+            // paddingInlineStart: "1ch",
             color: "transparent",
         },
         
@@ -39,10 +39,12 @@ export const coreTheme = () => {
             ariaHidden: "true",
         },
         
-        "& .cm-line:has(.lm)": {
-            display: "list-item flow-root",
-            backgroundColor: "hsl(from red h s l / .05)",
-            ariaHidden: "true",
+        "& .cm-line .lm, & .cm-line .TaskMark, & .cm-line .tm, & .cm-line .ls-text-line": {
+            verticalAlign: "top",
+        },
+        
+        "& .cb-content .ls-text-line, & .cb-spacer .ls-text-line": {
+            width: "unset !important",
         },
     });
 }

@@ -5,10 +5,23 @@ import { CopyCode } from "./copy/widget";
 
 const stack = [];
 
+/**
+ * @param {import("@codemirror/view").EditorView} view
+ * @param {object} conf
+ * @param {string} conf.mode - "type" for node type based decorations, "mark" for mark based decorations
+ * @param {object} conf.options - Additional options for decorations
+ * @returns {import("@codemirror/view").DecorationSet}
+ */
 export function decorator(view, conf) {
 
     const {
         mode, /* type, mark */
+        /**
+         * @type {object}
+         * @property {number} marginLeft - Margin left for the code block
+         * @property {number} paddingLeft - Padding left for the code block
+         */
+        options,
     } = conf;
 
     const iterable = [ "Document", "Blockquote", "ListItem", "BulletList", "OrderedList" ]
@@ -27,7 +40,7 @@ export function decorator(view, conf) {
     visibleNodes(view, { 
         enter: ({type: {name}, from, to}) => { 
             
-            if (mode === "type" && name in types) widgets.push(... types[name](view, from, to)) 
+            if (mode === "type" && name in types) widgets.push(... types[name](view, from, to, options)) 
             if (mode === "mark" && name in marks) widgets.push(... marks[name](view, from, to))
             
             if (iterable.includes(name) || (name in types)) {
@@ -50,7 +63,9 @@ export function decorator(view, conf) {
     }[mode];
 }
 
-const decorationCodeblock = (view, from, to) => {
+const decorationCodeblock = (view, from, to, options) => {
+    const marginLeft = options.marginLeft;
+    const paddingLeft = options.paddingLeft;
     const decorations = [];
     const father = stack[stack.length - 1];
     const isListed = ["BulletList", "OrderedList", "ListItem"].some(s => s === father.name);
@@ -61,11 +76,9 @@ const decorationCodeblock = (view, from, to) => {
     const isSpaced = offset > 0;
 
     const selected = hasSelection(view, startLine.from, to);
-    if (!selected) {
-        decorations.push(
-            Decoration.widget({ widget: new CopyCode("view.state.sliceDoc(from, to)", "code"), side: 0 }).range(from+1)
-        );
-    }
+    decorations.push(
+        Decoration.widget({ widget: new CopyCode("view.state.sliceDoc(from, to)", "code"), side: 0 }).range(from+1)
+    );
     
     const begin = startLine.number;
     const lines = view.state.doc
@@ -73,7 +86,7 @@ const decorationCodeblock = (view, from, to) => {
     
     for ( let i = begin; i < lines + begin; i++) {
         const { from, to } = view.state.doc.line(i);
-        const baseWidth = "100% - 1.2ch";
+        const baseWidth = `100% - ${marginLeft + paddingLeft}px`;
         
         const class_ = ["cb-content"];
         
@@ -84,19 +97,41 @@ const decorationCodeblock = (view, from, to) => {
         const start = Math.max(from + offset, 0);
         
         if (to < start) {
-            class_.push("free");
-            
-            decorations.push(
-                Decoration.widget({ 
-                    widget: new BrWraper(
-                        class_.join(" "), 
-                        `calc(${baseWidth} - ${start - from}ch)`,
-                        `calc(${start - to}ch + 2px)`
-                    )
-                    , side: 1 
-                }).range(to)
-            );
-            console.log("Hello World");
+          decorations.push(...[
+              Decoration.widget({ 
+                  widget: new BrWraper(
+                      ["left", "cb-error"].join(" "), 
+                      `0.1px`,
+                  )
+                  , side: 0 
+              }).range(to),
+              Decoration.widget({ 
+                  widget: new BrWraper(
+                    ["cb-error", "right"].join(" "),
+                    ``, ``, start - to
+                  )
+                  , side: 1 
+              }).range(to)
+          ]);
+        }
+        else if ( from === to && from === start ) {
+          decorations.push(...[
+              Decoration.widget({ 
+                  widget: new BrWraper(
+                      [...class_, "left"].join(" "), 
+                      `0`,
+                  )
+                  , side: 0 
+              }).range(to),
+              Decoration.widget({ 
+                  widget: new BrWraper(
+                    class_.join(" "),
+                      `calc(${baseWidth} - ${paddingLeft}px)`,
+                      "0"
+                  )
+                  , side: 1 
+              }).range(start)
+          ]);
         }
         else if ( start === to ) {
             class_.push("wg");

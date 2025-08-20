@@ -1,7 +1,7 @@
 import { EditorView, minimalSetup } from "codemirror"
 import { EditorState } from "@codemirror/state";
 
-import { gnosis } from "../../dist/gnosis";
+import { gnosis } from "../../src/exports";
 
 export const Editor = (text, save = false, key = 'gnosis-editor-content') => {
     const savedContent = localStorage.getItem(key);
@@ -21,6 +21,11 @@ export const Editor = (text, save = false, key = 'gnosis-editor-content') => {
                     localStorage.setItem(key, content);
                 }
             }) : [],
+            EditorView.theme({
+                "& .cm-line": {
+                    fontFamily: "Times New Roman, serif !important",
+                }
+            }),
         ],
         parent: document.querySelector(".editor")
     });
