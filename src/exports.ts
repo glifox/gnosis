@@ -9,13 +9,13 @@ import { Extension } from "@codemirror/state";
 import { unsetMarks } from "../src/tags";
 import { HrPlugin } from "../src/plugins/block/hr/plugin";
 import { InlinePlugin } from "../src/plugins/inline/plugin";
+import { LinkPlugin } from "./plugins/links/link/plugin";
+import { ImagePlugin } from "./plugins/links/image/plugin";
 import { ListPlugin } from "../src/plugins/block/list/plugin";
 import { CodePlugin } from "../src/plugins/block/code/plugin";
 import { HeadingPlugin } from "../src/plugins/block/heading/plugin";
 import { QuotePlugin } from "./plugins/block/quotes/plugin";
 import { QuoteType } from "./plugins/block/quotes/extension";
-import { LinkPlugin } from "./plugins/links/link/plugin";
-import { ImagePlugin } from "./plugins/links/image/plugin";
 import { HtmlPlugin } from "./plugins/block/html/plugin";
 
 
@@ -62,12 +62,12 @@ const gnosis = (conf?: GnosisConfig): Extension[] => {
         markdown(mdconfig),
         HrPlugin(),
         InlinePlugin(),
+        LinkPlugin(),
+        ImagePlugin(),
         ListPlugin(),
         CodePlugin(),
         HeadingPlugin(),
-        LinkPlugin(),
         QuotePlugin(),
-        ImagePlugin(),
         HtmlPlugin(),
         // (theme) ? themeVariant.of(catppuccin(theme)) : [],
     ];
@@ -77,13 +77,13 @@ export {
     gnosis,
     HrPlugin,
     InlinePlugin,
+    LinkPlugin,
+    ImagePlugin,
     ListPlugin,
     CodePlugin,
     HeadingPlugin,
-    LinkPlugin,
     QuotePlugin,
     QuoteType,
-    ImagePlugin,
     HtmlPlugin,
     // catppuccin,
     // themeVariant,
