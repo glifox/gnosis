@@ -96,7 +96,8 @@ export const coreTheme = (options) => {
         },
         
         "& .cb-content": {
-            backgroundColor: "var(--cm-ic-background, hsl(from black h s l / .1))"
+            backgroundColor: "var(--cm-ic-background, hsl(from black h s l / .1))",
+            cursor: "text"
         },
         
         "& .cb-error.left":{ padding: "0" },
@@ -104,6 +105,7 @@ export const coreTheme = (options) => {
         "& .cb-error":{
           display: "inline-block",
           backgroundColor: "var(--cm-ic-error, hsl(from red h s l / .5))",
+          cursor: "text"
         },
         
     })
