@@ -1,6 +1,6 @@
 {
   "name": "@glifox/gnosis",
-  "version": "0.0.19",
+  "version": "0.0.20",
   "author": "feraxhp",
   "license": "MIT",
   "main": "dist/gnosis.umd.js",
