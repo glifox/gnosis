@@ -21,11 +21,11 @@ export const coreTheme = () => {
         },
         
         "&light .lm.bl::before": { 
-            backgroundColor: "var(--cm-list-bullet, light-dark(black, white))",
+            backgroundColor: "var(--cm-list-bullet, black)",
         },
         
         "&dark .lm.bl::before": { 
-            backgroundColor: "var(--cm-list-bullet, light-dark(black, white))",
+            backgroundColor: "var(--cm-list-bullet, white)",
         },
         
         "&.cm-focused .lm.bl.sw, &.cm-focused .lm.bl.sw::before": {

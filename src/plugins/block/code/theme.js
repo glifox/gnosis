@@ -80,6 +80,10 @@ export const coreTheme = (options) => {
             opacity: "0.7"
         },
         
+        "&dark .cb-icon": {
+            fill: "white",
+        },
+        
         "& .wg-codeblock-btn:hover": { background: "rgba(0, 0, 0, 0.07)", },
         "& .wg-codeblock-btn:hover .cb-icon": { opacity: "1" },
         
