@@ -19,6 +19,7 @@
     "README.md"
   ],
   "dependencies": {
+    "@catppuccin/codemirror": "^1.0.3",
     "@catppuccin/palette": "^1.7.1",
     "@codemirror/lang-markdown": "^6.5.0",
     "@codemirror/language": "^6.12.2",

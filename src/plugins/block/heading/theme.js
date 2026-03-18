@@ -19,6 +19,6 @@ export const headingTheme = EditorView.baseTheme({
 })
 
 export const coreTheme = EditorView.baseTheme({
-    "& .hg .mk": { display: "none" },
-    "&.cm-focused .hg.sw .mk": { display: "inline" },
+  "& .hg .mk": { fontSize: "0" },
+  "&.cm-focused .hg.sw .mk": { fontSize: "inherit" },
 })

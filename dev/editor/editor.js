@@ -2,6 +2,7 @@ import { EditorView, minimalSetup } from "codemirror"
 import { EditorState } from "@codemirror/state";
 
 import { gnosis } from "../../src/exports";
+import { catppuccinMocha } from "@catppuccin/codemirror";
 
 export const Editor = (text, save = false, key = 'gnosis-editor-content') => {
     const savedContent = localStorage.getItem(key);
@@ -15,6 +16,7 @@ export const Editor = (text, save = false, key = 'gnosis-editor-content') => {
             EditorView.clickAddsSelectionRange.of(e => e.altKey),
             EditorState.allowMultipleSelections.of(true),
             gnosis(),
+            catppuccinMocha,
             save ? EditorView.updateListener.of(update => {
                 if (update.docChanged) {
                     const content = update.state.doc.toString();

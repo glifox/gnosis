@@ -1,6 +1,6 @@
 import { languages } from "@codemirror/language-data";
 import { Language, LanguageSupport, LanguageDescription } from '@codemirror/language';
-import { markdown } from "@codemirror/lang-markdown";
+import { markdown as mrk } from "@codemirror/lang-markdown";
 import { GFM, MarkdownExtension } from "@lezer/markdown";
 import { Extension } from "@codemirror/state";
 
@@ -34,32 +34,38 @@ interface GnosisConfig {
     // theme?: string
 }
 
+const IntrnalMarkdown = (config?: MarkdownConfig) => {
+  const {
+    defaultCodeLanguage,
+    codeLanguages,
+    addKeymap,
+    base,
+    completeHTMLTags,
+    htmlTagLanguage,
+    extensions = [],
+  } = config || {};
+  
+  const mdconfig = {
+      defaultCodeLanguage,
+      codeLanguages: codeLanguages || languages,
+      addKeymap,
+      base,
+      completeHTMLTags,
+      htmlTagLanguage,
+      extensions: [...extensions, GFM, QuoteType],
+  };
+  
+  return mrk(mdconfig);
+}
+
 const gnosis = (conf?: GnosisConfig): Extension[] => {
     const {
-        markdown: {
-            defaultCodeLanguage,
-            codeLanguages,
-            addKeymap,
-            base,
-            completeHTMLTags,
-            htmlTagLanguage,
-            extensions = [],
-        } = {},
+        markdown,
         // theme
     } = conf ?? {};
 
-    const mdconfig = {
-        defaultCodeLanguage,
-        codeLanguages: codeLanguages || languages,
-        addKeymap,
-        base,
-        completeHTMLTags,
-        htmlTagLanguage,
-        extensions: [...extensions, GFM, unsetMarks, QuoteType],
-    };
-
     return [
-        markdown(mdconfig),
+        IntrnalMarkdown(markdown),
         HrPlugin(),
         InlinePlugin(),
         LinkPlugin(),
@@ -74,6 +80,7 @@ const gnosis = (conf?: GnosisConfig): Extension[] => {
 };
 
 export {
+    IntrnalMarkdown as markdown,
     gnosis,
     HrPlugin,
     InlinePlugin,
@@ -85,6 +92,5 @@ export {
     QuotePlugin,
     QuoteType,
     HtmlPlugin,
-    // catppuccin,
-    // themeVariant,
+    unsetMarks,
 };
