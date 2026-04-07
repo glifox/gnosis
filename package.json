@@ -20,12 +20,12 @@
   ],
   "dependencies": {
     "@catppuccin/codemirror": "^1.0.3",
-    "@catppuccin/palette": "^1.7.1",
+    "@catppuccin/palette": "^1.8.0",
     "@codemirror/lang-markdown": "^6.5.0",
-    "@codemirror/language": "^6.12.2",
+    "@codemirror/language": "^6.12.3",
     "@codemirror/language-data": "^6.5.2",
     "@codemirror/state": "^6.6.0",
-    "@codemirror/view": "^6.40.0",
+    "@codemirror/view": "^6.41.0",
     "@lezer/common": "^1.5.1",
     "@lezer/highlight": "^1.2.3",
     "@lezer/markdown": "^1.6.3",
@@ -34,7 +34,7 @@
   },
   "devDependencies": {
     "typescript": "^5.9.3",
-    "vite": "7.3.1",
+    "vite": "^8.0.6",
     "vite-plugin-dts": "4.5.4"
   },
   "scripts": {
