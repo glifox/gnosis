@@ -70,7 +70,7 @@ export const hideMarks = [
     });
 
     return Decoration.set(decorations, false);
-  }),
+  }, null, {}),
   EditorView.baseTheme({
     ".mk.ft": { // trick to avoid jumps on hiden marks 
       "position": "absolute",
