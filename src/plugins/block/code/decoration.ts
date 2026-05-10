@@ -1,5 +1,5 @@
 import type { EditorView } from "codemirror";
-import { hasSelection } from "../../utils";
+import { hasSelection } from "../../../utils";
 import type { Options } from "./plugin";
 import { Decoration } from "@codemirror/view";
 import { CopyCode } from "./copy/widget";

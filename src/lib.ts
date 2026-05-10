@@ -1,4 +1,4 @@
-import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
+import { markdown } from "@codemirror/lang-markdown";
 import { GFM } from "@lezer/markdown";
 
 import { HighlightStyle, syntaxHighlighting /* , defaultHighlightStyle */} from "@codemirror/language";
@@ -7,28 +7,19 @@ import { languages } from "@codemirror/language-data"
 import type { Extension } from "@codemirror/state";
 import { tags } from "@lezer/highlight";
 import { hideMarks } from "./plugins/hidemarks";
-import { CodePlugin } from "./plugins/codeblock/plugin";
+import { code } from "./plugins/block/code/plugin";
+import { headings } from "./plugins/block/heading";
 
 export const gnosis: () => Extension = () => [
   syntaxHighlighting(defaultHighlightStyle),
-  syntaxHighlighting(headings),
-  hideMarks,
   markdown({
     codeLanguages: languages,
     extensions: [ GFM ]
   }),
-  CodePlugin(),
+  hideMarks,
+  headings,
+  code(),
 ]
-
-export const headings = HighlightStyle.define([
-  { tag: tags.heading, lineHeight: "2.4lh" },
-  { tag: tags.heading1, fontSize: "2.00em", fontWeight: "bolder" },
-  { tag: tags.heading2, fontSize: "1.55em", fontWeight: "bolder" },
-  { tag: tags.heading3, fontSize: "1.35em", fontWeight: "bolder" },
-  { tag: tags.heading4, fontSize: "1.25em", fontWeight: "bolder" },
-  { tag: tags.heading5, fontSize: "1.25em", fontWeight: "semi-bold" },
-  { tag: tags.heading6, fontSize: "1.25em", fontWeight: "normal" },
-])
 
 export const defaultHighlightStyle = HighlightStyle.define([
   {tag: tags.meta,

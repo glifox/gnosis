@@ -1,4 +1,4 @@
-import { PluginFactory } from "../../utils";
+import { PluginFactory } from "../../../utils";
 import { mousedown } from "./copy/event";
 import { decorator } from "./decorations";
 import { coreTheme } from "./theme";
@@ -9,7 +9,7 @@ export type Options = {
   paddingLeft: number;
 } 
 
-export const CodePlugin = () => {
+export const code = () => {
     const options: Options = {
       marginLeft: 2,
       paddingLeft: 6,

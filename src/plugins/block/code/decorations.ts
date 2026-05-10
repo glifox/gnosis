@@ -2,7 +2,7 @@ import { Decoration, EditorView } from "@codemirror/view";
 import type { Options } from "./plugin";
 import type { Range } from "@codemirror/state";
 import { decorationCodeblock } from "./decoration";
-import { visibleNodes } from "../../utils";
+import { visibleNodes } from "../../../utils";
 
 
 const iterable = [ "Document", "Blockquote", "ListItem", "BulletList", "OrderedList" ]
