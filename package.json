@@ -1,0 +1,51 @@
+{
+  "private": false,
+  "name": "@glifox/gnosis",
+  "version": "0.1.0",
+  "author": "feraxhp",
+  "license": "MIT",
+  "main": "dist/gnosis.umd.js",
+  "module": "dist/gnosis.mjs",
+  "types": "dist/gnosis.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/glifox/gnosis.git"
+  },
+  "bugs": {
+    "url": "https://github.com/glifox/gnosis/issues"
+  },
+  "homepage": "https://gnosis.feraxhp.com/",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "devDependencies": {
+    "rolldown": "^1.0.0",
+    "typescript": "^6.0.3"
+  },
+  "scripts": {
+    "prev": "bun ./example/index.html"
+  },
+  "keywords": [
+    "WYSIWYG",
+    "markdown",
+    "editor",
+    "codemirror",
+    "extension"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "packageManager": "pnpm@11.0.9",
+  "dependencies": {
+    "@codemirror/lang-markdown": "^6.5.0",
+    "@codemirror/language": "^6.12.3",
+    "@codemirror/language-data": "^6.5.2",
+    "@codemirror/state": "^6.6.0",
+    "@codemirror/view": "^6.42.1",
+    "@lezer/common": "^1.5.2",
+    "@lezer/highlight": "^1.2.3",
+    "@lezer/markdown": "^1.6.3",
+    "codemirror": "^6.0.2"
+  }
+}
