@@ -82,7 +82,7 @@ export const hideMarks = [
       "height": "2px",
       "overflow": "hidden",
     },
-    "&.cm-focused .sel > .mk": {
+    "&.cm-focused .sel > .mk, .mk:first-child:last-child": {
       "display": "inherit",
       "position": "relative",
       "fontSize": "inherit",
