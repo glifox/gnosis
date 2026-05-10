@@ -3,7 +3,6 @@ import {
   ViewUpdate,
   type DecorationSet,
   type PluginSpec,
-  type PluginValue,
 } from "@codemirror/view";
 import type { EditorView } from "codemirror";
 import { syntaxTree } from "@codemirror/language";
@@ -61,3 +60,19 @@ export const PluginFactory = <T extends any>(
     ...pluginSpec,
   });
 };
+
+export const startTimer = (oncomplete: () => void, duration: number) => {
+  let timeoutId: number | null = null;
+  const startTime = Date.now();
+  
+  const timeoutHandler = () => {
+    if (Date.now() - startTime >= duration) {
+      oncomplete();
+      window.cancelAnimationFrame(timeoutId!);
+    } else {
+      timeoutId = requestAnimationFrame(timeoutHandler);
+    }
+  };
+
+  timeoutId = requestAnimationFrame(timeoutHandler);
+}

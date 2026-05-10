@@ -1,11 +1,11 @@
-/*
 
-.mk:not(.ft), &:not(.cm-focused) .mk.ft {
-    display: inline-block;
-    width: 1px;
-    height: 2px;
-    overflow: hidden;
+.wg-codeblock-btn {
+    position: relative;
 }
 
+.wg-codeblock-btn::before {
+    content: attr(data-state);
+    position: absolute;
 
-*/
+    top: -100%;
+}

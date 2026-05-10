@@ -25,7 +25,7 @@ export const decorationCodeblock = (
 
     const selected = hasSelection(view, startLine.from, to);
     decorations.push(
-        Decoration.widget({ widget: new CopyCode("view.state.sliceDoc(from, to)", "code"), side: 0 }).range(from+1)
+        Decoration.widget({ widget: new CopyCode(), side: 0 }).range(from+1)
     );
     
     const begin = startLine.number;

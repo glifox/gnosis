@@ -1,6 +1,7 @@
 import { syntaxTree } from "@codemirror/language";
 import type { Tree } from "@lezer/common";
 import type { EditorView } from "codemirror";
+import { startTimer } from "../../../../utils";
 
 export const mousedown = (e: MouseEvent, view: EditorView) => {
   let target = e.target as HTMLElement;
@@ -23,6 +24,11 @@ export const mousedown = (e: MouseEvent, view: EditorView) => {
         });
         
         navigator.clipboard.writeText(code);
+        target.dataset.state = "Copy!";
+      
+        startTimer(() => {
+          delete target.dataset.state
+        }, 400)
         
         return true;
     }
