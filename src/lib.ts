@@ -7,6 +7,7 @@ import { languages } from "@codemirror/language-data"
 import type { Extension } from "@codemirror/state";
 import { tags } from "@lezer/highlight";
 import { hideMarks } from "./plugins/hidemarks";
+import { CodePlugin } from "./plugins/codeblock/plugin";
 
 export const gnosis: () => Extension = () => [
   syntaxHighlighting(defaultHighlightStyle),
@@ -16,6 +17,7 @@ export const gnosis: () => Extension = () => [
     codeLanguages: languages,
     extensions: [ GFM ]
   }),
+  CodePlugin(),
 ]
 
 export const headings = HighlightStyle.define([

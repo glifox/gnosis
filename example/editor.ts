@@ -11,7 +11,6 @@ export const Editor = (text: string, save: boolean = false, key = '') => {
         extensions: [
             gnosis(),
             minimalSetup,
-            EditorView.lineWrapping,
             EditorView.clickAddsSelectionRange.of(e => e.altKey),
             EditorState.allowMultipleSelections.of(true),
             save ? EditorView.updateListener.of(update => {
