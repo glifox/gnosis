@@ -24,11 +24,25 @@ const skip = new Set([
 
 const markDecoration = (isFirst: boolean, aditional: string = "") => Decoration.mark({ class: (isFirst) ? `mk ft ${aditional}` : `mk ${aditional}` })
 
-const marks: { [key: string]: (from: number, to: number, isFirst: boolean) => Range<Decoration> } = {
-  HeaderMark: (from, to, isFirst) => markDecoration(isFirst).range(from, to + 1),
-  EmphasisMark: (from, to, isFirst) => markDecoration(isFirst).range(from, to),
-  CodeMark: (from, to, isFirst) => markDecoration(isFirst).range(from, to),
-  StrikethroughMark: (from, to, isFirst) => markDecoration(isFirst).range(from, to),
+const marks: {
+  [key: string]: (
+    from: number,
+    to: number,
+    isFirst: boolean
+  ) => Range<Decoration>
+} = {
+  HeaderMark:
+    (from, to, isFirst) =>
+      markDecoration(isFirst).range(from, to + 1),
+  EmphasisMark:
+    (from, to, isFirst) =>
+      markDecoration(isFirst).range(from, to),
+  CodeMark:
+    (from, to, isFirst) =>
+      markDecoration(isFirst).range(from, to),
+  StrikethroughMark:
+    (from, to, isFirst) =>
+      markDecoration(isFirst).range(from, to),
   // HorizontalRule: (from, to, isFirst) => markDecoration(isFirst).range(from, to),
 }
 
