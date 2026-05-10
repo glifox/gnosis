@@ -49,8 +49,8 @@ export const hideMarks = [
         ) decorations.push(selected(from, to));
 
         if (name in marks) {
-          const startLine = view.state.doc.lineAt(from).from;
-          decorations.push(marks[name as keyof typeof marks]!(from, to, from == startLine))
+          const line = view.state.doc.lineAt(from);
+          decorations.push(marks[name as keyof typeof marks]!(from, to, line.from == from || line.to == to))
         }
       },
     });
