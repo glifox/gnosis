@@ -71,6 +71,13 @@ export const coreTheme = (options: Options) => {
             alignItems: "center",
             height: `calc(${buttonSize} + 4px )`,
             width: "5ch",
+            position: "relative",
+        },
+
+        ".wg-codeblock-btn::before": {
+          content: "attr(data-state)",
+          position: "absolute",
+          top: "-100%",
         },
         
         "& .cb-icon": {
@@ -101,7 +108,6 @@ export const coreTheme = (options: Options) => {
         },
         
         "& .cb-content": {
-            backgroundColor: "var(--cm-ic-background, hsl(from black h s l / .1))",
             cursor: "text"
         },
         
@@ -109,7 +115,6 @@ export const coreTheme = (options: Options) => {
         "& .cb-error.right":{ paddingRight: `${marginLeft}px` },
         "& .cb-error":{
           display: "inline-block",
-          backgroundColor: "var(--cm-ic-error, hsl(from red h s l / .5))",
           cursor: "text"
         },
         

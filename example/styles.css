@@ -1,11 +1,2 @@
 
-.wg-codeblock-btn {
-    position: relative;
-}
 
-.wg-codeblock-btn::before {
-    content: attr(data-state);
-    position: absolute;
-
-    top: -100%;
-}

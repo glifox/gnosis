@@ -76,3 +76,5 @@ export const startTimer = (oncomplete: () => void, duration: number) => {
 
   timeoutId = requestAnimationFrame(timeoutHandler);
 }
+
+export function classes(...item: string[]) { return item.join(' ') }
