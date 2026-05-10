@@ -9,9 +9,6 @@ const types = new Set([
   "InlineCode",
   "Emphasis",
   
-  "FencedCode",
-  "CodeBlock",
-  
   "ATXHeading1",
   "ATXHeading2",
   "ATXHeading3",
@@ -19,6 +16,11 @@ const types = new Set([
   "ATXHeading5",
   "ATXHeading6",
 ]);
+
+const skip = new Set([
+  "FencedCode",
+  "CodeBlock",
+])
 
 const markDecoration = (isFirst: boolean, aditional: string = "") => Decoration.mark({ class: (isFirst) ? `mk ft ${aditional}` : `mk ${aditional}` })
 
@@ -39,6 +41,8 @@ export const hideMarks = [
 
     visibleNodes(view, {
       enter: ({ type: { name }, from, to }) => {
+        if (skip.has(name)) return false;
+        
         if (
           types.has(name) &&
           hasSelection(view, from, to)
