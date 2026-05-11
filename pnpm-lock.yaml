@@ -45,6 +45,9 @@ importers:
 
 packages:
 
+  '@chenglou/pretext@0.0.7':
+    resolution: {integrity: sha512-FV5hj3fGqpBlzbANUbR+s+6XuNRrghVVyuNs33zdH2SzU7MvK+7GlW6xREjDCreixKbexEn7OEkDgAFeWuu5Hg==}
+
   '@codemirror/autocomplete@6.20.2':
     resolution: {integrity: sha512-G5FPkgIiLjOgZMjqVjvuKQ1rGPtHogLldJr33eFJdVLtmwY+giGrlv/ewljLz6b9BSQLkjxuwBc6g6omDM+YxQ==}
 
@@ -334,6 +337,8 @@ packages:
     resolution: {integrity: sha512-dpojBhNsCNN7T82Tm7k26A6G9ML3NkhDsnw9n/eoxSRlVBB4CEtIQ/KTCLI2Fwf3ataSXRhYFkQi3SlnFwPvPQ==}
 
 snapshots:
+
+  '@chenglou/pretext@0.0.7': {}
 
   '@codemirror/autocomplete@6.20.2':
     dependencies:

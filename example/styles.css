@@ -1,2 +1,8 @@
 
+.cb-content {
+    background-color: hsl(from black h s l / .05);
+}
 
+.cb-error {
+    background-color: hsl(from blue h s l / .09);
+}
