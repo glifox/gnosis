@@ -10,6 +10,7 @@ import { hideMarks } from "./plugins/hidemarks";
 import { code } from "./plugins/block/code/plugin";
 import { headings } from "./plugins/block/heading";
 import { EditorView } from "codemirror";
+import { breakes } from "./plugins/lineDetector";
 
 export const gnosis: () => Extension = () => [
   EditorView.lineWrapping,
@@ -21,6 +22,7 @@ export const gnosis: () => Extension = () => [
   hideMarks,
   headings,
   code(),
+  breakes
 ]
 
 export const defaultHighlightStyle = HighlightStyle.define([
