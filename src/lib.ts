@@ -14,14 +14,14 @@ import { breakes } from "./plugins/lineDetector";
 
 export const gnosis: () => Extension = () => [
   // EditorView.lineWrapping,
-  // syntaxHighlighting(defaultHighlightStyle),
-  // markdown({
-  //   codeLanguages: languages,
-  //   extensions: [ GFM ]
-  // }),
-  // hideMarks,
-  // headings,
-  // code(),
+  syntaxHighlighting(defaultHighlightStyle),
+  markdown({
+    codeLanguages: languages,
+    extensions: [ GFM ]
+  }),
+  hideMarks,
+  headings,
+  code(),
   breakes
 ]
 

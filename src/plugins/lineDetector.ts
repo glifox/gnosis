@@ -1,7 +1,7 @@
 import { Decoration, EditorView, ViewPlugin, ViewUpdate, WidgetType, type DecorationSet } from "@codemirror/view";
 import { PluginFactory } from "../utils";
-import { prepare, layout, layoutWithLines, prepareWithSegments } from '@chenglou/pretext';
-import { StateEffect, StateField } from "@codemirror/state";
+import { layoutWithLines, prepareWithSegments } from '@chenglou/pretext';
+import { EditorState, Line, Range, StateEffect, StateField } from "@codemirror/state";
 
 const widget = new class extends WidgetType {
   toDOM() { return document.createElement("br") }
@@ -9,30 +9,73 @@ const widget = new class extends WidgetType {
 }
 
 const actualizarAnchoEfecto = StateEffect.define<number>()
+type Effect = {
+  width: number,
+  font: string,
+}
+
+type State = {
+    width: number;
+    font: string;
+    decorations: DecorationSet;
+}
+
+function getLineBreaks(state: State, line: Line): Range<Decoration>[] {
+  const prep = prepareWithSegments(line.text, state.font);
+  const seg = layoutWithLines(prep, state.width, 1);
+  
+  console.info("seg:", seg);
+  let offset = line.from;
+  return seg.lines.slice(0, -1).map(line => {
+    const target = line.text.length + offset;
+    
+    offset = target
+    return Decoration.widget({ widget }).range(target);
+  }) 
+}
+
+function getLineDecorators(state: State, eState: EditorState) {
+  const decorations: Range<Decoration>[] = [];
+
+  const lines = eState.doc.lines;
+  for (let index = 1; index < lines; index++) {
+    decorations.push(...getLineBreaks(state, eState.doc.line(index)))
+  }
+  return Decoration.set(decorations, true)
+}
 
 export const state_field = StateField.define({
-  create(state) {
+  create(eState): State {
+    const state: State = {
+      width: 400,
+      font: '16px Inter',
+      decorations: Decoration.none
+    }
+
     return {
-      ancho: 0,
-      decorations: Decoration.set(Decoration.widget({ widget }).range(20))
+      ...state,
+      decorations: getLineDecorators(state, eState)
     }
   },
   update(value, tr) {
-    // Si el documento cambia, recalculamos los saltos según el árbol sintáctico actualizado
-    console.info("tr:", tr);
-    if (tr.docChanged) {
-      return {
-        ancho: 0,
-        decorations: Decoration.set(Decoration.widget({ widget }).range(20))
+    for (const ef of tr.effects) {
+      if (ef.is(actualizarAnchoEfecto)) {
+        
       }
     }
-    // Si no cambia el documento, mapeamos las posiciones existentes con los cambios del usuario
+    
+    if (tr.docChanged) {
+      return {
+        ...value,
+        decorations: getLineDecorators(value, tr.state)
+      }
+    }
+    
     return {
-      ancho: 0,
+      ...value,
       decorations: value.decorations.map(tr.changes)
     }
   },
-  // Aquí ocurre la magia: Le proveemos las decoraciones de estructura directamente al Facet de la vista
   provide: (field) => EditorView.decorations.from(field, value => value.decorations)
 })
 
@@ -42,32 +85,21 @@ const view_plugin = ViewPlugin.fromClass(class {
   
       this.observer = new ResizeObserver(entries => {
         for (let entry of entries) {
-          // Obtenemos el ancho real actual del DOM
           const nuevoAncho = entry.contentRect.width
-  
-          // Obtenemos el ancho que tenemos guardado actualmente en el Estado
-          const anchoActualEnEstado = this.view.state.field(state_field).ancho
-  
-          // Condición crítica: Solo disparamos si el ancho realmente cambió.
-          // Usamos un margen de 0.5px para evitar bucles infinitos por sub-píxeles o barras de scroll.
+          const anchoActualEnEstado = this.view.state.field(state_field).width
+          
           if (Math.abs(nuevoAncho - anchoActualEnEstado) > 0.5) {
-            
-            // ¡Aquí forzamos la transacción manual!
             this.view.dispatch({
               effects: actualizarAnchoEfecto.of(nuevoAncho)
             })
           }
         }
       })
-  
-      // Empezamos a escuchar el elemento raíz del editor
+      
       this.observer.observe(view.dom)
     }
   
-    destroy() {
-      // Muy importante apagar el observer si el editor se destruye
-      this.observer.disconnect()
-    }
+    destroy() { this.observer.disconnect() }
   })
 
-export const breakes = [ state_field, view_plugin ]
+export const breakes = [state_field, view_plugin]
