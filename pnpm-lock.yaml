@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@chenglou/pretext':
+        specifier: ^0.0.7
+        version: 0.0.7
       '@codemirror/lang-markdown':
         specifier: ^6.5.0
         version: 6.5.0

@@ -1,11 +1,11 @@
-import { Decoration, EditorView } from "@codemirror/view";
+import { Decoration, EditorView, WidgetType } from "@codemirror/view";
 import { PluginFactory } from "../utils";
-import {WidgetType} from "@codemirror/view"
+import { prepare, layout, layoutWithLines, prepareWithSegments } from '@chenglou/pretext';
 
 class MyWrapWidget extends WidgetType {
   toDOM() {
     let wrap = document.createElement("span")
-    wrap.innerHTML = " ↵ " // El símbolo o elemento que quieras mostrar
+    wrap.innerHTML = " ↵<br>" 
     wrap.className = "my-custom-wrap-widget"
     return wrap
   }
@@ -13,45 +13,25 @@ class MyWrapWidget extends WidgetType {
 
 export const breakes = PluginFactory(
   (view) => {
-    const block = obtenerSaltosVisuales(view, 1)
-    // const block = view.state.doc.lineAt(0);
-    console.info("block:", block);
     
-    // return Decoration.set(Decoration.widget({
-    //   widget: new MyWrapWidget(),
-    //   side: 1 // Aparece al final de la línea visual
-    // }).range(block.to))
+    const linea = view.state.doc.line(1);
 
-    return Decoration.set([])
+    const prepared = prepareWithSegments(linea.text, '16px Inter');
+    console.info("prepared:", prepared);
+    const testnt = layoutWithLines(prepared, view.dom.offsetWidth, 1);
+  
+    let current = linea.from;
+    const widgets = testnt.lines.map((line) => {
+      current += line.text.length
+      return Decoration.widget({
+        widget: new MyWrapWidget(),
+        side: 1 // Aparece al final de la línea visual
+      }).range(current)
+    })
+    
+    return Decoration.set(widgets)
+
+    // return Decoration.set([])
   },
   null, {}
 )
-
-function obtenerSaltosVisuales(view: EditorView, numeroDeLineaLogica: number) {
-  // 1. Obtenemos la línea lógica del estado del editor
-  const linea = view.state.doc.line(numeroDeLineaLogica);
-  const saltos = [];
-  
-  let alturaYPrevia = null;
-
-  // 2. Iteramos sobre cada posición dentro de esa línea
-  for (let pos = linea.from; pos <= linea.to; pos++) {
-    // Obtenemos las coordenadas en pantalla de esa posición exacta
-    const coords = view.coordsAtPos(pos);
-    
-    if (!coords) continue; // Si la posición no es visible, la ignoramos
-
-    // 3. Comparamos la altura (top) actual con la anterior
-    if (alturaYPrevia !== null) {
-      // Usamos un pequeño margen de tolerancia (ej. > 5px) para evitar
-      // falsos positivos por sub-píxeles o renderizado de fuentes
-      if (coords.top > alturaYPrevia + 5) {
-        saltos.push(pos); // ¡Hemos encontrado un salto visual!
-      }
-    }
-    
-    alturaYPrevia = coords.top;
-  }
-
-  return saltos; // Devuelve un array con las posiciones del documento donde la línea hace "wrap"
-}
