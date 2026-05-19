@@ -1,5 +1,5 @@
 import { EditorState } from "@codemirror/state";
-import { EditorView, minimalSetup } from "codemirror"
+import { basicSetup, EditorView, minimalSetup } from "codemirror"
 import { gnosis } from "../src/lib"
 
 export const Editor = (text: string, save: boolean = false, key = '') => {
@@ -9,8 +9,9 @@ export const Editor = (text: string, save: boolean = false, key = '') => {
     const view = new EditorView({
         doc: initialContent,
         extensions: [
-            gnosis(),
-            minimalSetup,
+          gnosis(),
+          basicSetup,
+            // minimalSetup,
             EditorView.clickAddsSelectionRange.of(e => e.altKey),
             EditorState.allowMultipleSelections.of(true),
             save ? EditorView.updateListener.of(update => {

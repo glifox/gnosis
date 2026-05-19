@@ -2,13 +2,9 @@ import { Decoration, EditorView, WidgetType } from "@codemirror/view";
 import { PluginFactory } from "../utils";
 import { prepare, layout, layoutWithLines, prepareWithSegments } from '@chenglou/pretext';
 
-class MyWrapWidget extends WidgetType {
-  toDOM() {
-    let wrap = document.createElement("span")
-    wrap.innerHTML = " ↵<br>" 
-    wrap.className = "my-custom-wrap-widget"
-    return wrap
-  }
+const widget = new class extends WidgetType {
+  toDOM() { return document.createElement("br") }
+  override get lineBreaks() { return 1 }
 }
 
 export const breakes = PluginFactory(
@@ -24,12 +20,11 @@ export const breakes = PluginFactory(
     const widgets = testnt.lines.map((line) => {
       current += line.text.length
       return Decoration.widget({
-        widget: new MyWrapWidget(),
-        side: 1 // Aparece al final de la línea visual
+        widget
       }).range(current)
     })
     
-    return Decoration.set(widgets)
+    return Decoration.set(widgets.slice(0, -1))
 
     // return Decoration.set([])
   },
