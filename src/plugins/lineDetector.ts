@@ -13,9 +13,15 @@ const widget = new BreakWidget();
 type LayoutUpdate = {
   width: number;
   font: string;
+  lines: Lines;
   viewport: { from: number; to: number };
   docChanged: boolean;
 };
+
+type Lines = {
+  line: Line,
+  font: string
+}[]
 
 const viewUpdateEffect = StateEffect.define<LayoutUpdate>();
 
@@ -36,6 +42,7 @@ type State = {
   decorations: DecorationSet;
   width: number;
   font: string;
+  lines: Lines;
   viewport: { from: number; to: number };
 }
 
@@ -45,11 +52,12 @@ export const state_field = StateField.define<State>({
       decorations: Decoration.none,
       width: 0,
       font: "16px sans-serif",
+      lines: [],
       viewport: { from: 0, to: 0 }
     }
   },
   update(value, tr) {
-    let { decorations, width, font, viewport } = value;
+    let { decorations, width, font, viewport, lines } = value;
     let layoutChanged = false;
 
     // Map decorations for document changes to keep them aligned during typing
@@ -67,6 +75,7 @@ export const state_field = StateField.define<State>({
           width = ef.value.width;
           font = ef.value.font;
           viewport = ef.value.viewport;
+          lines = ef.value.lines;
           layoutChanged = true;
         }
       }
@@ -76,22 +85,14 @@ export const state_field = StateField.define<State>({
     if (layoutChanged && width > 0) {
       const newDecorations: Range<Decoration>[] = [];
       
-      // Get exact line ranges based on the current visible viewport
-      const startLine = tr.state.doc.lineAt(viewport.from).number;
-      const endLine = tr.state.doc.lineAt(viewport.to).number;
-
-      for (let i = startLine; i <= endLine; i++) {
-        const line = tr.state.doc.line(i);
-        // Skip empty lines to save processing time
-        if (line.length > 0) {
-          newDecorations.push(...getLineBreaks(line, width, font));
-        }
+      for (const line of lines) {
+        newDecorations.push(...getLineBreaks(line.line, width, line.font));
       }
       
       decorations = Decoration.set(newDecorations, true);
     }
     
-    return { decorations, width, font, viewport };
+    return { decorations, width, font, viewport, lines };
   },
   provide: (field) => EditorView.decorations.from(field, value => value.decorations)
 })
@@ -123,11 +124,28 @@ const view_plugin = ViewPlugin.fromClass(class {
     // Extract actual CSS font values dynamically from the editor
     const computedStyle = window.getComputedStyle(view.dom);
     const font = `${computedStyle.fontSize} ${computedStyle.fontFamily}`;
+
+    const startLine = view.state.doc.lineAt(view.viewport.from).number;
+    const endLine = view.state.doc.lineAt(view.viewport.to).number;
+
+    const lines: Lines = [];
+    
+    for (let i = startLine; i <= endLine; i++) {
+      const line = view.state.doc.line(i);
+
+      if (line.length < 1) continue;
+      const computedStyle = window.getComputedStyle(view.domAtPos(line.from).node.parentElement!);
+      const font = `${computedStyle.fontSize} ${computedStyle.fontFamily}`;
+      
+      lines.push({ line, font });
+    }
+    
     
     view.dispatch({
       effects: viewUpdateEffect.of({
         width: view.dom.clientWidth,
         font: font,
+        lines: lines,
         viewport: {
           from: view.viewport.from,
           to: view.viewport.to
