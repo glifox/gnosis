@@ -1,6 +1,7 @@
-import { Line, StateEffect, StateField, Range, Transaction } from "@codemirror/state";
+import { Line, StateEffect, StateField, Range, Transaction, EditorState } from "@codemirror/state";
 import { Decoration, EditorView, ViewPlugin, ViewUpdate, WidgetType, type DecorationSet } from "@codemirror/view";
 import { layoutWithLines, prepareWithSegments } from '@chenglou/pretext';
+import { syntaxTree } from "@codemirror/language";
 
 // Widget for the line breaks
 class BreakWidget extends WidgetType {
@@ -20,16 +21,26 @@ type LayoutUpdate = {
 
 type Lines = {
   line: Line,
-  font: string
+  nodes: Nodes,
+  font: string,
 }[]
 
+type Nodes = Map<string, { from: number, to: number }[]>;
+
+const SKIP_BREAKS = [
+  "CodeMark", "CodeInfo", "FencedCode", "CodeBlock",
+  
+]
 const viewUpdateEffect = StateEffect.define<LayoutUpdate>();
 
-function getLineBreaks(line: Line, width: number, font: string): Range<Decoration>[] {
-  const prep = prepareWithSegments(line.text, font);
+function getLineBreaks(line: Lines[number], width: number): Range<Decoration>[] {
+  const prep = prepareWithSegments(
+    line.line.text,
+    line.font,
+  );
   const seg = layoutWithLines(prep, width - 12, 1);
   
-  let offset = line.from;
+  let offset = line.line.from;
   // Use .slice(0, -1) to avoid rendering an extra break at the end of the line
   return seg.lines.slice(0, -1).map(l => {
     const target = l.text.length + offset;
@@ -86,7 +97,7 @@ export const state_field = StateField.define<State>({
       const newDecorations: Range<Decoration>[] = [];
       
       for (const line of lines) {
-        newDecorations.push(...getLineBreaks(line.line, width, line.font));
+        newDecorations.push(...getLineBreaks(line, width));
       }
       
       decorations = Decoration.set(newDecorations, true);
@@ -134,10 +145,29 @@ const view_plugin = ViewPlugin.fromClass(class {
       const line = view.state.doc.line(i);
 
       if (line.length < 1) continue;
+
+      const nodes = new Map<string, { from: number, to: number }[]>();
+      let continue_ = false;
+      
+      syntaxTree(view.state).iterate({
+        from: line.from,
+        to: line.to,
+        enter: ({ name, from, to }) => {
+          if (SKIP_BREAKS.includes(name)) {
+            continue_ = true;
+            return false;
+          }
+          if (!nodes.has(name)) nodes.set(name, []);
+          nodes.get(name)!.push({ from, to });
+        }
+      });
+      
+      if (continue_) continue;
+      
       const computedStyle = window.getComputedStyle(view.domAtPos(line.from).node.parentElement!);
       const font = `${computedStyle.fontSize} ${computedStyle.fontFamily}`;
       
-      lines.push({ line, font });
+      lines.push({ line, font, nodes });
     }
     
     
