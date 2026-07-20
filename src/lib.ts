@@ -22,7 +22,7 @@ export const gnosis: () => Extension = () => [
   hideMarks,
   headings,
   code(),
-  breakes
+  breakes,
 ]
 
 export const defaultHighlightStyle = HighlightStyle.define([
