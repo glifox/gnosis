@@ -158,4 +158,8 @@ const view_plugin = ViewPlugin.fromClass(class {
   }
 })
 
-export const breakes = [state_field, view_plugin];
+export const breakes = [
+  state_field,
+  view_plugin,
+  
+];
