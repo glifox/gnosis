@@ -21,7 +21,7 @@ const viewUpdateEffect = StateEffect.define<LayoutUpdate>();
 
 function getLineBreaks(line: Line, width: number, font: string): Range<Decoration>[] {
   const prep = prepareWithSegments(line.text, font);
-  const seg = layoutWithLines(prep, width, 1);
+  const seg = layoutWithLines(prep, width - 12, 1);
   
   let offset = line.from;
   // Use .slice(0, -1) to avoid rendering an extra break at the end of the line
