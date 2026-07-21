@@ -37,6 +37,10 @@ function getLineBreaks(line: Lines[number], width: number): Range<Decoration>[] 
   const prep = prepareWithSegments(
     line.line.text,
     line.font,
+    {
+      wordBreak: 'keep-all',
+      whiteSpace: 'pre-wrap',
+    }
   );
   const seg = layoutWithLines(prep, width - 12, 1);
   
