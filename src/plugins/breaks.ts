@@ -12,18 +12,18 @@ class BreakWidget extends WidgetType {
 const widget = new BreakWidget();
 
 class Spacer extends WidgetType {
-  constructor(public text: string) { super() }
+  constructor(public width: number) { super() }
   toDOM() {
     const span = document.createElement("span")
-    span.innerText = this.text;
     span.style.color = 'transparent'
-    // span.style.backgroundColor = 'hsl(from red h s l / .1)'
+    span.style.backgroundColor = 'hsl(from red h s l / .1)'
+    span.style.marginInlineStart = `${this.width}px`
     
     return span
   }
   override get lineBreaks() { return 0 }
   override eq(other: Spacer) {
-    return other.text === this.text
+    return other.width === this.width
   }
 }
 
@@ -117,7 +117,7 @@ function getLineBreaks(line: Lines[number], width: number): Range<Decoration>[] 
     offset = absolute_pos;
     
     decorations.push(Decoration.widget({ widget }).range(absolute_pos));
-    decorations.push(Decoration.widget({ widget: new Spacer(text_offset), side: 10000 }).range(absolute_pos));
+    decorations.push(Decoration.widget({ widget: new Spacer(text_offset_width), side: 10000 }).range(absolute_pos));
   })
   
   return decorations.slice(0, -2)
