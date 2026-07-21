@@ -69,16 +69,13 @@ function getLineBreaks(line: Lines[number], width: number): Range<Decoration>[] 
   // console.info("prep:", prep.itemsBySourceItemIndex[2]?.prepared.segments.join(''));
   
   let offset = line.line.from;
-  console.info("line.line.text.length:", line.line.text.length);
-  walkRichInlineLineRanges(prep, width - 12, range => {
+  walkRichInlineLineRanges(prep, width - 20, range => {
     const line_ = materializeRichInlineLineRange(prep, range)
     const line_text = line_.fragments.map(s => s.text).join(' ');
     const line_length = line_text.length;
     
     const absolute_pos = line_length + offset + ((line_text.endsWith(' ')) ? 0 : 1); // plus the space of every line after the fist
     offset = absolute_pos;
-    console.info(`${decorations.length}`, line_text, line_length, offset - line.line.from);
-    console.info(`'${line_.fragments.map(s => s.text)}'`);
     decorations.push(Decoration.widget({ widget }).range(absolute_pos));
   })
   
