@@ -2,6 +2,7 @@ import { Line, StateEffect, StateField, Range, Transaction, EditorState } from "
 import { Decoration, EditorView, ViewPlugin, ViewUpdate, WidgetType, type DecorationSet } from "@codemirror/view";
 import { layoutWithLines, prepareWithSegments } from '@chenglou/pretext';
 import { syntaxTree } from "@codemirror/language";
+import type { RichInlineItem } from "@chenglou/pretext/rich-inline";
 
 // Widget for the line breaks
 class BreakWidget extends WidgetType {
@@ -31,6 +32,35 @@ const SKIP_BREAKS = [
   "CodeMark", "CodeInfo", "FencedCode", "CodeBlock",
   
 ]
+const inlineMarks: {
+  [key: string]: {
+    breakOnSpace: boolean,
+    extraWidth: number,
+    weigth: number,
+  }
+} = {
+  "StrongEmphasis": {
+    breakOnSpace: true,
+    extraWidth: 0,
+    weigth: 700,
+  },
+  "Strikethrough": {
+    breakOnSpace: true,
+    extraWidth: 0,
+    weigth: 400,
+  },
+  "InlineCode": {
+    breakOnSpace: true,
+    extraWidth: 0,
+    weigth: 400,
+  },
+  "Emphasis": {
+    breakOnSpace: true,
+    extraWidth: 0,
+    weigth: 400,
+  },
+}
+const breaks_regex = /\s*\S+/g;
 const viewUpdateEffect = StateEffect.define<LayoutUpdate>();
 
 function getLineBreaks(line: Lines[number], width: number): Range<Decoration>[] {
@@ -149,9 +179,14 @@ const view_plugin = ViewPlugin.fromClass(class {
       const line = view.state.doc.line(i);
 
       if (line.length < 1) continue;
+      
+      const computedStyle = window.getComputedStyle(view.domAtPos(line.from).node.parentElement!);
+      const font = `${computedStyle.fontSize} ${computedStyle.fontFamily}`;
 
-      const nodes = new Map<string, { from: number, to: number }[]>();
       let continue_ = false;
+      
+      const richLine: RichInlineItem[] = [];
+      let cursor = 0;
       
       syntaxTree(view.state).iterate({
         from: line.from,
@@ -161,34 +196,61 @@ const view_plugin = ViewPlugin.fromClass(class {
             continue_ = true;
             return false;
           }
-          if (!nodes.has(name)) nodes.set(name, []);
-          nodes.get(name)!.push({ from, to });
+          const [ start, end ] = [from - line.from, to - line.from ]
+          
+          if (name in inlineMarks) {
+            if (cursor !== start) richLine.push({
+              font,
+              text: line.text.slice(cursor, start)
+            })
+
+            const part = inlineMarks[name as keyof typeof inlineMarks]!;
+            if (part.breakOnSpace) {
+              const text = line.text.slice(start, end);
+              for (const match of text.matchAll(breaks_regex)) {
+                richLine.push({
+                  font: `${part.weigth} ${font}`,
+                  text: match.toString(),
+                  break: 'never',
+                  extraWidth: part.extraWidth,
+                })
+              }
+            }
+            else richLine.push({
+              font: `${part.weigth} ${font}`,
+              text: line.text.slice(start, end),
+              break: 'never',
+              extraWidth: part.extraWidth,
+            })
+            
+            cursor = end;
+          }
+          
+          
         }
       });
-      
       if (continue_) continue;
-      
-      const computedStyle = window.getComputedStyle(view.domAtPos(line.from).node.parentElement!);
-      const font = `${computedStyle.fontSize} ${computedStyle.fontFamily}`;
-      
-      lines.push({ line, font, nodes });
+      if (cursor < line.text.length) richLine.push({
+        font,
+        text: line.text.slice(cursor, line.text.length)
+      })
     }
     
     
-    view.dispatch({
-      effects: viewUpdateEffect.of({
-        width: view.dom.clientWidth,
-        font: font,
-        lines: lines,
-        viewport: {
-          from: view.viewport.from,
-          to: view.viewport.to
-        },
-        docChanged
-      }),
-      // Essential: Prevent scroll updates from filling up the undo history
-      annotations: Transaction.addToHistory.of(false)
-    });
+    // view.dispatch({
+    //   effects: viewUpdateEffect.of({
+    //     width: view.dom.clientWidth,
+    //     font: font,
+    //     lines: lines,
+    //     viewport: {
+    //       from: view.viewport.from,
+    //       to: view.viewport.to
+    //     },
+    //     docChanged
+    //   }),
+    //   // Essential: Prevent scroll updates from filling up the undo history
+    //   annotations: Transaction.addToHistory.of(false)
+    // });
   }
 })
 
