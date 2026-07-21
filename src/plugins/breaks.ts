@@ -1,6 +1,6 @@
 import { Line, StateEffect, StateField, Range, Transaction, EditorState } from "@codemirror/state";
 import { Decoration, EditorView, ViewPlugin, ViewUpdate, WidgetType, type DecorationSet } from "@codemirror/view";
-import { layoutWithLines, prepare, prepareWithSegments } from '@chenglou/pretext';
+import { prepare } from '@chenglou/pretext';
 import { syntaxTree } from "@codemirror/language";
 import { materializeRichInlineLineRange, prepareRichInline, walkRichInlineLineRanges, type RichInlineItem } from "@chenglou/pretext/rich-inline";
 
