@@ -21,7 +21,7 @@ type LayoutUpdate = {
 };
 
 type Lines = {
-  text: string,
+  line: Line,
   rich: RichInlineItem[],
 }[]
 
@@ -66,17 +66,23 @@ function getLineBreaks(line: Lines[number], width: number): Range<Decoration>[] 
   const decorations: Range<Decoration>[] = []
   
   const prep = prepareRichInline(line.rich);
-  console.info("width:", width);
-  console.info("prep:", prep);
-  // walkRichInlineLineRanges(prep, width - 12, range => {
-  //   const line = materializeRichInlineLineRange(prep, range)
-  //   const last_fragment = line.fragments[line.fragments.length - 1];
-    
-  //   console.info("last_fragment:", last_fragment);
-    
-  // })
+  // console.info("prep:", prep.itemsBySourceItemIndex[2]?.prepared.segments.join(''));
   
-  return decorations
+  let offset = line.line.from;
+  console.info("line.line.text.length:", line.line.text.length);
+  walkRichInlineLineRanges(prep, width - 12, range => {
+    const line_ = materializeRichInlineLineRange(prep, range)
+    const line_text = line_.fragments.map(s => s.text).join(' ');
+    const line_length = line_text.length;
+    
+    const absolute_pos = line_length + offset + ((line_text.endsWith(' ')) ? 0 : 1); // plus the space of every line after the fist
+    offset = absolute_pos;
+    console.info(`${decorations.length}`, line_text, line_length, offset - line.line.from);
+    console.info(`'${line_.fragments.map(s => s.text)}'`);
+    decorations.push(Decoration.widget({ widget }).range(absolute_pos));
+  })
+  
+  return decorations.slice(0, -1)
 }
 
 type State = {
@@ -178,7 +184,11 @@ const view_plugin = ViewPlugin.fromClass(class {
       
       const computedStyle = window.getComputedStyle(view.domAtPos(line.from).node.parentElement!);
       const font = `${computedStyle.fontSize} ${computedStyle.fontFamily}`;
-
+      const text = line.text.replace(/ {2,}/g, (match) => {
+        return Array.from(match)
+          .map((_, i) => (i % 2 === 0 ? " " : "*"))
+          .join("");
+      })
       let continue_ = false;
       
       const richLine: RichInlineItem[] = [];
@@ -197,13 +207,13 @@ const view_plugin = ViewPlugin.fromClass(class {
           if (name in inlineMarks) {
             if (cursor !== start) richLine.push({
               font,
-              text: line.text.slice(cursor, start)
+              text: text.slice(cursor, start)
             })
 
             const part = inlineMarks[name as keyof typeof inlineMarks]!;
             if (part.breakOnSpace) {
-              const text = line.text.slice(start, end);
-              for (const match of text.matchAll(breaks_regex)) {
+              const text_ = text.slice(start, end);
+              for (const match of text_.matchAll(breaks_regex)) {
                 richLine.push({
                   font: `${part.weigth} ${font}`,
                   text: match.toString(),
@@ -214,7 +224,7 @@ const view_plugin = ViewPlugin.fromClass(class {
             }
             else richLine.push({
               font: `${part.weigth} ${font}`,
-              text: line.text.slice(start, end),
+              text: text.slice(start, end),
               break: 'never',
               extraWidth: part.extraWidth,
             })
@@ -228,11 +238,11 @@ const view_plugin = ViewPlugin.fromClass(class {
       if (continue_) continue;
       if (cursor < line.text.length) richLine.push({
         font,
-        text: line.text.slice(cursor, line.text.length)
+        text: text.slice(cursor, line.text.length)
       })
 
       lines.push({
-        text: line.text,
+        line: line,
         rich: richLine,
       })
     }
