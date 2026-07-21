@@ -2,7 +2,7 @@ import { Line, StateEffect, StateField, Range, Transaction, EditorState } from "
 import { Decoration, EditorView, ViewPlugin, ViewUpdate, WidgetType, type DecorationSet } from "@codemirror/view";
 import { layoutWithLines, prepareWithSegments } from '@chenglou/pretext';
 import { syntaxTree } from "@codemirror/language";
-import type { RichInlineItem } from "@chenglou/pretext/rich-inline";
+import { materializeRichInlineLineRange, prepareRichInline, walkRichInlineLineRanges, type RichInlineItem } from "@chenglou/pretext/rich-inline";
 
 // Widget for the line breaks
 class BreakWidget extends WidgetType {
@@ -21,9 +21,8 @@ type LayoutUpdate = {
 };
 
 type Lines = {
-  line: Line,
-  nodes: Nodes,
-  font: string,
+  text: string,
+  rich: RichInlineItem[],
 }[]
 
 type Nodes = Map<string, { from: number, to: number }[]>;
@@ -64,23 +63,20 @@ const breaks_regex = /\s*\S+/g;
 const viewUpdateEffect = StateEffect.define<LayoutUpdate>();
 
 function getLineBreaks(line: Lines[number], width: number): Range<Decoration>[] {
-  const prep = prepareWithSegments(
-    line.line.text,
-    line.font,
-    {
-      wordBreak: 'keep-all',
-      whiteSpace: 'pre-wrap',
-    }
-  );
-  const seg = layoutWithLines(prep, width - 12, 1);
+  const decorations: Range<Decoration>[] = []
   
-  let offset = line.line.from;
-  // Use .slice(0, -1) to avoid rendering an extra break at the end of the line
-  return seg.lines.slice(0, -1).map(l => {
-    const target = l.text.length + offset;
-    offset = target;
-    return Decoration.widget({ widget }).range(target);
-  });
+  const prep = prepareRichInline(line.rich);
+  console.info("width:", width);
+  console.info("prep:", prep);
+  // walkRichInlineLineRanges(prep, width - 12, range => {
+  //   const line = materializeRichInlineLineRange(prep, range)
+  //   const last_fragment = line.fragments[line.fragments.length - 1];
+    
+  //   console.info("last_fragment:", last_fragment);
+    
+  // })
+  
+  return decorations
 }
 
 type State = {
@@ -234,23 +230,27 @@ const view_plugin = ViewPlugin.fromClass(class {
         font,
         text: line.text.slice(cursor, line.text.length)
       })
+
+      lines.push({
+        text: line.text,
+        rich: richLine,
+      })
     }
     
-    
-    // view.dispatch({
-    //   effects: viewUpdateEffect.of({
-    //     width: view.dom.clientWidth,
-    //     font: font,
-    //     lines: lines,
-    //     viewport: {
-    //       from: view.viewport.from,
-    //       to: view.viewport.to
-    //     },
-    //     docChanged
-    //   }),
-    //   // Essential: Prevent scroll updates from filling up the undo history
-    //   annotations: Transaction.addToHistory.of(false)
-    // });
+    view.dispatch({
+      effects: viewUpdateEffect.of({
+        width: view.dom.clientWidth,
+        font: font,
+        lines: lines,
+        viewport: {
+          from: view.viewport.from,
+          to: view.viewport.to
+        },
+        docChanged
+      }),
+      // Essential: Prevent scroll updates from filling up the undo history
+      annotations: Transaction.addToHistory.of(false)
+    });
   }
 })
 
