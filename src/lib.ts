@@ -10,7 +10,7 @@ import { hideMarks } from "./plugins/hidemarks";
 import { code } from "./plugins/block/code/plugin";
 import { headings } from "./plugins/block/heading";
 import { EditorView } from "codemirror";
-import { breakes } from "./plugins/lineDetector";
+import { breakes } from "./plugins/breaks";
 
 export const gnosis: () => Extension = () => [
   // EditorView.lineWrapping,

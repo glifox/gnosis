@@ -113,7 +113,7 @@ function getLineBreaks(line: Lines[number], width: number): Range<Decoration>[] 
     const line_length = line_text.length;
     
     console.log(`'${line_text}'`)
-    const absolute_pos = line_length + offset + ((line_text.endsWith(' ')) ? 0 : 1); // plus the space of every line after the fist
+    const absolute_pos = line_length + offset + ((line_text.endsWith(' ') || line_text.endsWith('\u2005')) ? 0 : 1); // plus the space of every line after the fist
     offset = absolute_pos;
     
     decorations.push(Decoration.widget({ widget }).range(absolute_pos));
@@ -224,7 +224,7 @@ const view_plugin = ViewPlugin.fromClass(class {
       const font = `${computedStyle.fontSize} ${computedStyle.fontFamily}`;
       const text = line.text.replace(/ {2,}/g, (match) => {
         return Array.from(match)
-          .map((_, i) => (i % 2 === 0 ? " " : "*"))
+          .map((_, i) => (i % 2 === 0 ? " " : "\u2005"))
           .join("");
       })
       let continue_ = false;
