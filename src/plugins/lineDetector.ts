@@ -1,6 +1,6 @@
 import { Line, StateEffect, StateField, Range, Transaction, EditorState } from "@codemirror/state";
 import { Decoration, EditorView, ViewPlugin, ViewUpdate, WidgetType, type DecorationSet } from "@codemirror/view";
-import { layoutWithLines, prepareWithSegments } from '@chenglou/pretext';
+import { layoutWithLines, prepare, prepareWithSegments } from '@chenglou/pretext';
 import { syntaxTree } from "@codemirror/language";
 import { materializeRichInlineLineRange, prepareRichInline, walkRichInlineLineRanges, type RichInlineItem } from "@chenglou/pretext/rich-inline";
 
@@ -10,6 +10,23 @@ class BreakWidget extends WidgetType {
   override get lineBreaks() { return 1 }
 }
 const widget = new BreakWidget();
+
+class Spacer extends WidgetType {
+  constructor(public text: string) { super() }
+  toDOM() {
+    const span = document.createElement("span")
+    span.innerText = this.text;
+    span.style.color = 'transparent'
+    // span.style.backgroundColor = 'hsl(from red h s l / .1)'
+    
+    return span
+  }
+  override get lineBreaks() { return 0 }
+  override eq(other: Spacer) {
+    return other.text === this.text
+  }
+}
+
 
 // Define a clean, serializable payload for the effect instead of the entire ViewUpdate
 type LayoutUpdate = {
@@ -22,6 +39,7 @@ type LayoutUpdate = {
 
 type Lines = {
   line: Line,
+  offset: number,
   rich: RichInlineItem[],
 }[]
 
@@ -38,48 +56,71 @@ const inlineMarks: {
     weigth: number,
   }
 } = {
-  "StrongEmphasis": {
+  StrongEmphasis: {
     breakOnSpace: true,
     extraWidth: 0,
     weigth: 700,
   },
-  "Strikethrough": {
+  Strikethrough: {
     breakOnSpace: true,
     extraWidth: 0,
     weigth: 400,
   },
-  "InlineCode": {
+  InlineCode: {
     breakOnSpace: true,
     extraWidth: 0,
     weigth: 400,
   },
-  "Emphasis": {
+  Emphasis: {
     breakOnSpace: true,
     extraWidth: 0,
     weigth: 400,
   },
 }
+const inlineOffsets = {
+  QuoteMark: {
+    offset: 1
+  },
+  ListMark: {
+    offset: 1,
+  },
+  TaskMarker: {
+    offset: 1
+  },
+}
 const breaks_regex = /\s*\S+/g;
 const viewUpdateEffect = StateEffect.define<LayoutUpdate>();
 
+function mesureOffset(offset: string, width: number, font: string): number {
+  const text = offset.replaceAll(' ', 's')
+  const prep = prepare(text, font)
+  return (prep as any as { widths: number[] }).widths.reduce((cur, add) => add += cur ,0)
+}
 function getLineBreaks(line: Lines[number], width: number): Range<Decoration>[] {
   const decorations: Range<Decoration>[] = []
+
+  const text_offset = line.line.text.slice(0, line.offset);
+  const text_offset_width = mesureOffset(line.line.text.slice(0, line.offset), width, line.rich[0]!.font)
   
   const prep = prepareRichInline(line.rich);
   // console.info("prep:", prep.itemsBySourceItemIndex[2]?.prepared.segments.join(''));
   
-  let offset = line.line.from;
-  walkRichInlineLineRanges(prep, width - 20, range => {
+  let offset = line.line.from + line.offset;
+  walkRichInlineLineRanges(prep, width - 20 - text_offset_width, range => {
     const line_ = materializeRichInlineLineRange(prep, range)
+    
     const line_text = line_.fragments.map(s => s.text).join(' ');
     const line_length = line_text.length;
     
+    console.log(`'${line_text}'`)
     const absolute_pos = line_length + offset + ((line_text.endsWith(' ')) ? 0 : 1); // plus the space of every line after the fist
     offset = absolute_pos;
+    
     decorations.push(Decoration.widget({ widget }).range(absolute_pos));
+    decorations.push(Decoration.widget({ widget: new Spacer(text_offset), side: 10000 }).range(absolute_pos));
   })
   
-  return decorations.slice(0, -1)
+  return decorations.slice(0, -2)
 }
 
 type State = {
@@ -190,6 +231,7 @@ const view_plugin = ViewPlugin.fromClass(class {
       
       const richLine: RichInlineItem[] = [];
       let cursor = 0;
+      let offset = 0;
       
       syntaxTree(view.state).iterate({
         from: line.from,
@@ -200,6 +242,13 @@ const view_plugin = ViewPlugin.fromClass(class {
             return false;
           }
           const [ start, end ] = [from - line.from, to - line.from ]
+          
+          
+          if (name in inlineOffsets) {
+            offset = end + inlineOffsets[name as keyof typeof inlineOffsets].offset
+            cursor = end;
+            return true
+          }
           
           if (name in inlineMarks) {
             if (cursor !== start) richLine.push({
@@ -228,8 +277,6 @@ const view_plugin = ViewPlugin.fromClass(class {
             
             cursor = end;
           }
-          
-          
         }
       });
       if (continue_) continue;
@@ -240,6 +287,7 @@ const view_plugin = ViewPlugin.fromClass(class {
 
       lines.push({
         line: line,
+        offset: offset,
         rich: richLine,
       })
     }
