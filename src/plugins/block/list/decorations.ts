@@ -28,17 +28,27 @@ class TaskInput extends WidgetType {
   toDOM() {
     const span = document.createElement("span")
     const checkbox = document.createElement('input')
+    const text = document.createTextNode(this.checked ? '[x]' : '[ ]')
     
     checkbox.type = "checkbox"
     checkbox.checked = this.checked
+    checkbox.style.margin = '0'
+    checkbox.style.position = 'absolute'
+    checkbox.style.top = '50%'
+    checkbox.style.left = '50%'
+    checkbox.style.transform = 'translate(-50%, -50%)'
     
-    span.append(checkbox)
+    span.style.position = 'relative'
+    span.style.color = 'transparent'
+    span.classList.add('cm-taskmark')
+    span.append(checkbox, text)
     return span
   }
   override get lineBreaks() { return 0 }
   override eq(other: TaskInput) {
     return other.checked === this.checked
   }
+  override ignoreEvent(event: Event): boolean { return false }
 }
 
 const marks = {
