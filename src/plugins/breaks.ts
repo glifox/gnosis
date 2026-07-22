@@ -112,7 +112,7 @@ function getLineBreaks(line: Lines[number], width: number): Range<Decoration>[] 
     const line_text = line_.fragments.map(s => s.text).join(' ');
     const line_length = line_text.length;
     
-    console.log(`'${line_text}'`)
+    // console.log(`'${line_text}'`)
     const absolute_pos = line_length + offset + ((line_text.endsWith(' ') || line_text.endsWith('\u2005')) ? 0 : 1); // plus the space of every line after the fist
     offset = absolute_pos;
     

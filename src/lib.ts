@@ -10,6 +10,7 @@ import { hideMarks } from "./plugins/hidemarks";
 import { code } from "./plugins/block/code/plugin";
 import { headings } from "./plugins/block/heading";
 import { breakes } from "./plugins/breaks";
+import { ListPlugin } from "./plugins/block/list/plugin";
 
 export const gnosis: () => Extension = () => [
   // EditorView.lineWrapping,
@@ -22,6 +23,7 @@ export const gnosis: () => Extension = () => [
   headings,
   code(),
   breakes,
+  ListPlugin(),
 ]
 
 export const defaultHighlightStyle = HighlightStyle.define([
