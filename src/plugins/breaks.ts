@@ -46,7 +46,7 @@ type Lines = {
 type Nodes = Map<string, { from: number, to: number }[]>;
 
 const SKIP_BREAKS = [
-  "CodeMark", "CodeInfo", "FencedCode", "CodeBlock",
+  "FencedCode", "CodeBlock",
   
 ]
 const inlineMarks: {
