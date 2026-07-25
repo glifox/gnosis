@@ -79,7 +79,7 @@ const inlineMarks: {
 }
 const inlineOffsets = {
   QuoteMark: {
-    offset: 1
+    offset: 4
   },
   ListMark: {
     offset: 1,
@@ -109,7 +109,10 @@ function getLineBreaks(line: Lines[number], width: number): Range<Decoration>[] 
   walkRichInlineLineRanges(prep, width - 20 - text_offset_width, range => {
     const line_ = materializeRichInlineLineRange(prep, range)
     
-    const line_text = line_.fragments.map(s => s.text).join(' ');
+    const line_text = line_.fragments
+      .map(curr => `${curr.gapBefore === 0 ? '' : ' '}${curr.text}`)
+      .join('');
+    
     const line_length = line_text.length;
     
     // console.log(`'${line_text}'`)
@@ -170,7 +173,7 @@ export const state_field = StateField.define<State>({
     if (layoutChanged && width > 0) {
       const newDecorations: Range<Decoration>[] = [];
       
-      for (const line of lines) {
+      for (const line of lines/*[lines[0]!] */) {
         newDecorations.push(...getLineBreaks(line, width));
       }
       
@@ -245,8 +248,8 @@ const view_plugin = ViewPlugin.fromClass(class {
           
           
           if (name in inlineOffsets) {
-            offset = end + inlineOffsets[name as keyof typeof inlineOffsets].offset
-            cursor = end;
+            offset = end + inlineOffsets[name as keyof typeof inlineOffsets].offset;
+            cursor = end + inlineOffsets[name as keyof typeof inlineOffsets].offset;
             return true
           }
           
