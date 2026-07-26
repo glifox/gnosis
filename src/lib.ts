@@ -20,7 +20,7 @@ export const gnosis: () => Extension = () => [
   syntaxHighlighting(defaultHighlightStyle),
   markdown({
     codeLanguages: languages,
-    extensions: [GFM, GHQuoteHighlights, unsetMarks],
+    extensions: [GFM, GHQuoteHighlights(), unsetMarks],
     addKeymap: false,
     
   }),

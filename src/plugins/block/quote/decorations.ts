@@ -32,7 +32,7 @@ type DecorationData = {
 }
 
 const decorationMarks = {
-  QuoteMark: ({ type, from, to, selected }: DecorationData) => [
+  QuoteMark: ({ type, from, to, selected }: DecorationData & {  }) => [
     Decoration.mark({
       class: `quote-mark ${quoteTypes[type]} ${(selected ? 'selected' : '')}`,
       // attributes: { style: 'background-color: red;' }
@@ -65,7 +65,7 @@ export function decorator(view: EditorView, config: null): DecorationSet {
   const stack: Blockquote[] = [];
   visibleNodes(view, {
     enter: ({ name, from, to, node }) => {
-      if ( 'Blockquote' === name) {
+      if ('Blockquote' === name) {
         const quoteKind = node.getChild('QuoteKind')?.firstChild
         const type: QuoteKind = (quoteKind) ? view.state.sliceDoc(quoteKind.from, quoteKind.to).toLocaleLowerCase() as QuoteKind : 'none'
         stack.push({ type })
@@ -73,10 +73,22 @@ export function decorator(view: EditorView, config: null): DecorationSet {
       }
       
       if (name in decorationMarks) {
+        const line = view.state.doc.lineAt(from);
+        const textBefore = line.text.slice(0, to - line.from);
+        const current = textBefore.match(/>\s*/ig)!.length;
+        const matches = line.text.match(/>\s*/ig)!.length;
+        
+        // console.info("matches, stack.length, current, stack[stack.length -1]:", matches, stack.length, current, stack[stack.length - 1]);
+        
+        let type_index = stack.length - 1;
+        if (matches > current && matches >= stack.length) type_index = current - 1;
+        else
+        if (matches > current && matches < stack.length) type_index = current;
+        
         decorations.push(
           ...decorationMarks[name as keyof typeof decorationMarks]({
             from, to,
-            type: stack[stack.length - 1]?.type ?? 'none',
+            type: stack[type_index]?.type ?? 'none',
             selected: hasSelection(view, from, to),
           })
         )

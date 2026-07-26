@@ -30,7 +30,9 @@ class GitHubQuoteParser implements LeafBlockParser {
 }
 
 /// Extensión para soportar los callouts de GitHub dentro de Blockquotes.
-export const GHQuoteHighlights: MarkdownConfig = {
+export const GHQuoteHighlights = (config?: {
+  allowNested?: boolean,
+}) : MarkdownConfig => ({
   defineNodes: [
     { name: "QuoteKind", block: true },
     { name: "QuoteKindMarker", style: t.processingInstruction }
@@ -45,8 +47,8 @@ export const GHQuoteHighlights: MarkdownConfig = {
           quoteDepth++;
         }
       }
-      if (quoteDepth !== 1) return null;
-
+      if (quoteDepth !== 1 && !(config?.allowNested ?? true)) return null;
+      
       // Solo es válido en la primera línea del quoteblock.
       if ((cx as any).block.from < cx.lineStart) {
         return null;
@@ -63,4 +65,4 @@ export const GHQuoteHighlights: MarkdownConfig = {
     // Lo interceptamos antes de que se confunda con un LinkReference
     before: "LinkReference" 
   }]
-};
+});
