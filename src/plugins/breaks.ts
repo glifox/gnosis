@@ -321,5 +321,13 @@ const view_plugin = ViewPlugin.fromClass(class {
 export const breakes = [
   state_field,
   view_plugin,
-  
+  EditorView.theme({
+    ".cm-content": {
+      flexShrink: '1',
+      overflow: 'hidden',
+    },
+    ".cm-nowrap": { 
+      textWrap: 'nowrap !important',
+    }
+  }),
 ];

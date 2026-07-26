@@ -15,7 +15,7 @@ export const code = () => {
       paddingLeft: 6,
     }
     return [
-        PluginFactory(decorator, { mode: "mark"} ),
+        // PluginFactory(decorator, { mode: "mark"} ),
         PluginFactory(decorator, { mode: "type", options }, {eventHandlers: { mousedown }}),
         coreTheme(options),
     ]

@@ -12,6 +12,7 @@ import { headings } from "./plugins/block/heading";
 import { breakes } from "./plugins/breaks";
 import { ListPlugin } from "./plugins/block/list/plugin";
 import { GHQuoteHighlights } from "./plugins/markdown/quotes";
+import { EditorView } from "codemirror";
 
 export const gnosis: () => Extension = () => [
   // EditorView.lineWrapping,
@@ -22,7 +23,7 @@ export const gnosis: () => Extension = () => [
   }),
   hideMarks,
   headings,
-  code(),
+  // code(),
   breakes,
   ListPlugin(),
 ]
