@@ -1,28 +1,27 @@
 import type { MarkdownConfig, BlockContext, LeafBlock, LeafBlockParser } from "@lezer/markdown";
 import { tags as t } from "@lezer/highlight";
 
-// Matches standard GitHub callouts. We allow optional leading whitespace.
-const quoteKindRegex = /^\s*\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\]/i;
+// Permite [!KIND] con espacios o tabs al final, pero nada de texto adicional.
+// Usamos [ \t]* en lugar de \s* para evitar comportamientos extraños con saltos de línea.
+const quoteKindRegex     = /^\s*\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\][ \t]*$/i;
+const markerExtractRegex = /^\s*\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\]/i;
 
 class GitHubQuoteParser implements LeafBlockParser {
-  // Returning false tells the parser we aren't completely consuming the block line-by-line ourselves,
-  // allowing Lezer to accumulate the paragraph content for us.
+  // "Sigue agregando las siguientes líneas de este blockquote a este mismo bloque".
   nextLine() {
     return false; 
   }
 
-  // Once the block ends, this is triggered. We wrap the content in our custom nodes.
   finish(cx: BlockContext, leaf: LeafBlock) {
-    let match = quoteKindRegex.exec(leaf.content);
+    let match = markerExtractRegex.exec(leaf.content);
     if (!match) return false;
 
     let markerLen = match[0].length;
 
-    // Use public APIs `cx.elt` and `cx.addLeafElement` instead of the internal buffer writers
     cx.addLeafElement(leaf, cx.elt("QuoteKind", leaf.start, leaf.start + leaf.content.length, [
-      // 1. Mark the [!KIND] text specifically
       cx.elt("QuoteKindMarker", leaf.start, leaf.start + markerLen),
-      // 2. Parse the rest of the blockquote content normally
+      
+      // 2. Pasamos el resto del contenido
       ...cx.parser.parseInline(leaf.content.slice(markerLen), leaf.start + markerLen)
     ]));
 
@@ -30,21 +29,38 @@ class GitHubQuoteParser implements LeafBlockParser {
   }
 }
 
-/// Extension providing GitHub-flavored blockquote callouts.
+/// Extensión para soportar los callouts de GitHub dentro de Blockquotes.
 export const GHQuoteHighlights: MarkdownConfig = {
   defineNodes: [
     { name: "QuoteKind", block: true },
-    { name: "QuoteKindMarker", style: t.annotation } // Styles just the [!NOTE] part
+    { name: "QuoteKindMarker", style: t.processingInstruction }
   ],
   parseBlock: [{
     name: "QuoteKind",
     leaf(cx, leaf) {
-      // Only trigger if we are inside a Blockquote and the pattern matches the start of the line
-      return quoteKindRegex.test(leaf.content) && cx.parentType().name === "Blockquote"
-        ? new GitHubQuoteParser()
-        : null;
+      // No es válido si está anidado dentro de otro quoteblock.
+      let quoteDepth = 0;
+      for (let i = 0; i < cx.depth; i++) {
+        if (cx.parentType(i).name === "Blockquote") {
+          quoteDepth++;
+        }
+      }
+      if (quoteDepth !== 1) return null;
+
+      // Solo es válido en la primera línea del quoteblock.
+      if ((cx as any).block.from < cx.lineStart) {
+        return null;
+      }
+
+      // Solo es válido si es lo único presente en la línea (ignorando espacios).
+      if (!quoteKindRegex.test(leaf.content)) {
+        return null;
+      }
+
+      // Si pasa todas las reglas, iniciamos nuestro parser de párrafo personalizado.
+      return new GitHubQuoteParser();
     },
-    // We insert this before LinkReference so the `[` doesn't trigger standard link parsing
-    before: "LinkReference"
+    // Lo interceptamos antes de que se confunda con un LinkReference
+    before: "LinkReference" 
   }]
 };
