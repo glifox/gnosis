@@ -16,35 +16,45 @@ I did a lot of online research, and found some _WYSIWYG markdown editors_. Howev
 ## TO-DO
 
 ### **Block-level**
-- [x] change: `paragraph`
+- [ ] change: `paragraph`
 - [x] change: `heading`
-- [x] change: `hr`
-- [x] change: `list`
+- [ ] change: `hr`
+- [ ] change: `list` (WIP)
     - [x] change: `listitem`
+    - [ ] change: `numbers`
     - [x] change: `checkbox`
-- [x] change: `code`
-- [x] change: `html`
-- [x] change: `blockquote`
-- [ ] change: `table`
+- [ ] change: `code`
+    - [ ] add a custom scroller to avoid line wrapps on codeblock
+    - [ ] add an option to line-wrapp inside codeblocks
+- [ ] change: `html`
+- [x] change: `blockquote` (WIP)
+    - [x] support for [github quotes highlight](https://github.com/orgs/community/discussions/16925)
+    - [ ] margin left when the number of quotemarks is inferior to the depth. _this needs to also be taking into account on the breaks pluggin_.
+    - [ ] use shades to difrent depths to allow clarifing the gerarquy to the user
+- [ ] change: `table` (added maybe from other project)
 
 ### **Inline-level**
 - [x] change: `strong`
 - [x] change: `em`
 - [x] change: `codespan`
-- [x] change: `br`
+- [ ] change: `br` _inline html_.
 - [x] change: `del`
-- [x] change: `link`
-- [x] change: `image`
-- [x] change: `text`
+- [ ] change: `link`
+- [ ] change: `image`
+    - [ ] for inline images large enough, add a refrence widget in the text as `see image: alt-text` and render the image as a blockWigeth on the next line
 - [ ] change: `tags`
 
 ### Features
-- [x] change the way mk shows.
-- [x] Auto complete list enters 
-    - [x] Bulleds
-    - [x] ++ Numeric
-    - [x] doble enter -- indent
-- [x] Code highliting
+- [x] hide marks when written.
+- [x] reduce the flickering when _marks toggle_. (WIP)
+- [x] custom line breaks using **pretext** (WIP - alpha)
+- [ ] Code highliting
+- [ ] keybinds
+    - [ ] Auto complete list on enter 
+        - [ ] auto add bullet on bullet-list
+        - [ ] increase number on numered-list
+        - [ ] doble enter reduce indentation "_un-nest list item_"
+        - [ ] tab add identation "_nest list item_"
 
 ## More ideas?
 
