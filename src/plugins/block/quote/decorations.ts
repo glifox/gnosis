@@ -32,10 +32,10 @@ type DecorationData = {
 }
 
 const decorationMarks = {
-  QuoteMark: ({ type, from, to, selected }: DecorationData & {  }) => [
+  QuoteMark: ({ type, from, to, selected, depth }: DecorationData & { depth: number }) => [
     Decoration.mark({
       class: `quote-mark ${quoteTypes[type]} ${(selected ? 'selected' : '')}`,
-      // attributes: { style: 'background-color: red;' }
+      attributes: { depth: depth.toString() }
     }).range(from, to)
   ],
   QuoteKindMarker: ({ type, from, to, selected }: DecorationData) => (type === 'none')
@@ -91,6 +91,7 @@ export function decorator(view: EditorView, config: null): DecorationSet {
             from, to,
             type: stack[type_index]?.type ?? 'none',
             selected: hasSelection(view, from, to),
+            depth: type_index +1,
           })
         )
       }
