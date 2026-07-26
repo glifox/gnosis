@@ -11,13 +11,14 @@ import { code } from "./plugins/block/code/plugin";
 import { headings } from "./plugins/block/heading";
 import { breakes } from "./plugins/breaks";
 import { ListPlugin } from "./plugins/block/list/plugin";
+import { GHQuoteHighlights } from "./plugins/markdown/quotes";
 
 export const gnosis: () => Extension = () => [
   // EditorView.lineWrapping,
   syntaxHighlighting(defaultHighlightStyle),
   markdown({
     codeLanguages: languages,
-    extensions: [ GFM ]
+    extensions: [ GFM , GHQuoteHighlights ]
   }),
   hideMarks,
   headings,
@@ -27,6 +28,8 @@ export const gnosis: () => Extension = () => [
 ]
 
 export const defaultHighlightStyle = HighlightStyle.define([
+  {tag: tags.annotation,
+   color: "red"},
   {tag: tags.meta,
    color: "#404740"},
   {tag: tags.link,
