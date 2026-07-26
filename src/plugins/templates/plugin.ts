@@ -1,4 +1,4 @@
-import { PluginFactory } from "../../utils";
+import { PluginFactory } from "../../../utils";
 import { decorator } from "./decorator";
 
 
