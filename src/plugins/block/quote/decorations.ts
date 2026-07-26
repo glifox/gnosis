@@ -1,5 +1,5 @@
 import { Decoration, type DecorationSet } from "@codemirror/view";
-import type { Range } from "@codemirror/state";
+import type { Line, Range } from "@codemirror/state";
 import type { EditorView } from "codemirror";
 import { visibleNodes, hasSelection } from "../../../utils";
 import { icons } from "./widget";
@@ -63,8 +63,10 @@ export function decorator(view: EditorView, config: null): DecorationSet {
   const decorations: Range<Decoration>[] = [];
   
   const stack: Blockquote[] = [];
+  let line: Line = view.state.doc.lineAt(0);
   visibleNodes(view, {
     enter: ({ name, from, to, node }) => {
+      if (line.to <= from) line = view.state.doc.lineAt(from);
       if ('Blockquote' === name) {
         const quoteKind = node.getChild('QuoteKind')?.firstChild
         const type: QuoteKind = (quoteKind) ? view.state.sliceDoc(quoteKind.from, quoteKind.to).toLocaleLowerCase() as QuoteKind : 'none'
@@ -73,7 +75,6 @@ export function decorator(view: EditorView, config: null): DecorationSet {
       }
       
       if (name in decorationMarks) {
-        const line = view.state.doc.lineAt(from);
         const textBefore = line.text.slice(0, to - line.from);
         const current = textBefore.match(/>\s*/ig)!.length;
         const matches = line.text.match(/>\s*/ig)!.length;
