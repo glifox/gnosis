@@ -1,3 +1,4 @@
+// import { EditorView } from "codemirror";
 import { markdown } from "@codemirror/lang-markdown";
 import { GFM } from "@lezer/markdown";
 
@@ -12,25 +13,28 @@ import { headings } from "./plugins/block/heading";
 import { breakes } from "./plugins/breaks";
 import { ListPlugin } from "./plugins/block/list/plugin";
 import { GHQuoteHighlights } from "./plugins/markdown/quotes";
-import { EditorView } from "codemirror";
+import { quotes } from "./plugins/block/quote/plugin";
 
 export const gnosis: () => Extension = () => [
   // EditorView.lineWrapping,
   syntaxHighlighting(defaultHighlightStyle),
   markdown({
     codeLanguages: languages,
-    extensions: [ GFM , GHQuoteHighlights ]
+    extensions: [GFM, GHQuoteHighlights, unsetMarks],
+    addKeymap: false,
+    
   }),
   hideMarks,
   headings,
   // code(),
   breakes,
   ListPlugin(),
+  quotes(),
 ]
 
 export const defaultHighlightStyle = HighlightStyle.define([
-  {tag: tags.annotation,
-   color: "red"},
+  // {tag: tags.annotation,
+  //  color: "red"},
   {tag: tags.meta,
    color: "#404740"},
   {tag: tags.link,
@@ -71,3 +75,13 @@ export const defaultHighlightStyle = HighlightStyle.define([
   {tag: tags.invalid,
    color: "#f00"}
 ])
+
+import {styleTags, Tag} from "@lezer/highlight"
+
+const none: Tag = Tag.define("none")
+const umarks  = styleTags({
+  "QuoteMark": none,
+  "QuoteKindMarker QuoteKind": none,
+});
+
+export const unsetMarks = { props: [umarks] };
