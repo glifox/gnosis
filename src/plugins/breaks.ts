@@ -81,7 +81,7 @@ const inlineMarks: {
 }
 const inlineOffsets = {
   QuoteMark: {
-    offset: 4
+    offset: 1
   },
   ListMark: {
     offset: 1,
