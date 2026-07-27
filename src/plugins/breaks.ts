@@ -55,28 +55,28 @@ const inlineMarks: {
   [key: string]: {
     breakOnSpace: boolean,
     extraWidth: number,
-    weigth: number,
+    weight: number,
   }
 } = {
   StrongEmphasis: {
     breakOnSpace: true,
     extraWidth: 0,
-    weigth: 700,
+    weight: 700,
   },
   Strikethrough: {
     breakOnSpace: true,
     extraWidth: 0,
-    weigth: 400,
+    weight: 400,
   },
   InlineCode: {
     breakOnSpace: true,
     extraWidth: 0,
-    weigth: 400,
+    weight: 400,
   },
   Emphasis: {
     breakOnSpace: true,
     extraWidth: 0,
-    weigth: 400,
+    weight: 400,
   },
 }
 const inlineOffsets = {
@@ -102,10 +102,10 @@ function getLineBreaks(line: Lines[number], width: number): Range<Decoration>[] 
   const decorations: Range<Decoration>[] = []
 
   const text_offset_width = mesureOffset(line.line.text.slice(0, line.offset.amount), width, line.offset.font)
-  
   const prep = prepareRichInline(line.rich);
   
   let offset = line.line.from + line.offset.amount;
+  
   walkRichInlineLineRanges(prep, width - 20 - text_offset_width, range => {
     const line_ = materializeRichInlineLineRange(prep, range)
     
@@ -124,7 +124,11 @@ function getLineBreaks(line: Lines[number], width: number): Range<Decoration>[] 
         '[gnosis:breaks] Perhaps the line is not reconstructed correctly:\n' + `-> rl: '${real_line}'\n-> pl: '${pretext_line}'`)
     }
     
-    offset = absolute_pos + ((line_text.endsWith(' ') || line_text.endsWith('\u2005')) ? 0 : 1); // plus the space if reved by pretext;
+    // Solución: Inspeccionar el caracter exacto en el texto original
+    // console.info(`pretext_line: '${pretext_line}'`);
+    const charAtBreak = transformSpaces(line.line.text)[absolute_pos - line.line.from];
+    // console.info(`charAtBreak: '${charAtBreak}'`);
+    offset = absolute_pos + (charAtBreak === ' ' ? 1 : 0);
     
     decorations.push(Decoration.widget({ widget }).range(offset));
     decorations.push(Decoration.widget({ widget: new Spacer(text_offset_width), side: 10000 }).range(offset));
@@ -214,115 +218,142 @@ const view_plugin = ViewPlugin.fromClass(class {
   }
 
   measureAndDispatch(view: EditorView, docChanged: boolean) {
-    // Extract actual CSS font values dynamically from the editor
-    // const computedStyle = window.getComputedStyle(view.dom);
-    // const font = `${computedStyle.fontSize} ${computedStyle.fontFamily}`;
-
-    const startLine = view.state.doc.lineAt(view.viewport.from).number;
-    const endLine = view.state.doc.lineAt(view.viewport.to).number;
-
+    const { from, to } = view.viewport;
+    const startLine = view.state.doc.lineAt(from).number;
+    const endLine = view.state.doc.lineAt(to).number;
+  
     const lines: Lines = [];
-    
+    const tree = syntaxTree(view.state);
+  
     for (let i = startLine; i <= endLine; i++) {
       const line = view.state.doc.line(i);
-
-      if (line.length < 1) continue;
+      if (line.length === 0) continue;
+  
+      const domNode = view.domAtPos(line.from).node;
+      const parentEl = (domNode.nodeType === Node.TEXT_NODE ? domNode.parentElement : domNode) as HTMLElement | null;
+      const computedStyle = parentEl ? window.getComputedStyle(parentEl) : null;
+      const font = computedStyle ? `${computedStyle.fontSize} ${computedStyle.fontFamily}` : "16px sans-serif";
       
-      const computedStyle = window.getComputedStyle(view.domAtPos(line.from).node.parentElement!);
-      const font = `${computedStyle.fontSize} ${computedStyle.fontFamily}`;
-      const text = line.text.replace(/ {2,}/g, (match) => {
-        return Array.from(match)
-          .map((_, i) => (i % 2 === 0 ? " " : "\u2005"))
-          .join("");
-      })
+      const rawText = line.text;
       let continue_ = false;
-      
       const richLine: RichInlineItem[] = [];
       let cursor = 0;
       let offset = 0;
       
-      syntaxTree(view.state).iterate({
+      tree.iterate({
         from: line.from,
         to: line.to,
-        enter: ({ name, from, to }) => {
-          if (SKIP_BREAKS.includes(name)) {
+        enter: (node) => {
+          if (SKIP_BREAKS.includes(node.name)) {
             continue_ = true;
             return false;
           }
-          const [ start, end ] = [from - line.from, to - line.from ]
           
-          if (name in inlineOffsets) {
-            offset = end + inlineOffsets[name as keyof typeof inlineOffsets].offset;
-            cursor = end + inlineOffsets[name as keyof typeof inlineOffsets].offset;
-            return true
+          const start = Math.max(0, node.from - line.from);
+          const end = Math.min(line.length, node.to - line.from);
+          
+          if (node.name in inlineOffsets) {
+            const config = inlineOffsets[node.name as keyof typeof inlineOffsets];
+            const newPos = end + config.offset;
+            offset = newPos;
+            cursor = Math.max(cursor, newPos);
+            return true;
           }
           
-          if (name in inlineMarks) {
-            if (cursor < start) richLine.push({
-              font,
-              text: text.slice(cursor, start)
-            })
+          if (node.name in inlineMarks) {
+            const part = inlineMarks[node.name as keyof typeof inlineMarks]!;
             
-            const part = inlineMarks[name as keyof typeof inlineMarks]!;
-            if (part.breakOnSpace) {
-              const text_ = text.slice(Math.max(start, cursor), end);
-              for (const match of text_.matchAll(breaks_regex)) {
+            if (cursor < start) {
+              richLine.push({
+                font,
+                text: transformSpaces(rawText.slice(cursor, start))
+              });
+            }
+  
+            const markStart = Math.max(start, cursor);
+            const markText = rawText.slice(markStart, end);
+  
+            if (markText.length > 0) {
+              if (part.breakOnSpace) {
+                const matches = Array.from(markText.matchAll(breaks_regex));
+                if (matches.length > 0) {
+                  for (const match of matches) {
+                    richLine.push({
+                      font: `${part.weight} ${font}`,
+                      text: transformSpaces(match[0]),
+                      break: 'never',
+                      extraWidth: part.extraWidth,
+                    });
+                  }
+                } else {
+                  richLine.push({
+                    font: `${part.weight} ${font}`,
+                    text: transformSpaces(markText),
+                    break: 'never',
+                    extraWidth: part.extraWidth,
+                  });
+                }
+              } else {
                 richLine.push({
-                  font: `${part.weigth} ${font}`,
-                  text: match.toString(),
+                  font: `${part.weight} ${font}`,
+                  text: transformSpaces(markText),
                   break: 'never',
                   extraWidth: part.extraWidth,
-                })
+                });
               }
             }
-            else richLine.push({
-              font: `${part.weigth} ${font}`,
-              text: text.slice(start, end),
-              break: 'never',
-              extraWidth: part.extraWidth,
-            })
-            
-            cursor = end;
+  
+            cursor = Math.max(cursor, end);
           }
         }
       });
+  
       if (continue_) continue;
-      if (cursor < line.text.length) richLine.push({
-        font,
-        text: text.slice(cursor, line.text.length)
-      })
-
+      if (cursor < rawText.length) {
+        richLine.push({
+          font,
+          text: transformSpaces(rawText.slice(cursor))
+        });
+      }
+  
       lines.push({
-        line: line,
+        line,
         offset: {
           amount: offset,
           font,
         },
         rich: richLine,
-      })
+      });
     }
     
     view.dispatch({
       effects: viewUpdateEffect.of({
         width: view.dom.clientWidth,
-        lines: lines,
+        lines,
         viewport: {
           from: view.viewport.from,
           to: view.viewport.to
         },
         docChanged
       }),
-      // Essential: Prevent scroll updates from filling up the undo history
       annotations: Transaction.addToHistory.of(false)
     });
   }
 })
 
+function transformSpaces(str: string): string {
+  return str.replace(/ {2,}/g, (match) =>
+    Array.from(match)
+      .map((_, i) => (i % 2 === 0 ? " " : "\u2005"))
+      .join("")
+  );
+}
+
 export const breakes = [
   state_field,
   view_plugin,
   EditorView.baseTheme({
-    ".cm-content": {
+    "& .cm-content": {
       flexShrink: '1',
       overflow: 'hidden',
     },
