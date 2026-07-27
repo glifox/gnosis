@@ -103,7 +103,7 @@ function getLineBreaks(line: Lines[number], width: number): Range<Decoration>[] 
 
   const text_offset_width = mesureOffset(line.line.text.slice(0, line.offset.amount), width, line.offset.font)
   const prep = prepareRichInline(line.rich);
-  
+  // console.info("prep:", prep.itemsBySourceItemIndex.map(s => s?.prepared/*.segments */));
   let offset = line.line.from + line.offset.amount;
   
   walkRichInlineLineRanges(prep, width - 20 - text_offset_width, range => {
@@ -112,7 +112,6 @@ function getLineBreaks(line: Lines[number], width: number): Range<Decoration>[] 
     const line_text = line_.fragments
       .map(curr => `${curr.gapBefore === 0 ? '' : ' '}${curr.text}`)
       .join('');
-    
     const line_length = line_text.length;
     const absolute_pos = line_length + offset;
 
@@ -125,9 +124,7 @@ function getLineBreaks(line: Lines[number], width: number): Range<Decoration>[] 
     }
     
     // Solución: Inspeccionar el caracter exacto en el texto original
-    // console.info(`pretext_line: '${pretext_line}'`);
     const charAtBreak = transformSpaces(line.line.text)[absolute_pos - line.line.from];
-    // console.info(`charAtBreak: '${charAtBreak}'`);
     offset = absolute_pos + (charAtBreak === ' ' ? 1 : 0);
     
     decorations.push(Decoration.widget({ widget }).range(offset));
@@ -217,10 +214,10 @@ const view_plugin = ViewPlugin.fromClass(class {
     }
   }
 
-  measureAndDispatch(view: EditorView, docChanged: boolean) {
+  measureAndDispatch(view: EditorView, docChanged: boolean, forceAll: boolean = false) {
     const { from, to } = view.viewport;
-    const startLine = view.state.doc.lineAt(from).number;
-    const endLine = view.state.doc.lineAt(to).number;
+    const startLine = (forceAll) ? view.state.doc.lineAt(from).number : 1;
+    const endLine = (forceAll) ? view.state.doc.lineAt(to).number : view.state.doc.lines;
   
     const lines: Lines = [];
     const tree = syntaxTree(view.state);
@@ -344,7 +341,7 @@ const view_plugin = ViewPlugin.fromClass(class {
 function transformSpaces(str: string): string {
   return str.replace(/ {2,}/g, (match) =>
     Array.from(match)
-      .map((_, i) => (i % 2 === 0 ? " " : "\u2005"))
+      .map((_, i) => (i % 2 === 0 ? "\u2005" : " "))
       .join("")
   );
 }
