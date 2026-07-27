@@ -1,11 +1,13 @@
 // import { EditorView } from "codemirror";
 import { markdown } from "@codemirror/lang-markdown";
 import { GFM } from "@lezer/markdown";
+import { template } from "./plugins/block/templates/plugin";
 
 import { HighlightStyle, syntaxHighlighting /* , defaultHighlightStyle */} from "@codemirror/language";
 import { languages } from "@codemirror/language-data"
 
 import type { Extension } from "@codemirror/state";
+import { styleTags, Tag } from "@lezer/highlight"
 import { tags } from "@lezer/highlight";
 import { hideMarks } from "./plugins/hidemarks";
 import { code } from "./plugins/block/code/plugin";
@@ -14,6 +16,14 @@ import { breakes } from "./plugins/breaks";
 import { ListPlugin } from "./plugins/block/list/plugin";
 import { GHQuoteHighlights } from "./plugins/markdown/quotes";
 import { quotes } from "./plugins/block/quote/plugin";
+
+const none: Tag = Tag.define("none")
+const umarks  = styleTags({
+  "QuoteMark": none,
+  "QuoteKindMarker QuoteKind": none,
+});
+
+export const unsetMarks = { props: [umarks] };
 
 export const gnosis: () => Extension = () => [
   // EditorView.lineWrapping,
@@ -76,14 +86,3 @@ export const defaultHighlightStyle = HighlightStyle.define([
   {tag: tags.invalid,
    color: "#f00"}
 ])
-
-import {styleTags, Tag} from "@lezer/highlight"
-import { template } from "./plugins/block/templates/plugin";
-
-const none: Tag = Tag.define("none")
-const umarks  = styleTags({
-  "QuoteMark": none,
-  "QuoteKindMarker QuoteKind": none,
-});
-
-export const unsetMarks = { props: [umarks] };
