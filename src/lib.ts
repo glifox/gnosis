@@ -30,6 +30,7 @@ export const gnosis: () => Extension = () => [
   breakes,
   ListPlugin(),
   quotes(),
+  template(),
 ]
 
 export const defaultHighlightStyle = HighlightStyle.define([
@@ -77,6 +78,7 @@ export const defaultHighlightStyle = HighlightStyle.define([
 ])
 
 import {styleTags, Tag} from "@lezer/highlight"
+import { template } from "./plugins/block/templates/plugin";
 
 const none: Tag = Tag.define("none")
 const umarks  = styleTags({

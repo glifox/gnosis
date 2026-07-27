@@ -9,7 +9,7 @@ export function decorator(view: EditorView, config: null): DecorationSet {
   const stack: string[] = [];
   visibleNodes(view, {
     enter: ({ name, from, to, node }) => {
-      console.info("" + " ".repeat(stack.length), name);
+      console.debug("| " + "| ".repeat(stack.length), name, node);
       stack.push(name)
     },
     leave({ name }) {
