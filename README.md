@@ -23,7 +23,8 @@ I did a lot of online research, and found some _WYSIWYG markdown editors_. Howev
     - [x] change: `listitem`
     - [ ] change: `numbers`
     - [x] change: `checkbox`
-- [ ] change: `code`
+- [x] change: `code` (WIP)
+    - [x] code highlight 
     - [ ] add a custom scroller to avoid line wrapps on codeblock
     - [ ] add an option to line-wrapp inside codeblocks
 - [ ] change: `html`
