@@ -51,30 +51,36 @@ const SKIP_BREAKS = [
   "FencedCode", "CodeBlock",
   
 ]
+const breaks_regex = /\s*\S+/g;
 const inlineMarks: {
   [key: string]: {
-    breakOnSpace: boolean,
+    breakOn: RegExp | null,
     extraWidth: number,
     weight: number,
   }
 } = {
   StrongEmphasis: {
-    breakOnSpace: true,
+    breakOn: breaks_regex,
     extraWidth: 0,
     weight: 700,
   },
   Strikethrough: {
-    breakOnSpace: true,
+    breakOn: breaks_regex,
     extraWidth: 0,
     weight: 400,
   },
   InlineCode: {
-    breakOnSpace: true,
+    breakOn: breaks_regex,
     extraWidth: 0,
     weight: 400,
   },
   Emphasis: {
-    breakOnSpace: true,
+    breakOn: breaks_regex,
+    extraWidth: 0,
+    weight: 400,
+  },
+  URL: {
+    breakOn: /[a-zA-Z]+:\/\/|\/[^\/?#]*|[?&][^?&#]*|[^\/?#]+/g,
     extraWidth: 0,
     weight: 400,
   },
@@ -90,7 +96,6 @@ const inlineOffsets = {
     offset: 1
   },
 }
-const breaks_regex = /\s*\S+/g;
 const viewUpdateEffect = StateEffect.define<LayoutUpdate>();
 
 function mesureOffset(offset: string, width: number, font: string): number {
@@ -271,8 +276,8 @@ const view_plugin = ViewPlugin.fromClass(class {
             const markText = rawText.slice(markStart, end);
   
             if (markText.length > 0) {
-              if (part.breakOnSpace) {
-                const matches = Array.from(markText.matchAll(breaks_regex));
+              if (part.breakOn) {
+                const matches = Array.from(markText.matchAll(part.breakOn));
                 if (matches.length > 0) {
                   for (const match of matches) {
                     richLine.push({
