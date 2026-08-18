@@ -24,7 +24,8 @@
     "typescript": "^6.0.3"
   },
   "scripts": {
-    "prev": "bun ./example/index.html"
+    "prev": "bun ./example/index.html",
+    "web:prev": "bun ./web/"
   },
   "keywords": [
     "WYSIWYG",

@@ -1,0 +1,41 @@
+.title {
+    margin: auto;
+    margin-top: 60px;
+    max-width: 70%;
+    
+    font-size: var(--fs-display-large);
+    text-align: center;
+
+    & em {
+        position: relative;
+        word-break: keep-all;
+    }
+}
+
+.dm {
+    color: var(--fg-dimmer);
+}
+
+.cursor {
+    display: inline-block;
+    height: 1lh;
+    width: 4px;
+    position: absolute;
+    
+    top: .1lh;
+    background-color: var(--ctp-peach);
+    
+    animation: steps(1) cm-blink 1.2s infinite;
+}
+
+.editor {
+    margin: 64px auto;
+    padding: 8px;
+    width: 80%;
+    height: 400px;
+    
+    border-radius: 8px;
+    background-color: var(--bg-dark);
+    
+    /*border: red 1px solid;*/
+}

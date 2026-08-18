@@ -1,0 +1,99 @@
+:root {
+  --mono: 'JetBrains Mono'; /* Fuente para bloques de codigo e inputs */
+  --sans: Geist; /* Fuente principal */
+  
+  --fac: 1.125; /* Factor de reduccion para el tamaño del texto */
+  --rem: 1rem;
+  
+  --fw-bold: 700;
+  --fw-medium: 500;
+  --fw-semi-medium: 400;
+  --fw-normal: 300;
+  
+  --fs-display-large: calc(var(--fs-display-medium) * var(--fac) * var(--fac));
+  --fs-display-medium: calc(var(--fs-display-small) * var(--fac) * var(--fac));
+  --fs-display-small: calc(var(--fs-headline-large) * var(--fac));
+  
+  --fs-headline-large: calc(var(--fs-headline-medium) * var(--fac));
+  --fs-headline-medium: calc(var(--fs-headline-small) * var(--fac));
+  --fs-headline-small: calc(var(--fs-title-large) * var(--fac));
+
+  --fs-title-large: calc(var(--fs-title-medium) * var(--fac) * var(--fac));
+  --fs-title-medium: calc(var(--fs-title-small) * var(--fac));
+  --fs-title-small: var(--rem);
+
+  --fs-body-large: var(--rem);
+  --fs-body-medium: calc(var(--rem) / var(--fac));
+  --fs-body-small: calc(var(--fs-body-medium) / var(--fac));
+
+  --fs-label-large: var(--fs-body-medium);
+  --fs-label-medium: var(--fs-body-small);
+  --fs-label-small: calc(var(--fs-label-medium) / var(--fac));
+  
+  --br-xlarge: var(--rem);
+  --br-large: calc(var(--rem) / 1.23);
+  --br-medium: calc(var(--rem) / 2);
+  --br-small: calc(var(--rem) / 4);
+  --br-xsmall: calc(var(--rem) / 8);
+}
+
+.headline-h1 {
+  font-family: var(--sans);
+  font-size: var(--fs-headline-large);
+  font-weight: var(--fw-bold);
+  line-height: 2;
+}
+
+.headline-h2 {
+  font-family: var(--sans);
+  font-size: var(--fs-headline-medium);
+  font-weight: var(--fw-medium);
+  line-height: 1.8;
+}
+
+.headline-h3 {
+  font-family: var(--sans);
+  font-size: var(--fs-headline-small);
+  font-weight: var(--fw-semi-medium);
+  line-height: 1.5;
+}
+
+.headline-h4 {
+  font-family: var(--sans);
+  font-size: var(--fs-title-large);
+  font-weight: var(--fw-bold);
+  line-height: 1.5;
+}
+
+.headline-h5 {
+  font-family: var(--sans);
+  font-size: var(--fs-title-medium);
+  font-weight: var(--fw-medium);
+  line-height: 1.5;
+}
+
+.headline-h6 {
+  font-family: var(--sans);
+  font-size: var(--fs-title-small);
+  font-weight: var(--fw-semi-medium);
+  line-height: 1.3;
+}
+
+body {
+    font-family: var(--sans);
+    background-color: var(--bg-light);
+    
+    margin: 0;
+    min-height: 100dvh;
+    min-width: 100dvw;
+}
+
+.horizontal {
+    display: flex;
+    flex-direction: row;
+}
+
+.full {
+    width: 100%;
+    height: 100%;
+}

@@ -1,0 +1,11 @@
+{
+    "scripts": {
+        "prev": "vite --host"
+    },
+    "devDependencies": {
+        "vite": "^8.2.1"
+    },
+    "dependencies": {
+        "@glifox/gnosis": "^0.0.20"
+    }
+}
