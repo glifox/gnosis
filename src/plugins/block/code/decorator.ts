@@ -113,16 +113,19 @@ function wrapper(view: EditorView): RangeSet<BlockWrapper> {
         
         requestAnimationFrame(() => {
           const node = view.domAtPos(line.from).node.parentElement;
+          // console.info(`node:`, node);
           if (!node) return;
           
           const wraperDom = node.closest(`.${background_class}`);
           if (!wraperDom) return;
           
-          const font = getNodeFont(node);
+          // const font = getNodeFont(node);
+          // console.info(`font: '${font}'`);
           const text = view.state.doc.sliceString(line.from, from);
           // if (text.length < 1) return;
           
-          const width = mesureOffset(text, font);
+          // const width = mesureOffset(text, font);
+          const width = text.length * view.defaultCharacterWidth;
 
           (wraperDom as HTMLElement).style.setProperty('--left-padding', `${width + 4}px`)
         })
