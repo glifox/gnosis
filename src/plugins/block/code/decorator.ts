@@ -5,7 +5,7 @@ import { EditorSelection, type Range, type RangeSet, type Transaction } from "@c
 import { EditorView } from "codemirror";
 import { hasSelection, visibleNodes } from "../../../utils";
 import { getLineFont as getNodeFont, mesureOffset } from '../../breaks';
-import { CopyCode } from './html/copy/widget';
+import { CopyCode, wrap_class } from './html/copy/widget';
 
 
 export const background_class = "cm-codeblock-background" as const;
@@ -119,14 +119,9 @@ function wrapper(view: EditorView): RangeSet<BlockWrapper> {
           const wraperDom = node.closest(`.${background_class}`);
           if (!wraperDom) return;
           
-          // const font = getNodeFont(node);
-          // console.info(`font: '${font}'`);
-          const text = view.state.doc.sliceString(line.from, from);
-          // if (text.length < 1) return;
+          const spacer = wraperDom.querySelector(`.${spacer_class}`);
           
-          // const width = mesureOffset(text, font);
-          const width = text.length * view.defaultCharacterWidth;
-
+          const width = spacer?.getBoundingClientRect().width ?? 0;
           (wraperDom as HTMLElement).style.setProperty('--left-padding', `${width + 4}px`)
         })
       }
