@@ -1,6 +1,9 @@
 import { WidgetType } from "@codemirror/view";
 import { icon } from "./icon";
 
+export const wrap_class = "cm-widget-copy-codeblock"
+export const boton_class = "cm-widget-copy-codeblock-btn"
+
 export class CopyCode extends WidgetType {
 
   private wrap = document.createElement("span");
@@ -11,9 +14,9 @@ export class CopyCode extends WidgetType {
     this.wrap.appendChild(this.btn);
 
     this.wrap.setAttribute("aria-hidden", "true");
-    this.wrap.className = "wg-codeblock";
+    this.wrap.className = wrap_class;
 
-    this.btn.className = "wg-codeblock-btn";
+    this.btn.className = boton_class;
     this.btn.innerHTML = icon(".7lh");
   }
 

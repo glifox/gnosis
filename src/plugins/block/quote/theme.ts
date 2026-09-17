@@ -23,12 +23,12 @@ const normalize = (color: string | Color): Color => {
 
 export const coreTheme = (
   colors: BlockQuoteColors = {
-    none: 'black',
-    note: 'blue',
-    tip: 'green',
-    warning: 'coral',
-    important: 'rebeccapurple',
-    caution: 'red',
+    none: 'currentColor',
+    note: 'var(--cm-note-color, blue)',
+    tip: 'var(--cm-tip-color, green)',
+    warning: 'var(--cm-warning-color, coral)',
+    important: 'var(--cm-important-color, rebeccapurple)',
+    caution: 'var(--cm-caution-color, red)',
   }
 ) => {
   

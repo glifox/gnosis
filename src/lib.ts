@@ -11,7 +11,7 @@ import { styleTags, Tag } from "@lezer/highlight"
 import { tags } from "@lezer/highlight";
 import { hideMarks } from "./plugins/hidemarks";
 import { code } from "./plugins/block/code/plugin";
-import { headings } from "./plugins/block/heading";
+import { headings } from "./plugins/block/heading/plugin";
 import { breakes } from "./plugins/breaks";
 import { ListPlugin } from "./plugins/block/list/plugin";
 import { GHQuoteHighlights } from "./plugins/markdown/quotes";
@@ -27,7 +27,7 @@ export const unsetMarks = { props: [umarks] };
 
 export const gnosis: () => Extension = () => [
   // EditorView.lineWrapping,
-  syntaxHighlighting(defaultHighlightStyle),
+  // syntaxHighlighting(defaultHighlightStyle),
   markdown({
     codeLanguages: languages,
     extensions: [GFM, GHQuoteHighlights(), unsetMarks],
@@ -35,12 +35,12 @@ export const gnosis: () => Extension = () => [
     
   }),
   hideMarks,
-  headings,
-  // code(),
+  headings(),
   breakes,
   ListPlugin(),
   quotes(),
-  template(),
+  code(),
+  // template(),
 ]
 
 export const defaultHighlightStyle = HighlightStyle.define([

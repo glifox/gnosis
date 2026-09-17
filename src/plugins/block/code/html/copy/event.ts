@@ -1,21 +1,22 @@
 import { syntaxTree } from "@codemirror/language";
 import type { Tree } from "@lezer/common";
 import type { EditorView } from "codemirror";
-import { startTimer } from "../../../../utils";
+import { startTimer } from "../../../../../utils";
+import { wrap_class } from "./widget";
 
 export const mousedown = (e: MouseEvent, view: EditorView) => {
   let target = e.target as HTMLElement;
 
     if (
         target.nodeName === "BUTTON" &&
-        target.parentElement?.classList.contains("wg-codeblock")
+        target.parentElement?.classList.contains(wrap_class)
     ) {
         const types = ["FencedCode", "CodeBlock"];
 
-        let code = "";
+        let code: string | null = null;
 
         syntaxTree(view.state).iterate({
-            enter: ({ type: { name }, from, to, node }) => {
+          enter: ({ type: { name }, from, to, node }) => {
                 if (types.includes(name)) code = getCode(view, node.toTree(), from, to);
                 return !types.includes(name);
             },
@@ -23,9 +24,14 @@ export const mousedown = (e: MouseEvent, view: EditorView) => {
             to: view.posAtDOM(target) + 2,
         });
         
-        navigator.clipboard.writeText(code);
-        target.dataset.state = "Copy!";
-      
+        if (code !== null) {
+          navigator.clipboard.writeText(code);
+          target.dataset.state = "Copy!";
+        } else {
+          target.dataset.state = "Error!";
+          console.debug(`[error] Codeblock not found, code: ${code}`)
+        }
+        
         startTimer(() => {
           delete target.dataset.state
         }, 400)

@@ -1,5 +1,6 @@
-import { EditorState } from "@codemirror/state";
+import { catppuccinLatte } from "@catppuccin/codemirror"
 import { EditorView, minimalSetup } from "codemirror"
+import { EditorState } from "@codemirror/state";
 import { gnosis } from "../src/lib"
 
 export const Editor = (text: string, save: boolean = false, key = '') => {
@@ -8,7 +9,8 @@ export const Editor = (text: string, save: boolean = false, key = '') => {
     
     const view = new EditorView({
         doc: initialContent,
-        extensions: [
+      extensions: [
+            // catppuccinLatte,
             gnosis(),
             minimalSetup,
             EditorView.clickAddsSelectionRange.of(e => e.altKey),

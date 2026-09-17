@@ -25,8 +25,9 @@ I did a lot of online research, and found some _WYSIWYG markdown editors_. Howev
     - [x] change: `checkbox`
 - [x] change: `code` (WIP)
     - [x] code highlight 
-    - [ ] add a custom scroller to avoid line wrapps on codeblock
+    - [x] add a custom scroller to avoid line wrapps on codeblock (WIP)
     - [ ] add an option to line-wrapp inside codeblocks
+    - [ ] add background color to codeblocks
 - [ ] change: `html`
 - [x] change: `blockquote` (WIP)
     - [x] support for [github quotes highlight](https://github.com/orgs/community/discussions/16925)
