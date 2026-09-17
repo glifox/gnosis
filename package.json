@@ -25,7 +25,7 @@
   },
   "scripts": {
     "prev": "bun ./example/index.html",
-    "web:prev": "bun ./web/"
+    "web:prev": "cd web && bun run prev"
   },
   "keywords": [
     "WYSIWYG",
