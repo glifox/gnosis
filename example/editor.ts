@@ -1,3 +1,4 @@
+import { dynamicTheme } from '@feraxjs/themes-codemirror';
 import { catppuccinLatte } from "@catppuccin/codemirror"
 import { EditorView, minimalSetup } from "codemirror"
 import { EditorState } from "@codemirror/state";
@@ -9,9 +10,9 @@ export const Editor = (text: string, save: boolean = false, key = '') => {
     
     const view = new EditorView({
         doc: initialContent,
-      extensions: [
-            // catppuccinLatte,
+      extensions: [ 
             gnosis(),
+            dynamicTheme,
             minimalSetup,
             EditorView.clickAddsSelectionRange.of(e => e.altKey),
             EditorState.allowMultipleSelections.of(true),

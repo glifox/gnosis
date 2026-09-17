@@ -1,6 +1,8 @@
-import { EditorState, Extension } from "@codemirror/state";
-import { EditorView, minimalSetup } from "codemirror";
+import { EditorState, type Extension } from "@codemirror/state";
+import { EditorView, } from "@codemirror/view";
+import { basicSetup, minimalSetup } from "codemirror";
 import { gnosis } from "../../src/lib";
+
 
 export const Editor = ({ 
   text,
@@ -21,6 +23,7 @@ export const Editor = ({
         extensions: [
             gnosis(),
             minimalSetup,
+            extensions ?? [],
             EditorView.clickAddsSelectionRange.of(e => e.altKey),
             EditorState.allowMultipleSelections.of(true),
             save ? EditorView.updateListener.of(update => {
@@ -30,12 +33,17 @@ export const Editor = ({
                 }
             }) : [],
             EditorView.theme({
-                "&": { width: "100%", height: "100%" },
+              "&": {
+                width: "100%", height: "100%",
+                outline: "unset"
+              },
                 "& .cm-line": {
                     fontFamily: "Geist, Times New Roman, serif !important",
+                },
+                "& .cm-line .cm-codeblock-content": {
+                    fontFamily: "Jetbrains Mono, monospace !important",
                 }
             }, { dark: true }),
-            extensions ?? [],
         ],
         parent: document.querySelector(".editor")!
     });
