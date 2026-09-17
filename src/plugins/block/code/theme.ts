@@ -1,122 +1,109 @@
 import { EditorView } from "codemirror";
-import type { Options } from "./plugin";
+import { background_class, scroller_class, content_class, spacer_class } from "./decorator";
+import { boton_class, wrap_class } from "./html/copy/widget";
 
-/**
- * 
- * @param {object} options 
- * @param {number} options.marginLeft - The left margin for the content.
- * @param {number} options.paddingLeft - The left padding for the content.
- * @returns 
- */
-export const coreTheme = (options: Options) => {
-    const marginLeft = options.marginLeft;
-    const paddingLeft = options.paddingLeft;
-    const paddingRigth = 0;
-    const borderRadius = "4px";
-    
-    // button
-    const buttonSize = "1lh";
-    const buttonMargin = ".05lh";
+const border = { border: "red solid 1px" }
 
-    return EditorView.baseTheme({
-        "& .cb-start": { borderRadius: `${borderRadius} ${borderRadius} 0 0` },
-        "& .cb-end  ": { borderRadius: `0 0 ${borderRadius} ${borderRadius}` },
-        "& .cb-start.cb-end": { borderRadius: `${borderRadius}` },
-        
-        "& .cm-line .cb-content": { 
-            display: "inline-block",
-            marginLeft: `${marginLeft}px`, 
-            paddingLeft: `${paddingLeft}px`, 
-            paddingRigth: `${paddingRigth}px` ,
-            position: "relative",
-        },
-        
-        "& .cb-content.wg": { cursor: "text" },
-        "& .cb-content.wg.start": { 
-            maxWidth: "1px",
-            Width: "1px",
-            paddingLeft: `${paddingLeft-1}px`,
-        },
-        
-        "& .cb-content.wg.end": {
-            marginLeft: "0", 
-            paddingLeft: "0"
-        },
-        
-        "& .cb-mi,& .cb-mk": { color: "transparent" },
-        "&.cm-focused .cb-content.sw > .cb-mi, &.cm-focused .cb-content.sw > .cb-mk": { color: "inherit" },
-        
-        "&.cm-focused .cb-content.sw .wg-codeblock": { 
-            display: "none",
-            opacity: "0" 
-        },
-        
-        "& .wg-codeblock": {
-            display: "inline-block",
-            position: "absolute",
-            top: "0",
-            right: "0",
-            zIndex: "100",
-            margin: buttonMargin,
-        },
-        
-        "& .wg-codeblock-btn": {
-            padding: "0",
-            display: "inline-flex",
-            borderRadius: "999999px",
-            background: "transparent",
-            border: "none",
-            outline: "none",
-            justifyContent: "center",
-            alignItems: "center",
-            height: `calc(${buttonSize} + 4px )`,
-            width: "5ch",
-            position: "relative",
-        },
+export const coreTheme = () => {
+  const padding_horizontal = '4px';
+  
+  return EditorView.baseTheme({
+    [`.${scroller_class}`]: { 
+      display: "grid",
+      fontFamily: "monospace",
+      overflowX: "auto",
 
-        ".wg-codeblock-btn::before": {
-          content: "attr(data-state)",
-          position: "absolute",
-          top: "-100%",
-        },
-        
-        "& .cb-icon": {
-            width: buttonSize,
-            height: buttonSize,
-            pointerEvents: "none",
-            fill: "currentColor",
-            opacity: "0.7"
-        },
-        
-        "&dark .cb-icon": {
-            fill: "white",
-        },
-        
-        "& .wg-codeblock-btn:hover": { background: "rgba(0, 0, 0, 0.07)", },
-        "& .wg-codeblock-btn:hover .cb-icon": { opacity: "1" },
-        
-        "& .cb-content.cb-start.cb-end  .wg-codeblock": {
-            marginTop: "0",
-            marginBottom: "0",
-            top: "0",
-            bottom: "0",
-        },
-        "& .cb-content.cb-start.cb-end  .wg-codeblock-btn":{
-            boxSizing: "border-box",
-            maxHeight: "100%",
-            width: "5ch",
-        },
-        
-        "& .cb-content": {
-            cursor: "text"
-        },
-        
-        "& .cb-error.left":{ padding: "0" },
-        "& .cb-error.right":{ paddingRight: `${marginLeft}px` },
-        "& .cb-error":{
-          display: "inline-block",
-          cursor: "text"
-        },
-        
-    })
-}
+      scrollbarWidth: "thin",
+      scrollbarColor: "transparent transparent",
+      overscrollBehavior: "none",
+    },
+    [`.${spacer_class}`]: { 
+      left: '6px',
+      position: 'sticky',
+    },
+    [`.${scroller_class}[data-offset="0"]`]: {
+      marginLeft: padding_horizontal,
+    },
+    [`.${background_class}:has(.${scroller_class}[data-offset="0"])`]: {
+      marginLeft: padding_horizontal,
+    },
+    [`.${content_class}`]: { 
+      "--gap": "calc(var(--left-padding, 0px) + 10px)",
+      
+      display: "inline-block",
+      width: "calc(100% - var(--left-padding, 0px) + 4px)",
+      
+      maskImage: "linear-gradient(to right, transparent var(--gap), black 0)",
+      WebkitMaskImage: "linear-gradient(to right, transparent var(--gap), black 0)",
+      
+      maskRepeat: "no-repeat",
+      WebkitMaskRepeat: "no-repeat",
+      
+      maskPosition: "calc(var(--scroll-x, 0px) - var(--gap)) 0",
+      WebkitMaskPosition: "calc(var(--scroll-x, 0px) - var(--gap)) 0",
+      
+      willChange: "mask-position"
+    },
+    [`.${background_class}`]: { 
+      position: "relative",
+      marginRight: `calc(${padding_horizontal} + 4px)`,
+    },
+    [`.${background_class}::before`]: {
+      content: "\"\"",
+      backgroundColor: "hsl(from gray h s l / .1)",
+      position: "absolute",
+      height: "100%",
+      top: "0",
+      left: `calc(var(--left-padding, 0) - ${padding_horizontal})`,
+      right: `-${padding_horizontal}`,
+      borderRadius: "12px",
+      
+      zIndex: "-80",
+    },
+    [`& .${wrap_class}`]: {
+      display: "inline-block",
+      position: "absolute",
+      top: "0",
+      right: "0",
+      zIndex: "900",
+    },
+    [`& .${boton_class}`]: {
+      margin: padding_horizontal,
+      padding: "0",
+      display: "inline-flex",
+      borderRadius: "999999px",
+      background: "#00000020",
+      border: "none",
+      outline: "none",
+      justifyContent: "center",
+      alignItems: "center",
+      height: `1lh`,
+      width: "5ch",
+      position: "relative",
+    },
+    [`& .${boton_class}::before`]: {
+      content: "attr(data-state)",
+      color: "currentColor",
+      position: "absolute",
+      top: "-100%",
+    },
+    [`&dark .${boton_class}::before`]: {
+      color: "white",
+    },
+    "& .cb-icon": {
+        height: "80%",
+        pointerEvents: "none",
+        fill: "currentColor",
+        opacity: "0.7"
+    },
+    "&dark .cb-icon": {
+        fill: "white",
+    },
+    [`& .${boton_class}:hover`]: {
+      background: "#00000060",
+    },
+    [`& .${boton_class}:hover .cb-icon`]: {
+        opacity: "0.9",
+    },
+  });
+};

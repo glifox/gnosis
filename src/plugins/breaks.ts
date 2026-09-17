@@ -98,15 +98,16 @@ const inlineOffsets = {
 }
 const viewUpdateEffect = StateEffect.define<LayoutUpdate>();
 
-function mesureOffset(offset: string, width: number, font: string): number {
+export function mesureOffset(offset: string, font: string): number {
   const text = offset.replaceAll(' ', 's')
   const prep = prepare(text, font)
   return (prep as any as { widths: number[] }).widths.reduce((cur, add) => add += cur ,0)
 }
+
 function getLineBreaks(line: Lines[number], width: number): Range<Decoration>[] {
   const decorations: Range<Decoration>[] = []
 
-  const text_offset_width = mesureOffset(line.line.text.slice(0, line.offset.amount), width, line.offset.font)
+  const text_offset_width = mesureOffset(line.line.text.slice(0, line.offset.amount), line.offset.font)
   const prep = prepareRichInline(line.rich);
   // console.info("prep:", prep.itemsBySourceItemIndex.map(s => s?.prepared/*.segments */));
   let offset = line.line.from + line.offset.amount;
@@ -233,8 +234,7 @@ const view_plugin = ViewPlugin.fromClass(class {
   
       const domNode = view.domAtPos(line.from).node;
       const parentEl = (domNode.nodeType === Node.TEXT_NODE ? domNode.parentElement : domNode) as HTMLElement | null;
-      const computedStyle = parentEl ? window.getComputedStyle(parentEl) : null;
-      const font = computedStyle ? `${computedStyle.fontSize} ${computedStyle.fontFamily}` : "16px sans-serif";
+      const font = getLineFont(parentEl);
       
       const rawText = line.text;
       let continue_ = false;
@@ -343,6 +343,11 @@ const view_plugin = ViewPlugin.fromClass(class {
   }
 })
 
+export function getLineFont(element: Element | null) {
+  const computedStyle = element ? window.getComputedStyle(element) : null;
+  return computedStyle ? `${computedStyle.fontSize} ${computedStyle.fontFamily}` : "16px sans-serif";
+}
+
 function transformSpaces(str: string): string {
   return str.replace(/ {2,}/g, (match) =>
     Array.from(match)
@@ -356,6 +361,7 @@ export const breakes = [
   view_plugin,
   EditorView.baseTheme({
     "& .cm-content": {
+      // fontFamily: "Times New Roman",
       flexShrink: '1',
       overflow: 'hidden',
     },

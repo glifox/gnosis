@@ -6,3 +6,7 @@
 .cb-error {
     background-color: hsl(from blue h s l / .09);
 }
+
+body {
+    /*background-color: paleturquoise;*/
+}
