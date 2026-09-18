@@ -30,8 +30,8 @@ importers:
         specifier: ^0.0.3
         version: 0.0.3(@codemirror/language@6.12.4)(@codemirror/state@6.7.5)(@codemirror/view@6.43.12)(@lezer/highlight@1.2.3)
       '@glifox/gnosis':
-        specifier: ^0.0.20
-        version: 0.0.20
+        specifier: link:..
+        version: link:..
       '@lezer/common':
         specifier: ^1.5.2
         version: 1.5.2
@@ -50,12 +50,6 @@ importers:
         version: 8.3.0
 
 packages:
-
-  '@catppuccin/codemirror@1.0.3':
-    resolution: {integrity: sha512-P1ZCj4DZVLqr/TNz28m3aaF2Elrikpb8OOnzN0Vyf95Un4pTWTkCSvhbskbnJbnNJ87Rfvt3fXoaUj4o55X30Q==}
-
-  '@catppuccin/palette@1.8.0':
-    resolution: {integrity: sha512-qXhwKiLzQomUygUJYB36YAFgs+dET5bIocfkiaFIatQF5Pwc7L112TlF9P8J5Oqs3x3XTjYSucG0ncHXSCuk7Q==}
 
   '@chenglou/pretext@0.0.7':
     resolution: {integrity: sha512-FV5hj3fGqpBlzbANUbR+s+6XuNRrghVVyuNs33zdH2SzU7MvK+7GlW6xREjDCreixKbexEn7OEkDgAFeWuu5Hg==}
@@ -157,9 +151,6 @@ packages:
       '@codemirror/state': ^6.7.1
       '@codemirror/view': ^6.43.9
       '@lezer/highlight': ^1.2.3
-
-  '@glifox/gnosis@0.0.20':
-    resolution: {integrity: sha512-Nyiw4oXo7P9cPRPdJfOEJhysLWe4A+RwBM36sbfRq6DJqt48loGJQjECCItTQAyfsaJzCaZNQwf8G9ua6RmN0A==}
 
   '@lezer/common@1.5.2':
     resolution: {integrity: sha512-sxQE460fPZyU3sdc8lafxiPwJHBzZRy/udNFynGQky1SePYBdhkBl1kOagA9uT3pxR8K09bOrmTUqA9wb/PjSQ==}
@@ -443,13 +434,6 @@ packages:
   style-mod@4.1.3:
     resolution: {integrity: sha512-i/n8VsZydrugj3Iuzll8+x/00GH2vnYsk1eomD8QiRrSAeW6ItbCQDtfXCeJHd0iwiNagqjQkvpvREEPtW3IoQ==}
 
-  thememirror@2.0.1:
-    resolution: {integrity: sha512-d5i6FVvWWPkwrm4cHLI3t9AT1OrkAt7Ig8dtdYSofgF7C/eiyNuq6zQzSTusWTde3jpW9WLvA9J/fzNKMUsd0w==}
-    peerDependencies:
-      '@codemirror/language': ^6.0.0
-      '@codemirror/state': ^6.0.0
-      '@codemirror/view': ^6.0.0
-
   tinyglobby@0.2.17:
     resolution: {integrity: sha512-wXR/dYpcqKmfWpEdZjiKJOwCNFndD0DMnrW/cYjVGttEkBfVgcLFHoNrlj47mjOVic9yyNu65alsgF4NQyTa2g==}
     engines: {node: '>=12.0.0'}
@@ -501,16 +485,6 @@ packages:
     resolution: {integrity: sha512-dpojBhNsCNN7T82Tm7k26A6G9ML3NkhDsnw9n/eoxSRlVBB4CEtIQ/KTCLI2Fwf3ataSXRhYFkQi3SlnFwPvPQ==}
 
 snapshots:
-
-  '@catppuccin/codemirror@1.0.3':
-    dependencies:
-      '@catppuccin/palette': 1.8.0
-      '@codemirror/language': 6.12.4
-      '@codemirror/state': 6.7.5
-      '@codemirror/view': 6.43.12
-      '@lezer/highlight': 1.2.3
-
-  '@catppuccin/palette@1.8.0': {}
 
   '@chenglou/pretext@0.0.7': {}
 
@@ -772,21 +746,6 @@ snapshots:
       '@codemirror/view': 6.43.12
       '@lezer/highlight': 1.2.3
 
-  '@glifox/gnosis@0.0.20':
-    dependencies:
-      '@catppuccin/codemirror': 1.0.3
-      '@catppuccin/palette': 1.8.0
-      '@codemirror/lang-markdown': 6.5.2
-      '@codemirror/language': 6.12.4
-      '@codemirror/language-data': 6.5.2
-      '@codemirror/state': 6.7.5
-      '@codemirror/view': 6.43.12
-      '@lezer/common': 1.5.2
-      '@lezer/highlight': 1.2.3
-      '@lezer/markdown': 1.7.2
-      codemirror: 6.0.2
-      thememirror: 2.0.1(@codemirror/language@6.12.4)(@codemirror/state@6.7.5)(@codemirror/view@6.43.12)
-
   '@lezer/common@1.5.2': {}
 
   '@lezer/cpp@1.1.6':
@@ -1037,12 +996,6 @@ snapshots:
   source-map-js@1.2.1: {}
 
   style-mod@4.1.3: {}
-
-  thememirror@2.0.1(@codemirror/language@6.12.4)(@codemirror/state@6.7.5)(@codemirror/view@6.43.12):
-    dependencies:
-      '@codemirror/language': 6.12.4
-      '@codemirror/state': 6.7.5
-      '@codemirror/view': 6.43.12
 
   tinyglobby@0.2.17:
     dependencies:

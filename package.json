@@ -4,9 +4,16 @@
   "version": "0.1.0",
   "author": "feraxhp",
   "license": "MIT",
-  "main": "dist/gnosis.umd.js",
+  "type": "module",
+  "main": "dist/gnosis.cjs",
   "module": "dist/gnosis.mjs",
-  "types": "dist/gnosis.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/gnosis.d.ts",
+      "import": "./dist/gnosis.mjs",
+      "require": "./dist/gnosis.cjs"
+    }
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/glifox/gnosis.git"

@@ -15,7 +15,7 @@
         "@codemirror/state": "^6.7.1",
         "@codemirror/view": "^6.43.9",
         "@feraxjs/themes-codemirror": "^0.0.3",
-        "@glifox/gnosis": "^0.0.20",
+        "@glifox/gnosis": "link:..",
         "@lezer/common": "^1.5.2",
         "@lezer/highlight": "^1.2.3",
         "@lezer/markdown": "^1.6.3",

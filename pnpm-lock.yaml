@@ -26,9 +26,6 @@ importers:
       '@codemirror/view':
         specifier: ^6.43.9
         version: 6.43.12
-      '@feraxjs/themes-codemirror':
-        specifier: ^0.0.3
-        version: 0.0.3(@codemirror/language@6.12.4)(@codemirror/state@6.7.5)(@codemirror/view@6.43.12)(@lezer/highlight@1.2.3)
       '@lezer/common':
         specifier: ^1.5.2
         version: 1.5.2
@@ -42,6 +39,9 @@ importers:
         specifier: ^6.0.2
         version: 6.0.2
     devDependencies:
+      '@feraxjs/themes-codemirror':
+        specifier: ^0.0.3
+        version: 0.0.3(@codemirror/language@6.12.4)(@codemirror/state@6.7.5)(@codemirror/view@6.43.12)(@lezer/highlight@1.2.3)
       rolldown:
         specifier: ^1.0.0
         version: 1.2.9
