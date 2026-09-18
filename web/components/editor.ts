@@ -1,7 +1,10 @@
 import { EditorState, type Extension } from "@codemirror/state";
-import { EditorView, } from "@codemirror/view";
-import { basicSetup, minimalSetup } from "codemirror";
-import { gnosis } from "../../src/lib";
+// import { EditorView, } from "@codemirror/view";
+import { EditorView, basicSetup, minimalSetup } from "codemirror";
+import { gnosis } from "../../dist/gnosis";
+import { markdown } from "@codemirror/lang-markdown";
+import { languages } from "@codemirror/language-data";
+// import { gnosis } from "@glifox/gnosis";
 
 
 export const Editor = ({ 
@@ -21,29 +24,35 @@ export const Editor = ({
     const view = new EditorView({
         doc: initialContent,
         extensions: [
-            gnosis(),
+            // gnosis(),
+            markdown({
+              codeLanguages: languages,
+              // extensions: [GFM, GHQuoteHighlights(), unsetMarks],
+              addKeymap: false,
+              
+            }),
             minimalSetup,
-            extensions ?? [],
-            EditorView.clickAddsSelectionRange.of(e => e.altKey),
-            EditorState.allowMultipleSelections.of(true),
-            save ? EditorView.updateListener.of(update => {
-                if (update.docChanged) {
-                    const content = update.state.doc.toString();
-                    localStorage.setItem(key, content);
-                }
-            }) : [],
-            EditorView.theme({
-              "&": {
-                width: "100%", height: "100%",
-                outline: "unset"
-              },
-                "& .cm-line": {
-                    fontFamily: "Geist, Times New Roman, serif !important",
-                },
-                "& .cm-line .cm-codeblock-content": {
-                    fontFamily: "Jetbrains Mono, monospace !important",
-                }
-            }, { dark: true }),
+            // extensions ?? [],
+            // EditorView.clickAddsSelectionRange.of(e => e.altKey),
+            // EditorState.allowMultipleSelections.of(true),
+            // save ? EditorView.updateListener.of(update => {
+                // if (update.docChanged) {
+                    // const content = update.state.doc.toString();
+                    // localStorage.setItem(key, content);
+                // }
+            // }) : [],
+            // EditorView.theme({
+              // "&": {
+                // width: "100%", height: "100%",
+                // outline: "unset"
+              // },
+                // "& .cm-line": {
+                    // fontFamily: "Geist, Times New Roman, serif !important",
+                // },
+                // "& .cm-line .cm-codeblock-content": {
+                    // fontFamily: "Jetbrains Mono, monospace !important",
+                // }
+            // }, { dark: true }),
         ],
         parent: document.querySelector(".editor")!
     });

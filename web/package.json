@@ -6,15 +6,16 @@
     "devDependencies": {
         "vite": "^8.3.0"
     },
+    "packageManager": "pnpm@11.0.9",
     "dependencies": {
-        "@feraxjs/themes-codemirror": "^0.0.3",
-        "@glifox/gnosis": "link:..",
         "@chenglou/pretext": "^0.0.7",
         "@codemirror/lang-markdown": "^6.5.0",
         "@codemirror/language": "^6.12.4",
         "@codemirror/language-data": "^6.5.2",
         "@codemirror/state": "^6.7.1",
         "@codemirror/view": "^6.43.9",
+        "@feraxjs/themes-codemirror": "^0.0.3",
+        "@glifox/gnosis": "^0.0.20",
         "@lezer/common": "^1.5.2",
         "@lezer/highlight": "^1.2.3",
         "@lezer/markdown": "^1.6.3",

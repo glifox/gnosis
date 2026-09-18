@@ -1,5 +1,4 @@
 import { dynamicTheme } from '@feraxjs/themes-codemirror';
-import { catppuccinLatte } from "@catppuccin/codemirror"
 import { EditorView, minimalSetup } from "codemirror"
 import { EditorState } from "@codemirror/state";
 import { gnosis } from "../src/lib"
