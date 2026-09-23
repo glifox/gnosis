@@ -1,7 +1,6 @@
+import { dynamicTheme, reconfig } from '@feraxjs/themes-codemirror';
 import { EditorState, type Extension } from "@codemirror/state";
-// import { EditorView, } from "@codemirror/view";
 import { EditorView, minimalSetup } from "codemirror";
-// import { gnosis } from "../../dist/gnosis";
 import { gnosis } from "@glifox/gnosis";
 
 
@@ -24,6 +23,7 @@ export const Editor = ({
         extensions: [
             gnosis(),
             minimalSetup,
+            dynamicTheme(),
             extensions ?? [],
             EditorView.clickAddsSelectionRange.of(e => e.altKey),
             EditorState.allowMultipleSelections.of(true),
@@ -48,6 +48,7 @@ export const Editor = ({
         ],
         parent: document.querySelector(".editor")!
     });
-    
+
+    /* const unsubscribe = */ reconfig(view);
     return view;
 };
