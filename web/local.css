@@ -35,7 +35,74 @@
     height: 400px;
     
     border-radius: 8px;
-    background-color: var(--bg-dark);
+    background-color: var(--bg-light);
     
     /*border: red 1px solid;*/
+}
+
+/* Container layout */
+.horizontal {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    padding: 1rem  24px;
+    max-width: 90%;
+    margin: auto;
+}
+
+/* Base card styling */
+.card {
+    background-color: var(--bg-surface0);
+    border: 1px solid var(--bd-muted);
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+}
+
+/* Card hover state */
+.card:hover {
+    transform: translateY(-4px);
+    border-color: var(--bc-lavender);
+    background-color: var(--bg-surface1);
+}
+
+/* Typography for headings */
+.card h3 {
+    margin: 0 0 0.75rem 0;
+    color: var(--fg-brigth);
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+/* Typography for paragraphs */
+.card p {
+    margin: 0;
+    color: var(--fg-muted);
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+/* Link styling inside cards */
+.card a {
+    color: var(--ge-normal-links);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.card a:visited {
+    color: var(--ge-followed-links);
+}
+
+.card a:hover {
+    color: var(--ge-on-hover-links);
+    text-decoration: underline;
+}
+
+/* Emphasis inside paragraphs */
+.card p em, 
+.card p strong {
+    color: var(--fg-brigth);
 }

@@ -7,6 +7,13 @@ _GNOSIS_ is an extension-pack for codemirror to support WYSIWYG markdown edition
 
 I did a lot of online research, and found some _WYSIWYG markdown editors_. However, none of the Open Source options seemed good enough. The  **Obsidian** editor is nice but not Open Source... _So I decided to start a new project_.
 
+## Features
+
+1. Fine granite control of `line-breaks`.
+2. Less flickering compared with other _WYSIWYG markdown editors_.
+3. Open Source.
+4. Better `code-blocks`
+
 ## Similar projects
 
 1. [Inoxia](https://ixora.karawale.in/)
