@@ -89,6 +89,11 @@ export function decorator(view: EditorView, config: null): DecorationSet {
             //     .widget({ widget: new Span(" ".repeat(offset - lineOffset)) })
             //     .range(lineStart + lineOffset));
           }
+        } else {
+          for (let l = startLine.number; l <= endLine.number; l++) {
+            const currentLine = view.state.doc.line(l);
+            if (currentLine.from < currentLine.to) decorations.push(content.range(currentLine.from, currentLine.to));
+          }
         }
         
         decorations.push(copycode().range(endLine.from))

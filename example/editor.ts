@@ -1,5 +1,5 @@
 import { dynamicTheme } from '@feraxjs/themes-codemirror';
-import { EditorView, minimalSetup } from "codemirror"
+import { basicSetup, EditorView, minimalSetup } from "codemirror"
 import { EditorState } from "@codemirror/state";
 import { gnosis } from "../src/lib"
 
@@ -12,7 +12,7 @@ export const Editor = (text: string, save: boolean = false, key = '') => {
       extensions: [ 
             gnosis(),
             dynamicTheme,
-            minimalSetup,
+            basicSetup,
             EditorView.clickAddsSelectionRange.of(e => e.altKey),
             EditorState.allowMultipleSelections.of(true),
             save ? EditorView.updateListener.of(update => {
