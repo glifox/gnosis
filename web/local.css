@@ -35,8 +35,9 @@
     height: 400px;
     
     border-radius: 8px;
-    background-color: var(--bg-light);
-    
+    background-color: hsl(from var(--bg-light) h s l / .5);
+
+    backdrop-filter: blur(13px) saturate(158%);
     /*border: red 1px solid;*/
 }
 
