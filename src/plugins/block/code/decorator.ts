@@ -98,7 +98,7 @@ export function decorator(view: EditorView, config: null): DecorationSet {
         }
 
         if (endLine.from == view.state.doc.length) {
-          decorations.push(copycode().range(startLine.from))
+          // decorations.push(copycode().range(startLine.from))
         }
         else decorations.push(copycode().range(endLine.from))
       }

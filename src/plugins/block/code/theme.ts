@@ -55,12 +55,12 @@ export const coreTheme = () => {
       
       zIndex: "-80",
     },
-    [`.${background_class}.sl .${wrap_class}`]: {
-      position: "unset",
-      width: "0",
-      height: "0",
-      overflow: "hidden",
-    },
+    // [`.${background_class}.sl .${wrap_class}`]: {
+    //   position: "unset",
+    //   width: "0",
+    //   height: "0",
+    //   overflow: "hidden",
+    // },
     [`& .${wrap_class}`]: {
       display: "inline-block",
       position: "absolute",
