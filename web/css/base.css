@@ -86,6 +86,25 @@ body {
     margin: 0;
     min-height: 100dvh;
     min-width: 100dvw;
+
+    background-repeat: repeat;
+    background-attachment: fixed;
+}
+
+[theme="dark"] body::before { opacity: 0; }
+[theme="light"] body::before { opacity: 1; }
+body { background-image: url('../assets/texturize_glitch_mocha.png'); }
+body::before {
+  content: "";
+  position: fixed;
+  background-repeat: repeat;
+  background-attachment: fixed;
+  
+  background-image: url('../assets/texturize_glitch_latte.png');
+  inset: 0;
+  opacity: 0;
+  z-index: -1;
+  transition: opacity 0.3s cubic-bezier(0, 0.8, 0.5, 0.85); 
 }
 
 .horizontal {
