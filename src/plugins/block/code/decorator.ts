@@ -41,17 +41,18 @@ const content = Decoration.mark({
 })
 
 const copycode = () => Decoration.widget({
-  widget: new CopyCode()
+  widget: new CopyCode(),
+  side: -1
 })
 
 const wrappers = {
-  CodeBlock: ({ from, to, offset }: { from: number, to: number, offset: number }) => [
+  CodeBlock: ({ from, to, offset, selected }: { from: number, to: number, offset: number, selected: boolean }) => [
     scroller(scroller_class, offset).range(from, to),
-    codeblock(background_class).range(from, to),
+    codeblock(background_class + (selected ? ' sl' : '')).range(from, to),
   ],
-  FencedCode: ({ from, to, offset }: { from: number, to: number, offset: number }) => [
+  FencedCode: ({ from, to, offset, selected }: { from: number, to: number, offset: number, selected: boolean }) => [
     scroller(scroller_class, offset).range(from, to),
-    codeblock(background_class).range(from, to),
+    codeblock(background_class + (selected ? ' sl' : '')).range(from, to),
   ],
 }
 
@@ -95,8 +96,11 @@ export function decorator(view: EditorView, config: null): DecorationSet {
             if (currentLine.from < currentLine.to) decorations.push(content.range(currentLine.from, currentLine.to));
           }
         }
-        
-        decorations.push(copycode().range(endLine.from))
+
+        if (endLine.from == view.state.doc.length) {
+          decorations.push(copycode().range(startLine.from))
+        }
+        else decorations.push(copycode().range(endLine.from))
       }
     }
   });
@@ -112,8 +116,14 @@ function wrapper(view: EditorView): RangeSet<BlockWrapper> {
       if (name in wrappers) {
         const line = view.state.doc.lineAt(from)
         const offset = from - line.from;
+        const selected = hasSelection(view, from, to)
         decorations.push(
-        ... wrappers[name as keyof typeof wrappers]({ from: line.from, to, offset: offset })
+          ...wrappers[name as keyof typeof wrappers]({
+            from: line.from,
+            to,
+            offset: offset,
+            selected,
+          })
         )
         
         requestAnimationFrame(() => {
