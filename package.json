@@ -27,7 +27,7 @@
     "README.md"
   ],
   "devDependencies": {
-    "@feraxjs/themes-codemirror": "^0.0.3",
+    "@feraxjs/themes-codemirror": "^0.1.0",
     "rolldown": "^1.0.0",
     "rolldown-plugin-dts": "^0.28.2",
     "typescript": "^6.0.3"
