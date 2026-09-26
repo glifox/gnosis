@@ -32,10 +32,10 @@ I did a lot of online research, and found some _WYSIWYG markdown editors_. Howev
     - [x] change: `checkbox`
 - [x] change: `code` (WIP)
     - [x] code highlight 
-    - [x] add a custom scroller to avoid line wrapps on codeblock (WIP)
+    - [x] add a custom scroller to avoid line wrapps on codeblock (WIP - beta)
     - [ ] add an option to line-wrapp inside codeblocks
     - [ ] add background color to codeblocks
-- [ ] change: `html`
+- [ ] change: `html` (needs better planing {how a god render inline must work})
 - [x] change: `blockquote` (WIP)
     - [x] support for [github quotes highlight](https://github.com/orgs/community/discussions/16925)
     - [ ] margin left when the number of quotemarks is inferior to the depth. _this needs to also be taking into account on the breaks pluggin_.
@@ -48,16 +48,16 @@ I did a lot of online research, and found some _WYSIWYG markdown editors_. Howev
 - [x] change: `codespan`
 - [ ] change: `br` _inline html_.
 - [x] change: `del`
-- [ ] change: `link`
+- [ ] change: `link` (how to reduce the flikering for the text?)
 - [ ] change: `image`
-    - [ ] for inline images large enough, add a refrence widget in the text as `see image: alt-text` and render the image as a blockWigeth on the next line
+    - [ ] for inline images large enough, add a refrence widget in the text as `see image: alt-text` and render the image as a blockWigeth on the next line, maybe any image should work like this?
 - [ ] change: `tags`
 
 ### Features
 - [x] hide marks when written.
 - [x] reduce the flickering when _marks toggle_. (WIP)
 - [x] custom line breaks using **pretext** (WIP - alpha)
-- [ ] Code highliting
+- [x] Code highliting
 - [ ] keybinds
     - [ ] Auto complete list on enter 
         - [ ] auto add bullet on bullet-list
