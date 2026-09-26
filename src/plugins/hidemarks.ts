@@ -26,6 +26,11 @@ const markDecoration = (isFirst: boolean, isLast: boolean, aditional: string = "
   class: 'mk' + ((isFirst) ? ` ft` : ``) + ((isLast) ? ` lt` : ``) + aditional
 })
 
+const transparentModeDecoration = (aditional: string = "") => Decoration.mark({
+  class: 'tp' + aditional
+})
+
+
 const marks: {
   [key: string]: (
     from: number,
@@ -41,8 +46,8 @@ const marks: {
     (from, to, isFirst, isLast) =>
       markDecoration(isFirst, isLast).range(from, to),
   CodeMark:
-    (from, to, isFirst, isLast) =>
-      markDecoration(isFirst, isLast).range(from, to),
+    (from, to) =>
+      transparentModeDecoration().range(from, to),
   StrikethroughMark:
     (from, to, isFirst, isLast) =>
       markDecoration(isFirst, isLast).range(from, to),
@@ -91,5 +96,7 @@ export const hideMarks = [
       "fontSize": "inherit",
       "opacity": "1",
     },
+    "&.cm-focused .sel > .tp": { "opacity": "1", },
+    "& .tp": { "opacity": "0", },
   })
 ];

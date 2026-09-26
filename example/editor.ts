@@ -10,9 +10,9 @@ export const Editor = (text: string, save: boolean = false, key = '') => {
     const view = new EditorView({
         doc: initialContent,
       extensions: [ 
+            basicSetup,
             gnosis(),
             dynamicTheme(),
-            basicSetup,
             EditorView.clickAddsSelectionRange.of(e => e.altKey),
             EditorState.allowMultipleSelections.of(true),
             save ? EditorView.updateListener.of(update => {

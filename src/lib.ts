@@ -16,6 +16,7 @@ import { breakes } from "./plugins/breaks";
 import { ListPlugin } from "./plugins/block/list/plugin";
 import { GHQuoteHighlights } from "./plugins/markdown/quotes";
 import { quotes } from "./plugins/block/quote/plugin";
+import { inline } from "./plugins/inline";
 
 const none: Tag = Tag.define("none")
 const umarks  = styleTags({
@@ -33,6 +34,7 @@ export const gnosis: () => Extension = () => [
     
   }),
   hideMarks,
+  inline,
   headings(),
   breakes,
   ListPlugin(),
