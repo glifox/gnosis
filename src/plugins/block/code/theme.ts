@@ -12,10 +12,12 @@ export const coreTheme = () => {
       display: "grid",
       fontFamily: "monospace",
       overflowX: "auto",
+      overflowY: "hidden",
 
       scrollbarWidth: "thin",
       scrollbarColor: "transparent transparent",
-      overscrollBehavior: "none",
+      overscrollBehaviorX: "none",
+      overscrollBehaviorY: "auto",
     },
     [`.${spacer_class}`]: { 
       left: '6px',
