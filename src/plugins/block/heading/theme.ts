@@ -9,4 +9,5 @@ export const core = () => EditorView.baseTheme({
   ".cm-heading4" : { fontSize: "1.25em", fontWeight: "bolder" },
   ".cm-heading5" : { fontSize: "1.25em", fontWeight: "semi-bold" },
   ".cm-heading6" : { fontSize: "1.25em", fontWeight: "normal" },
+  ".cm-gutterElement": { display: "flex", alignItems: "center" }, // fixes the position of the number in the gutter.
 })

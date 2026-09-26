@@ -1,18 +1,30 @@
 import { dynamicTheme, reconfig } from '@feraxjs/themes-codemirror';
-import { basicSetup, EditorView, minimalSetup } from "codemirror"
-import { EditorState } from "@codemirror/state";
-import { gnosis } from "../src/lib"
+import { EditorState, type Extension } from "@codemirror/state";
+import { EditorView, minimalSetup } from "codemirror";
+import { gnosis } from "@glifox/gnosis";
 
-export const Editor = (text: string, save: boolean = false, key = '') => {
+
+export const Editor = ({ 
+  text,
+  save = false, 
+  key = '',
+  extensions,
+}: {
+  text: string,
+  save?: boolean,
+  key?: string,
+  extensions?: Extension[],
+}) => {
     const savedContent = localStorage.getItem(key);
     const initialContent = savedContent !== null ? savedContent : text;
     
     const view = new EditorView({
         doc: initialContent,
-      extensions: [ 
+        extensions: [
             gnosis(),
+            minimalSetup,
             dynamicTheme(),
-            basicSetup,
+            extensions ?? [],
             EditorView.clickAddsSelectionRange.of(e => e.altKey),
             EditorState.allowMultipleSelections.of(true),
             save ? EditorView.updateListener.of(update => {
@@ -22,15 +34,21 @@ export const Editor = (text: string, save: boolean = false, key = '') => {
                 }
             }) : [],
             EditorView.theme({
+              "&": {
+                width: "100%", height: "100%",
+                outline: "unset"
+              },
                 "& .cm-line": {
-                    // fontFamily: "Times New Roman, serif !important",
+                    fontFamily: "Geist, Times New Roman, serif !important",
+                },
+                "& .cm-line .cm-codeblock-content": {
+                    fontFamily: "Jetbrains Mono, monospace !important",
                 }
-            }),
+            }, { dark: true }),
         ],
         parent: document.querySelector(".editor")!
     });
-    
-    reconfig(view)
-    
+
+    /* const unsubscribe = */ reconfig(view);
     return view;
 };

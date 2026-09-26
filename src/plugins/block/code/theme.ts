@@ -12,26 +12,23 @@ export const coreTheme = () => {
       display: "grid",
       fontFamily: "monospace",
       overflowX: "auto",
+      overflowY: "hidden",
 
       scrollbarWidth: "thin",
       scrollbarColor: "transparent transparent",
-      overscrollBehavior: "none",
+      overscrollBehaviorX: "none",
+      overscrollBehaviorY: "auto",
     },
     [`.${spacer_class}`]: { 
       left: '6px',
       position: 'sticky',
-    },
-    [`.${scroller_class}[data-offset="0"]`]: {
-      marginLeft: padding_horizontal,
-    },
-    [`.${background_class}:has(.${scroller_class}[data-offset="0"])`]: {
-      marginLeft: padding_horizontal,
     },
     [`.${content_class}`]: { 
       "--gap": "calc(var(--left-padding, 0px) + 10px)",
       
       display: "inline-block",
       width: "calc(100% - var(--left-padding, 0px) + 4px)",
+      marginLeft: `calc(4px + ${padding_horizontal})`,
       
       maskImage: "linear-gradient(to right, transparent var(--gap), black 0)",
       WebkitMaskImage: "linear-gradient(to right, transparent var(--gap), black 0)",
@@ -54,12 +51,18 @@ export const coreTheme = () => {
       position: "absolute",
       height: "100%",
       top: "0",
-      left: `calc(var(--left-padding, 0) - ${padding_horizontal})`,
+      left: `calc(var(--left-padding, 0) + ${padding_horizontal})`,
       right: `-${padding_horizontal}`,
       borderRadius: "12px",
       
       zIndex: "-80",
     },
+    // [`.${background_class}.sl .${wrap_class}`]: {
+    //   position: "unset",
+    //   width: "0",
+    //   height: "0",
+    //   overflow: "hidden",
+    // },
     [`& .${wrap_class}`]: {
       display: "inline-block",
       position: "absolute",

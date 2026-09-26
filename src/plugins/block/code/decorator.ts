@@ -5,7 +5,7 @@ import { EditorSelection, type Range, type RangeSet, type Transaction } from "@c
 import { EditorView } from "codemirror";
 import { hasSelection, visibleNodes } from "../../../utils";
 import { getLineFont as getNodeFont, mesureOffset } from '../../breaks';
-import { CopyCode } from './html/copy/widget';
+import { CopyCode, wrap_class } from './html/copy/widget';
 
 
 export const background_class = "cm-codeblock-background" as const;
@@ -41,17 +41,18 @@ const content = Decoration.mark({
 })
 
 const copycode = () => Decoration.widget({
-  widget: new CopyCode()
+  widget: new CopyCode(),
+  side: -1
 })
 
 const wrappers = {
-  CodeBlock: ({ from, to, offset }: { from: number, to: number, offset: number }) => [
+  CodeBlock: ({ from, to, offset, selected }: { from: number, to: number, offset: number, selected: boolean }) => [
     scroller(scroller_class, offset).range(from, to),
-    codeblock(background_class).range(from, to),
+    codeblock(background_class + (selected ? ' sl' : '')).range(from, to),
   ],
-  FencedCode: ({ from, to, offset }: { from: number, to: number, offset: number }) => [
+  FencedCode: ({ from, to, offset, selected }: { from: number, to: number, offset: number, selected: boolean }) => [
     scroller(scroller_class, offset).range(from, to),
-    codeblock(background_class).range(from, to),
+    codeblock(background_class + (selected ? ' sl' : '')).range(from, to),
   ],
 }
 
@@ -89,9 +90,17 @@ export function decorator(view: EditorView, config: null): DecorationSet {
             //     .widget({ widget: new Span(" ".repeat(offset - lineOffset)) })
             //     .range(lineStart + lineOffset));
           }
+        } else {
+          for (let l = startLine.number; l <= endLine.number; l++) {
+            const currentLine = view.state.doc.line(l);
+            if (currentLine.from < currentLine.to) decorations.push(content.range(currentLine.from, currentLine.to));
+          }
         }
-        
-        decorations.push(copycode().range(endLine.from))
+
+        if (endLine.from == view.state.doc.length) {
+          // decorations.push(copycode().range(startLine.from))
+        }
+        else decorations.push(copycode().range(endLine.from))
       }
     }
   });
@@ -107,23 +116,27 @@ function wrapper(view: EditorView): RangeSet<BlockWrapper> {
       if (name in wrappers) {
         const line = view.state.doc.lineAt(from)
         const offset = from - line.from;
+        const selected = hasSelection(view, from, to)
         decorations.push(
-        ... wrappers[name as keyof typeof wrappers]({ from: line.from, to, offset: offset })
+          ...wrappers[name as keyof typeof wrappers]({
+            from: line.from,
+            to,
+            offset: offset,
+            selected,
+          })
         )
         
         requestAnimationFrame(() => {
           const node = view.domAtPos(line.from).node.parentElement;
+          // console.info(`node:`, node);
           if (!node) return;
           
           const wraperDom = node.closest(`.${background_class}`);
           if (!wraperDom) return;
           
-          const font = getNodeFont(node);
-          const text = view.state.doc.sliceString(line.from, from);
-          // if (text.length < 1) return;
+          const spacer = wraperDom.querySelector(`.${spacer_class}`);
           
-          const width = mesureOffset(text, font);
-
+          const width = spacer?.getBoundingClientRect().width ?? 0;
           (wraperDom as HTMLElement).style.setProperty('--left-padding', `${width + 4}px`)
         })
       }
