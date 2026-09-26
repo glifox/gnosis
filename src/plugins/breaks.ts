@@ -330,7 +330,7 @@ const view_plugin = ViewPlugin.fromClass(class {
     
     view.dispatch({
       effects: viewUpdateEffect.of({
-        width: view.dom.clientWidth,
+        width: view.contentDOM.clientWidth,
         lines,
         viewport: {
           from: view.viewport.from,
