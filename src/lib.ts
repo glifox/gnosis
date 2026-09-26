@@ -6,7 +6,7 @@ import { template } from "./plugins/block/templates/plugin";
 import { HighlightStyle, syntaxHighlighting /* , defaultHighlightStyle */} from "@codemirror/language";
 import { languages } from "@codemirror/language-data"
 
-import type { Extension } from "@codemirror/state";
+import { Prec, type Extension } from "@codemirror/state";
 import { styleTags, Tag } from "@lezer/highlight"
 import { tags } from "@lezer/highlight";
 import { hideMarks } from "./plugins/hidemarks";
@@ -37,6 +37,6 @@ export const gnosis: () => Extension = () => [
   breakes,
   ListPlugin(),
   quotes(),
-  code(),
+  Prec.lowest(code()),
   // template(),
 ]
