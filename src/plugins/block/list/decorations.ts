@@ -1,3 +1,5 @@
+import './html/bullet';
+
 import type { Range } from "@codemirror/state";
 import { Decoration, WidgetType, type DecorationSet } from "@codemirror/view";
 import type { EditorView } from "codemirror";
@@ -55,6 +57,7 @@ const marks = {
   ListMark: ({ type, from, to, show }: MarkData) => [
     Decoration
     .mark({
+      tagName: type === 'pointmark' ? 'cm-widget-bullet' : 'span',
       class: `cm-listmark cm-${type} ${(show) ? 'mk-show' : ''}`,
     })
       .range(from, to)
@@ -99,4 +102,3 @@ export const decorator: (view: EditorView, config: {}) => DecorationSet = (view)
   
   return Decoration.set(decorations, false)
 }
-
