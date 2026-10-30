@@ -36,6 +36,7 @@
   "scripts": {
     "build": "rm -fr dist && rolldown -c",
     "prev": "bun ./example/index.html",
+    "lock": "pnpm install && pnpm --dir web install && pnpm install --frozen-lockfile && pnpm --dir web install --frozen-lockfile",
     "web:prev": "cd web && bun run prev",
     "web:build": "pnpm run build && cd web && pnpm run build"
   },
