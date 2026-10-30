@@ -71,6 +71,10 @@
     color: var(--sm-fg-on-info);
 }
 
+@page {
+    margin: 1.5cm;
+}
+
 @media print {
     * {
         scrollbar-width: none;
@@ -118,6 +122,30 @@
     .cm-scroller {
         height: auto !important;
         overflow: visible !important;
+    }
+
+    /* Prevent lines of text from being sliced in half across pages */
+    .cm-line {
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+    }
+
+    /* Prevent headings from being left alone at the bottom of a page */
+    .cm-heading {
+        break-after: avoid !important;
+        page-break-after: avoid !important;
+    }
+
+    /* Prevent code blocks and callouts from splitting awkwardly */
+    .cm-codeblock-background,
+    .cm-codeblock-scroller {
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+    }
+
+    .quote-mark {
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
     }
 
     /* Print styling for blockquote and callout icons */
