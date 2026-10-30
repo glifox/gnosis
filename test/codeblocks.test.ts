@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { setDoc } from './helpers';
+import { setDoc, setCursor } from './helpers';
 
 test.describe('Codeblocks Decorator & Widgets', () => {
   test.beforeEach(async ({ page }) => {
@@ -94,5 +94,80 @@ test.describe('Codeblocks Decorator & Widgets', () => {
     // Should not throw errors and must keep the scroller active
     const scroller = page.locator('.cm-codeblock-scroller');
     await expect(scroller).toBeVisible();
+  });
+
+  test('display centered language and dimmed path when cursor is outside, hide fences', async ({ page }) => {
+    const doc = [
+      'Outside top',
+      '```ts:src/app.ts',
+      'const a = 1;',
+      '```',
+      'Outside bottom'
+    ].join('\n');
+
+    // Place cursor outside the codeblock (line 1)
+    await setDoc(page, doc, 0);
+
+    const header = page.locator('.cm-codeblock-header');
+    await expect(header).toBeVisible();
+
+    const lang = page.locator('.cm-codeblock-lang');
+    await expect(lang).toHaveText('ts');
+
+    const path = page.locator('.cm-codeblock-path');
+    await expect(path).toHaveText('src/app.ts');
+
+    // Path has reduced opacity
+    const pathOpacity = await path.evaluate((el) => window.getComputedStyle(el).opacity);
+    expect(Number(pathOpacity)).toBeLessThanOrEqual(0.7);
+
+    // Opening and closing fences are hidden (opacity 0)
+    const openingFence = page.locator('.cm-codeblock-opening-fence');
+    const closingFence = page.locator('.cm-codeblock-closing-fence');
+    expect(await openingFence.evaluate((el) => window.getComputedStyle(el).opacity)).toBe('0');
+    expect(await closingFence.evaluate((el) => window.getComputedStyle(el).opacity)).toBe('0');
+
+    // Now place cursor inside codeblock (line 3)
+    await setCursor(page, 3, 2);
+
+    // Header should disappear and marks become visible
+    await expect(header).not.toBeVisible();
+    expect(await openingFence.evaluate((el) => window.getComputedStyle(el).opacity)).toBe('1');
+    expect(await closingFence.evaluate((el) => window.getComputedStyle(el).opacity)).toBe('1');
+  });
+
+  test('header and copy button remain stationary during horizontal scroll', async ({ page }) => {
+    const longLine = 'const long = "' + 'x'.repeat(400) + '";';
+    const doc = [
+      'Outside',
+      '```ts:utils.ts',
+      longLine,
+      '```',
+      'Outside end'
+    ].join('\n');
+
+    await setDoc(page, doc, 0);
+
+    const header = page.locator('.cm-codeblock-header');
+    const copy = page.locator('.cm-widget-copy-codeblock');
+    await expect(header).toBeVisible();
+    await expect(copy).toBeVisible();
+
+    const headerXBefore = await header.evaluate((el) => el.getBoundingClientRect().x);
+    const copyXBefore = await copy.evaluate((el) => el.getBoundingClientRect().x);
+
+    // Scroll horizontally in code-scroller
+    await page.evaluate(async () => {
+      const scroller = document.querySelector('.cm-codeblock-scroller') as HTMLElement;
+      scroller.scrollLeft = 200;
+      scroller.dispatchEvent(new Event('scroll'));
+      await new Promise(r => requestAnimationFrame(r));
+    });
+
+    const headerXAfter = await header.evaluate((el) => el.getBoundingClientRect().x);
+    const copyXAfter = await copy.evaluate((el) => el.getBoundingClientRect().x);
+
+    expect(Math.abs(headerXBefore - headerXAfter)).toBeLessThan(1);
+    expect(Math.abs(copyXBefore - copyXAfter)).toBeLessThan(1);
   });
 });

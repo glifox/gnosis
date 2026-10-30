@@ -1,6 +1,7 @@
 import { EditorView } from "codemirror";
-import { background_class, scroller_class, content_class, spacer_class } from "./decorator";
+import { background_class, scroller_class, content_class, spacer_class, marking_class, codeinfo_class } from "./decorator";
 import { boton_class, wrap_class } from "./html/copy/widget";
+import { header_class, lang_class, path_class } from "./html/header/widget";
 
 const border = { border: "red solid 1px" }
 
@@ -69,6 +70,38 @@ export const coreTheme = () => {
       top: "0",
       right: "0",
       zIndex: "900",
+    },
+    [`& .${header_class}`]: {
+      display: "inline-flex",
+      alignItems: "center",
+      justifyContent: "center",
+      position: "absolute",
+      top: "0",
+      left: "calc(50% + var(--left-padding, 0px) / 2)",
+      transform: "translateX(-50%)",
+      zIndex: "900",
+      height: "1lh",
+      pointerEvents: "none",
+      gap: "0.6ch",
+      fontFamily: "monospace",
+      fontSize: "0.85em",
+    },
+    [`.${background_class}.sl .${header_class}`]: {
+      display: "none",
+    },
+    [`& .${lang_class}`]: {
+      fontWeight: "500",
+      color: "var(--cm-codeblock-lang-color, inherit)",
+    },
+    [`& .${path_class}`]: {
+      color: "var(--cm-codeblock-path-color, inherit)",
+      opacity: "var(--cm-codeblock-path-opacity, 0.6)",
+    },
+    [`.${background_class}:not(.sl) .${marking_class}`]: {
+      opacity: "0",
+    },
+    [`.${background_class}:not(.sl) .${codeinfo_class}`]: {
+      opacity: "0",
     },
     [`& .${boton_class}`]: {
       margin: padding_horizontal,

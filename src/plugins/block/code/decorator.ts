@@ -6,12 +6,15 @@ import { EditorView } from "codemirror";
 import { hasSelection, visibleNodes } from "../../../utils";
 import { getLineFont as getNodeFont, mesureOffset } from '../../breaks';
 import { CopyCode, wrap_class } from './html/copy/widget';
+import { CodeHeader, header_class } from './html/header/widget';
 
 
 export const background_class = "cm-codeblock-background" as const;
 export const scroller_class = "cm-codeblock-scroller" as const;
 export const spacer_class = "cm-codeblock-spacer" as const;
 export const content_class = "cm-codeblock-content" as const;
+export const marking_class = "cm-codeblock-marking" as const;
+export const codeinfo_class = "cm-codeblock-codeinfo" as const;
 
 const codeblock = (class_: string) => BlockWrapper.create({
   tagName: 'div',
@@ -40,9 +43,17 @@ const content = Decoration.mark({
   }
 })
 
+const marking = Decoration.mark({ class: marking_class, })
+const codeinfo = Decoration.mark({ class: codeinfo_class, })
+
 const copycode = () => Decoration.widget({
   widget: new CopyCode(),
   side: -1
+})
+
+const codeHeader = (lang: string, path: string) => Decoration.widget({
+  widget: new CodeHeader(lang, path),
+  side: 1
 })
 
 const wrappers = {
@@ -56,12 +67,18 @@ const wrappers = {
   ],
 }
 
+const setHeader = (info: string) => {
+  const colonIndex = info.indexOf(':');
+  const lang = colonIndex !== -1 ? info.slice(0, colonIndex).trim() : info.trim();
+  const path = colonIndex !== -1 ? info.slice(colonIndex + 1).trim() : "";
+  return codeHeader(lang, path);
+}
 
 export function decorator(view: EditorView, config: null): DecorationSet {
   const decorations: Range<Decoration>[] = [];
   
   visibleNodes(view, {
-    enter: ({ name, from, to }) => {
+    enter: ({ name, from, to, node }) => {
       if (name in wrappers) {
         const startLine = view.state.doc.lineAt(from);
         const endLine = view.state.doc.lineAt(to);
@@ -84,11 +101,6 @@ export function decorator(view: EditorView, config: null): DecorationSet {
             const lineStart = currentLine.from;
             if (lineOffset > 0) decorations.push(spacer.range(lineStart, lineStart + lineOffset));
             if (lineStart + lineOffset < currentLine.to ) decorations.push(content.range(lineStart + lineOffset, currentLine.to));
-            
-            // if (lineOffset < offset) decorations.push(
-            //   Decoration
-            //     .widget({ widget: new Span(" ".repeat(offset - lineOffset)) })
-            //     .range(lineStart + lineOffset));
           }
         } else {
           for (let l = startLine.number; l <= endLine.number; l++) {
@@ -96,7 +108,23 @@ export function decorator(view: EditorView, config: null): DecorationSet {
             if (currentLine.from < currentLine.to) decorations.push(content.range(currentLine.from, currentLine.to));
           }
         }
-
+        
+        let cursor = node.cursor();
+        if (cursor.firstChild()) {
+          do {
+            if (cursor.name === "CodeInfo") {
+              const info = view.state.doc.sliceString(cursor.from, cursor.to).trim();
+              
+              decorations.push(codeinfo.range(cursor.from, cursor.to));
+              decorations.push(setHeader(info).range(cursor.from));
+            }
+            else
+            if (cursor.name === "CodeMark") {
+              decorations.push(marking.range(cursor.from, cursor.to));
+            }
+          } while (cursor.nextSibling());
+        }
+        
         if (endLine.from == view.state.doc.length) {
           // decorations.push(copycode().range(startLine.from))
         }
@@ -145,19 +173,3 @@ function wrapper(view: EditorView): RangeSet<BlockWrapper> {
 
   return BlockWrapper.set(decorations, false);
 }
-
-// class Span extends WidgetType {
-//   constructor(public text: string) { super() }
-//   toDOM() {
-//     const span = document.createElement("span")
-//     span.style.color = 'transparent'
-//     span.style.backgroundColor = 'hsl(from red h s l / .1)'
-//     span.innerText = `${this.text}`
-    
-//     return span
-//   }
-//   override get lineBreaks() { return 0 }
-//   override eq(other: Span) {
-//     return other.text === this.text
-//   }
-// }
