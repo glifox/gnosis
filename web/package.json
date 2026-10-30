@@ -22,6 +22,6 @@
         "@lezer/common": "^1.5.4",
         "@lezer/highlight": "^1.2.5",
         "@lezer/markdown": "^1.8.1",
-        "codemirror": "^6.65.7"
+        "codemirror": "^6.0.2"
     }
 }
