@@ -1,3 +1,118 @@
+.main {
+    margin: 1.2rem;
+    height: calc(100dvh - 5.5rem);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.editor {
+    background-color: var(--bg-light);
+    border-radius: 12px;
+    padding: 1.2rem .8rem;
+    height: 100%;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow: auto;
+}
+
+/* Header & Action Controls */
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    flex-wrap: wrap;
+}
+
+.width-control {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.28rem 0.65rem 0.28rem 0.85rem;
+    border-radius: 9999px;
+    border: 1px solid var(--bd-muted, rgba(255, 255, 255, 0.1));
+    background: var(--bg-surface0);
+    color: var(--fg-brigth);
+    font-size: 0.82rem;
+    font-weight: 600;
+}
+
+.control-label {
+    opacity: 0.8;
+    user-select: none;
+}
+
+#slider-width {
+    width: 120px;
+    accent-color: var(--sm-bg-info, #89b4fa);
+    cursor: pointer;
+}
+
+#input-width {
+    width: 4.2rem;
+    padding: 0.15rem 0.35rem;
+    border-radius: 6px;
+    border: 1px solid var(--bd-muted, rgba(255, 255, 255, 0.15));
+    background: var(--bg-dark);
+    color: var(--fg-brigth);
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    text-align: right;
+}
+
+.unit-label {
+    opacity: 0.65;
+    font-size: 0.75rem;
+    font-family: var(--mono);
+}
+
+.action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.45rem 1rem;
+    border-radius: 9999px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    border: 1px solid var(--bd-muted, rgba(255, 255, 255, 0.1));
+    background: var(--bg-surface0);
+    color: var(--fg-brigth);
+    transition: all 0.2s ease-in-out;
+    text-decoration: none;
+}
+
+.action-btn-sm {
+    padding: 0.2rem 0.6rem;
+    font-size: 0.75rem;
+}
+
+.action-btn:hover {
+    transform: translateY(-1px);
+    background: var(--bg-surface1);
+    border-color: var(--ctp-lavender, #b4befe);
+    color: var(--fg-brigth);
+}
+
+.action-btn:active {
+    transform: translateY(0);
+}
+
+.action-btn.active {
+    background: var(--sm-bg-info);
+    color: var(--sm-fg-on-info);
+    border-color: transparent;
+}
+
+.action-btn-reset:hover {
+    border-color: var(--ctp-red, #f38ba8);
+    color: var(--ctp-red, #f38ba8);
+}
 
 .cb-content {
     background-color: hsl(from black h s l / .05);
@@ -7,6 +122,121 @@
     background-color: hsl(from blue h s l / .09);
 }
 
-body {
-    /*background-color: paleturquoise;*/
+@page {
+    margin: 1.5cm;
+}
+
+@media print {
+    * {
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    *::-webkit-scrollbar {
+        display: none;
+    }
+
+    body,
+    .main {
+        margin: 0 !important;
+        padding: 0 !important;
+        background: transparent !important;
+        background-image: none !important;
+        min-height: auto !important;
+        height: auto !important;
+    }
+
+    body::before {
+        display: none !important;
+    }
+
+    header {
+        display: none !important;
+    }
+
+    .editor {
+        background: transparent !important;
+        padding: 0 !important;
+        border-radius: 0 !important;
+        height: auto !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-shadow: none !important;
+    }
+
+    .cm-editor {
+        height: auto !important;
+        overflow: visible !important;
+    }
+
+    .cm-scroller {
+        height: auto !important;
+        overflow: visible !important;
+    }
+
+    .cm-content {
+        white-space: pre-wrap !important;
+        word-break: break-word !important;
+        overflow-wrap: break-word !important;
+        overflow: visible !important;
+    }
+
+    /* Wrap text lines for print width and avoid slicing lines across pages */
+    .cm-line {
+        white-space: pre-wrap !important;
+        word-break: break-word !important;
+        overflow-wrap: break-word !important;
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+    }
+
+    /* Hide pretext artificial breaks and spacers in print mode */
+    .cm-break-widget,
+    .cm-spacer-widget {
+        display: none !important;
+    }
+
+    /* Prevent headings from being left alone at the bottom of a page */
+    .cm-heading {
+        break-after: avoid !important;
+        page-break-after: avoid !important;
+    }
+
+    /* Prevent code blocks and callouts from splitting awkwardly */
+    .cm-codeblock-background,
+    .cm-codeblock-scroller {
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+    }
+
+    .quote-mark {
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+    }
+
+    /* Print styling for blockquote and callout icons */
+    [class*="cm-icon-"] {
+        display: inline-block !important;
+        vertical-align: middle !important;
+    }
+
+    [class*="cm-icon-"] svg {
+        display: inline-block !important;
+        vertical-align: middle !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    .quote-kind-marker {
+        opacity: 0.8 !important;
+    }
+
+    /* Hide interactive copy button, icon, and background on code blocks when printing */
+    .cm-widget-copy-codeblock,
+    .cm-widget-copy-codeblock-btn {
+        display: none !important;
+        background: none !important;
+    }
 }

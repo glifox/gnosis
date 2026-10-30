@@ -4,19 +4,48 @@
 	<script src="https://cdn.jsdelivr.net/gh/feraxjs/thselector@v0.1.0/src/core.js"></script>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>[gnosis] example</title>
-	<script type="module" src="index.ts"></script>
+	<link rel="icon" type="image/x-icon" href="../web/assets/favicon.ico" />
+	<title>[glifox] gnosis:example</title>
+
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/feraxjs/themes@1e05acb/catppuccin/light/latte.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/feraxjs/themes@1e05acb/catppuccin/dark/mocha.css">
+	<link rel="stylesheet" href="../web/css/base.css">
+	<link rel="stylesheet" href="../web/css/header.css">
 	<link rel="stylesheet" href="styles.css">
 
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/feraxjs/themes@cm0.1.0/catppuccin/light/latte.css">
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/feraxjs/themes@cm0.1.0/catppuccin/dark/mocha.css">
+	<script defer type="module" src="index.ts"></script>
 </head>
-<body>
-    <style>
-        .editor {
-            border: solid black 1px; 
-        }
-    </style>
-    <div class="editor"></div>
+<body style="margin: 0">
+	<header>
+		<nav>
+			<a href="/" class="logo">
+				<img id="logo-svg" src="../web/assets/logo.svg" alt="glifox" width="32px">
+				<span class="logo-highlight">gnosis</span>
+			</a>
+			<ul class="nav-links">
+				<li class="width-control" title="Adjust editor width pixel by pixel">
+					<label for="slider-width" class="control-label">Width</label>
+					<input type="range" id="slider-width" min="320" max="1600" step="1" value="900">
+					<input type="number" id="input-width" min="320" max="2400" step="1" value="900">
+					<span class="unit-label">px</span>
+					<button type="button" class="action-btn action-btn-sm" id="btn-width-full" title="Set editor to full width (100%)">Full</button>
+				</li>
+				<li>
+					<button type="button" class="action-btn active" id="btn-gutter" aria-pressed="true" title="Toggle line numbers gutter">
+						# Gutter
+					</button>
+				</li>
+				<li>
+					<button type="button" class="action-btn" id="btn-print" title="Print document">🖨️ Print</button>
+				</li>
+				<li>
+					<button type="button" class="action-btn action-btn-reset" id="btn-reset" title="Reset editor to default content">↺ Reset</button>
+				</li>
+			</ul>
+		</nav>
+	</header>
+	<main class="main">
+		<section class="editor"></section>
+	</main>
 </body>
 </html>
