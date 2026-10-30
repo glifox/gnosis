@@ -50,6 +50,20 @@ export const coreTheme = (
     ...theme,
     "& .quote-kind-marker": { opacity: '0.2' },
     "&.cm-focused .quote-kind-marker.selected": { opacity: '1' },
+    "@media print": {
+      "[class*='cm-icon-']": {
+        display: "inline-block !important",
+        verticalAlign: "middle !important",
+      },
+      "[class*='cm-icon-'] svg": {
+        display: "inline-block !important",
+        verticalAlign: "middle !important",
+        printColorAdjust: "exact",
+        "-webkit-print-color-adjust": "exact",
+      },
+      ".quote-kind-marker": {
+        opacity: "0.8 !important",
+      }
+    }
   })
 }
-

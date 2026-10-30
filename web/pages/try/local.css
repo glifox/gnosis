@@ -109,4 +109,38 @@
         width: 100% !important;
         box-shadow: none !important;
     }
+
+    .cm-editor {
+        height: auto !important;
+        overflow: visible !important;
+    }
+
+    .cm-scroller {
+        height: auto !important;
+        overflow: visible !important;
+    }
+
+    /* Print styling for blockquote and callout icons */
+    [class*="cm-icon-"] {
+        display: inline-block !important;
+        vertical-align: middle !important;
+    }
+
+    [class*="cm-icon-"] svg {
+        display: inline-block !important;
+        vertical-align: middle !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    .quote-kind-marker {
+        opacity: 0.8 !important;
+    }
+
+    /* Hide interactive copy button, icon, and background on code blocks when printing */
+    .cm-widget-copy-codeblock,
+    .cm-widget-copy-codeblock-btn {
+        display: none !important;
+        background: none !important;
+    }
 }

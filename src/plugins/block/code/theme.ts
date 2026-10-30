@@ -108,5 +108,17 @@ export const coreTheme = () => {
     [`& .${boton_class}:hover .cb-icon`]: {
         opacity: "0.9",
     },
+    "@media print": {
+      [`.${wrap_class}`]: {
+        display: "none !important",
+      },
+      [`.${boton_class}`]: {
+        display: "none !important",
+        background: "none !important",
+      },
+      ".cb-icon": {
+        display: "none !important",
+      },
+    },
   });
 };

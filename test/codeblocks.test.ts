@@ -61,6 +61,31 @@ test.describe('Codeblocks Decorator & Widgets', () => {
     expect(isHidden).toBe(true);
   });
 
+  test('hide copy button, icon, and background in print mode', async ({ page }) => {
+    const doc = [
+      'Text outside',
+      '```ts',
+      'console.log("print preview");',
+      '```',
+      'Trailing text'
+    ].join('\n');
+
+    await setDoc(page, doc, 0);
+
+    const copyBtn = page.locator('.cm-widget-copy-codeblock-btn');
+    await expect(copyBtn).toBeVisible();
+
+    // Emulate print media
+    await page.emulateMedia({ media: 'print' });
+
+    const wrap = page.locator('.cm-widget-copy-codeblock');
+    const isHidden = await wrap.evaluate((el) => {
+      const style = window.getComputedStyle(el);
+      return style.display === 'none';
+    });
+    expect(isHidden).toBe(true);
+  });
+
   test('gracefully handle unclosed code block at end of file (EOF)', async ({ page }) => {
     // Unclosed fence at EOF
     const doc = '```typescript\nlet x = 10;';
