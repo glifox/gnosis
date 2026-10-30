@@ -7,6 +7,7 @@
   "type": "module",
   "main": "dist/gnosis.cjs",
   "module": "dist/gnosis.mjs",
+  "types": "./dist/gnosis.d.ts",
   "exports": {
     ".": {
       "types": "./dist/gnosis.d.ts",

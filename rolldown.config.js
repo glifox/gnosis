@@ -38,13 +38,12 @@ export default defineConfig([
   },
   // Separate build configuration for TypeScript declarations (.d.ts)
   {
-    input: "src/lib.ts",
+    input: { gnosis: "src/lib.ts" },
     external,
-    plugins: [dts()],
+    plugins: [dts({ emitDtsOnly: true })],
     output: {
       dir: "dist",
       format: "esm",
-      entryFileNames: "gnosis.d.ts"
     }
   }
 ]);
