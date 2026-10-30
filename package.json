@@ -55,7 +55,7 @@
   },
   "packageManager": "pnpm@11.0.9",
   "peerDependencies": {
-    "@chenglou/pretext": "^0.0.7",
+    "@chenglou/pretext": "^1.0.0",
     "@codemirror/lang-markdown": "^6.5.0",
     "@codemirror/language": "^6.12.4",
     "@codemirror/language-data": "^6.5.2",
