@@ -1,10 +1,13 @@
 {
+    "name": "@glifox/gnosis-web",
+    "private": true,
     "type": "module",
     "scripts": {
-        "prev": "vite --host --force"
+        "prev": "vite --host --force",
+        "build": "vite build"
     },
     "devDependencies": {
-        "vite": "^8.3.0"
+        "vite": "^8.3.5"
     },
     "packageManager": "pnpm@11.0.9",
     "dependencies": {

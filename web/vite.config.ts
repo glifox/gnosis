@@ -1,3 +1,4 @@
+import { resolve } from 'node:path';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
@@ -12,13 +13,13 @@ export default defineConfig({
       '@lezer/markdown'
     ]
   },
-  optimizeDeps: {
-    // Crucial: Evita que Vite pre-compile tu paquete enlazado y rompa las referencias
-    // exclude: ['@glifox/gnosis']
-  },
-  // server: {
-    // fs: {
-      // allow: ['..']
-    // }
-  // }
+  build: {
+    rollupOptions: {
+      input: {
+        main: resolve(import.meta.dirname, 'index.html'),
+        try: resolve(import.meta.dirname, 'pages/try/index.html'),
+        try_redirect: resolve(import.meta.dirname, 'try/index.html')
+      }
+    }
+  }
 });

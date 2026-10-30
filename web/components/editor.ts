@@ -3,7 +3,6 @@ import { EditorState, type Extension } from "@codemirror/state";
 import { EditorView, minimalSetup } from "codemirror";
 import { gnosis } from "@glifox/gnosis";
 
-
 export const Editor = ({ 
   text,
   save = false, 
@@ -15,7 +14,14 @@ export const Editor = ({
   key?: string,
   extensions?: Extension[],
 }) => {
-    const savedContent = localStorage.getItem(key);
+    let savedContent: string | null = null;
+    if (key) {
+      savedContent = localStorage.getItem(key);
+      // Preserve content from previous legacy key if applicable
+      if (savedContent === null && key === 'gnosis-try-editor-content') {
+        savedContent = localStorage.getItem('gnosis-editor-content');
+      }
+    }
     const initialContent = savedContent !== null ? savedContent : text;
     
     const view = new EditorView({
@@ -27,7 +33,7 @@ export const Editor = ({
             extensions ?? [],
             EditorView.clickAddsSelectionRange.of(e => e.altKey),
             EditorState.allowMultipleSelections.of(true),
-            save ? EditorView.updateListener.of(update => {
+            save && key ? EditorView.updateListener.of(update => {
                 if (update.docChanged) {
                     const content = update.state.doc.toString();
                     localStorage.setItem(key, content);

@@ -1,6 +1,8 @@
 .main {
     margin: 1.2rem;
-    height: 82dvh;
+    height: calc(100dvh - 5.5rem);
+    display: flex;
+    flex-direction: column;
 }
 
 .editor {
@@ -8,4 +10,103 @@
     border-radius: 12px;
     padding: 1.2rem .8rem;
     height: 100%;
+    overflow: auto;
+}
+
+/* Try page Action Buttons */
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.45rem 1rem;
+    border-radius: 9999px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    border: 1px solid var(--bd-muted, rgba(255, 255, 255, 0.1));
+    background: var(--bg-surface0);
+    color: var(--fg-brigth);
+    transition: all 0.2s ease-in-out;
+    text-decoration: none;
+}
+
+.action-btn:hover {
+    transform: translateY(-1px);
+    background: var(--bg-surface1);
+    border-color: var(--ctp-lavender, #b4befe);
+    color: var(--fg-brigth);
+}
+
+.action-btn:active {
+    transform: translateY(0);
+}
+
+.action-btn-reset:hover {
+    border-color: var(--ctp-red, #f38ba8);
+    color: var(--ctp-red, #f38ba8);
+}
+
+.action-btn-home {
+    background: var(--sm-bg-info);
+    color: var(--sm-fg-on-info);
+    border: none;
+    box-shadow: 0 4px 14px 0 light-dark(
+        oklch(from var(--sm-bg-info) .8 c h), 
+        oklch(from var(--sm-bg-info) .3 c h)
+    );
+}
+
+.action-btn-home:hover {
+    border-color: transparent;
+    color: var(--sm-fg-on-info);
+}
+
+@media print {
+    * {
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    *::-webkit-scrollbar {
+        display: none;
+    }
+
+    body,
+    .main {
+        margin: 0 !important;
+        padding: 0 !important;
+        background: transparent !important;
+        background-image: none !important;
+        min-height: auto !important;
+        height: auto !important;
+    }
+
+    body::before {
+        display: none !important;
+    }
+
+    header {
+        display: none !important;
+    }
+
+    .editor {
+        background: transparent !important;
+        padding: 0 !important;
+        border-radius: 0 !important;
+        height: auto !important;
+        width: 100% !important;
+        box-shadow: none !important;
+    }
 }

@@ -107,3 +107,43 @@
 .card p strong {
     color: var(--fg-brigth);
 }
+
+/* Footer styling */
+footer {
+    border-top: 1px solid var(--bd-muted, rgba(255, 255, 255, 0.08));
+    margin-top: 5rem;
+    padding: 2rem 1.5rem;
+    color: var(--fg-muted);
+    font-size: 0.9rem;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.footer-content p {
+    margin: 0;
+}
+
+.footer-links {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.footer-links a {
+    color: var(--ctp-lavender, #b4befe);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.footer-links a:hover {
+    color: var(--ctp-peach, #fab387);
+    text-decoration: underline;
+}

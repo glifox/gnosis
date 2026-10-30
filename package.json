@@ -35,7 +35,8 @@
   "scripts": {
     "build": "rm -fr dist && rolldown -c",
     "prev": "bun ./example/index.html",
-    "web:prev": "cd web && bun run prev"
+    "web:prev": "cd web && bun run prev",
+    "web:build": "pnpm run build && cd web && pnpm run build"
   },
   "keywords": [
     "WYSIWYG",
