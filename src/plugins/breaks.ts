@@ -36,7 +36,6 @@ class Spacer extends WidgetType {
 // Define a clean, serializable payload for the effect instead of the entire ViewUpdate
 type LayoutUpdate = {
   width: number;
-  padding: number;
   lines: Lines;
   viewport: { from: number; to: number };
   docChanged: boolean;
@@ -110,19 +109,30 @@ const viewUpdateEffect = StateEffect.define<LayoutUpdate>();
 
 export function mesureOffset(offset: string, font: string): number {
   if (!offset) return 0;
-  const prep = prepare(offset, font, { whiteSpace: 'pre-wrap' });
-  return (prep as any as { widths: number[] }).widths.reduce((cur, add) => add + cur, 0);
+  // Medir el ancho real de un espacio en la fuente mediante prepare("a a", font)
+  const spacePrep = prepare("a a", font);
+  const spaceWidth = (spacePrep as any as { widths: number[] }).widths?.[1] ?? 4;
+  
+  const nonSpaces = offset.replaceAll(' ', '');
+  let nonSpacesWidth = 0;
+  if (nonSpaces.length > 0) {
+    const prep = prepare(nonSpaces, font);
+    nonSpacesWidth = (prep as any as { widths: number[] }).widths.reduce((cur, add) => cur + add, 0);
+  }
+  
+  const spaceCount = offset.length - nonSpaces.length;
+  return nonSpacesWidth + (spaceCount * spaceWidth);
 }
 
-function getLineBreaks(line: Lines[number], width: number, padding: number): Range<Decoration>[] {
+function getLineBreaks(line: Lines[number], width: number): Range<Decoration>[] {
   const decorations: Range<Decoration>[] = []
 
   const text_offset_width = mesureOffset(line.line.text.slice(0, line.offset.amount), line.offset.font)
-  const prep = prepareRichInline(line.rich, { whiteSpace: 'pre-wrap' });
+  const prep = prepareRichInline(line.rich);
+  // console.info("prep:", prep.itemsBySourceItemIndex.map(s => s?.prepared/*.segments */));
   let offset = line.line.from + line.offset.amount;
-  const availableWidth = Math.max(1, width - padding - text_offset_width);
   
-  walkRichInlineLineRanges(prep, availableWidth, range => {
+  walkRichInlineLineRanges(prep, width - 20 - text_offset_width, range => {
     const line_ = materializeRichInlineLineRange(prep, range)
     
     const line_text = line_.fragments
@@ -131,7 +141,17 @@ function getLineBreaks(line: Lines[number], width: number, padding: number): Ran
     const line_length = line_text.length;
     const absolute_pos = line_length + offset;
 
-    offset = absolute_pos;
+    if (true) {
+      const pretext_line = line_text.replaceAll('\u2005', ' ')
+      const real_line = line.line.text.slice(offset - line.line.from, absolute_pos - line.line.from)
+      console.assert(
+        pretext_line === real_line,
+        '[gnosis:breaks] Perhaps the line is not reconstructed correctly:\n' + `-> rl: '${real_line}'\n-> pl: '${pretext_line}'`)
+    }
+    
+    // Solución: Inspeccionar el caracter exacto en el texto original
+    const charAtBreak = transformSpaces(line.line.text)[absolute_pos - line.line.from];
+    offset = absolute_pos + (charAtBreak === ' ' ? 1 : 0);
     
     decorations.push(Decoration.widget({ widget }).range(offset));
     decorations.push(Decoration.widget({ widget: new Spacer(text_offset_width), side: 10000 }).range(offset));
@@ -143,7 +163,6 @@ function getLineBreaks(line: Lines[number], width: number, padding: number): Ran
 type State = {
   decorations: DecorationSet;
   width: number;
-  padding: number;
   font: string;
   lines: Lines;
   viewport: { from: number; to: number };
@@ -154,14 +173,13 @@ export const state_field = StateField.define<State>({
     return {
       decorations: Decoration.none,
       width: 0,
-      padding: 20,
       font: "16px sans-serif",
       lines: [],
       viewport: { from: 0, to: 0 }
     }
   },
   update(value, tr) {
-    let { decorations, width, padding, font, viewport, lines } = value;
+    let { decorations, width, font, viewport, lines } = value;
     let layoutChanged = false;
 
     // Map decorations for document changes to keep them aligned during typing
@@ -172,12 +190,10 @@ export const state_field = StateField.define<State>({
     for (const ef of tr.effects) {
       if (ef.is(viewUpdateEffect)) {
         const isWidthChanged = Math.abs(ef.value.width - width) > 0.5;
-        const isPaddingChanged = Math.abs(ef.value.padding - padding) > 0.5;
         const isViewportChanged = ef.value.viewport.from !== viewport.from || ef.value.viewport.to !== viewport.to;
         
-        if (isWidthChanged || isPaddingChanged || isViewportChanged || ef.value.docChanged) {
+        if (isWidthChanged || isViewportChanged || ef.value.docChanged) {
           width = ef.value.width;
-          padding = ef.value.padding;
           viewport = ef.value.viewport;
           lines = ef.value.lines;
           layoutChanged = true;
@@ -190,13 +206,13 @@ export const state_field = StateField.define<State>({
       const newDecorations: Range<Decoration>[] = [];
       
       for (const line of lines/*[lines[0]!] */) {
-        newDecorations.push(...getLineBreaks(line, width, padding));
+        newDecorations.push(...getLineBreaks(line, width));
       }
       
       decorations = Decoration.set(newDecorations, true);
     }
     
-    return { decorations, width, padding, font, viewport, lines };
+    return { decorations, width, font, viewport, lines };
   },
   provide: (field) => EditorView.decorations.from(field, value => value.decorations)
 })
@@ -298,7 +314,7 @@ const view_plugin = ViewPlugin.fromClass(class {
             if (cursor < start) {
               richLine.push({
                 font,
-                text: rawText.slice(cursor, start)
+                text: transformSpaces(rawText.slice(cursor, start))
               });
             }
   
@@ -312,7 +328,7 @@ const view_plugin = ViewPlugin.fromClass(class {
                   for (const match of matches) {
                     richLine.push({
                       font: markFont,
-                      text: match[0],
+                      text: transformSpaces(match[0]),
                       break: 'never',
                       extraWidth: part.extraWidth,
                     });
@@ -320,7 +336,7 @@ const view_plugin = ViewPlugin.fromClass(class {
                 } else {
                   richLine.push({
                     font: markFont,
-                    text: markText,
+                    text: transformSpaces(markText),
                     break: 'never',
                     extraWidth: part.extraWidth,
                   });
@@ -328,7 +344,7 @@ const view_plugin = ViewPlugin.fromClass(class {
               } else {
                 richLine.push({
                   font: markFont,
-                  text: markText,
+                  text: transformSpaces(markText),
                   break: 'never',
                   extraWidth: part.extraWidth,
                 });
@@ -344,7 +360,7 @@ const view_plugin = ViewPlugin.fromClass(class {
       if (cursor < rawText.length) {
         richLine.push({
           font,
-          text: rawText.slice(cursor)
+          text: transformSpaces(rawText.slice(cursor))
         });
       }
   
@@ -358,18 +374,9 @@ const view_plugin = ViewPlugin.fromClass(class {
       });
     }
     
-    let linePadding = 20;
-    const lineEl = view.contentDOM.querySelector('.cm-line');
-    if (lineEl && typeof window !== 'undefined') {
-      const cs = window.getComputedStyle(lineEl);
-      const pad = (parseFloat(cs.paddingLeft) || 0) + (parseFloat(cs.paddingRight) || 0);
-      if (pad > 0) linePadding = pad;
-    }
-
     view.dispatch({
       effects: viewUpdateEffect.of({
         width: view.contentDOM.clientWidth,
-        padding: linePadding,
         lines,
         viewport: {
           from: view.viewport.from,
@@ -393,6 +400,14 @@ export function getLineFont(
   const size = computedStyle?.fontSize ?? '16px';
   const family = override?.fontFamily ?? computedStyle?.fontFamily ?? 'sans-serif';
   return `${style} ${weight} ${size} ${family}`;
+}
+
+function transformSpaces(str: string): string {
+  return str.replace(/ {2,}/g, (match) =>
+    Array.from(match)
+      .map((_, i) => (i % 2 === 0 ? "\u2005" : " "))
+      .join("")
+  );
 }
 
 export const breakes = [
