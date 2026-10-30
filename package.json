@@ -28,6 +28,7 @@
   ],
   "devDependencies": {
     "@feraxjs/themes-codemirror": "^0.1.0",
+    "@playwright/test": "^1.64.1",
     "@types/node": "^26.6.6",
     "rolldown": "^1.2.16",
     "rolldown-plugin-dts": "^0.29.0",
@@ -36,6 +37,7 @@
   "scripts": {
     "build": "rm -fr dist && rolldown -c",
     "prev": "bun ./example/index.html",
+    "test": "playwright test",
     "lock": "pnpm install && pnpm --dir web install && pnpm install --frozen-lockfile && pnpm --dir web install --frozen-lockfile",
     "web:prev": "cd web && bun run prev",
     "web:build": "pnpm run build && cd web && pnpm run build"
