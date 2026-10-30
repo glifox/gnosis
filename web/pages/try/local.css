@@ -124,10 +124,26 @@
         overflow: visible !important;
     }
 
-    /* Prevent lines of text from being sliced in half across pages */
+    .cm-content {
+        white-space: pre-wrap !important;
+        word-break: break-word !important;
+        overflow-wrap: break-word !important;
+        overflow: visible !important;
+    }
+
+    /* Wrap text lines for print width and avoid slicing lines across pages */
     .cm-line {
+        white-space: pre-wrap !important;
+        word-break: break-word !important;
+        overflow-wrap: break-word !important;
         break-inside: avoid !important;
         page-break-inside: avoid !important;
+    }
+
+    /* Hide pretext artificial breaks and spacers in print mode */
+    .cm-break-widget,
+    .cm-spacer-widget {
+        display: none !important;
     }
 
     /* Prevent headings from being left alone at the bottom of a page */

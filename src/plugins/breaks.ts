@@ -6,7 +6,11 @@ import { materializeRichInlineLineRange, prepareRichInline, walkRichInlineLineRa
 
 // Widget for the line breaks
 class BreakWidget extends WidgetType {
-  toDOM() { return document.createElement("br") }
+  toDOM() {
+    const br = document.createElement("br")
+    br.className = "cm-break-widget"
+    return br
+  }
   override get lineBreaks() { return 1 }
 }
 const widget = new BreakWidget();
@@ -15,6 +19,7 @@ class Spacer extends WidgetType {
   constructor(public width: number) { super() }
   toDOM() {
     const span = document.createElement("span")
+    span.className = "cm-spacer-widget"
     span.style.color = 'transparent'
     span.style.backgroundColor = 'hsl(from red h s l / .1)'
     span.style.marginInlineStart = `${this.width}px`
@@ -364,6 +369,25 @@ export const breakes = [
       // fontFamily: "Times New Roman",
       flexShrink: '1',
       overflow: 'hidden',
+    },
+    "@media print": {
+      ".cm-break-widget": {
+        display: "none !important",
+      },
+      ".cm-spacer-widget": {
+        display: "none !important",
+      },
+      ".cm-content": {
+        whiteSpace: "pre-wrap !important",
+        wordBreak: "break-word !important",
+        overflowWrap: "break-word !important",
+        overflow: "visible !important",
+      },
+      ".cm-line": {
+        whiteSpace: "pre-wrap !important",
+        wordBreak: "break-word !important",
+        overflowWrap: "break-word !important",
+      },
     },
   }),
 ];

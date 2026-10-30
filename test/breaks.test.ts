@@ -32,4 +32,29 @@ test.describe('Pretext Breaks & Soft Wrapping', () => {
     const width = await contentDOM.evaluate((el) => el.getBoundingClientRect().width);
     expect(width).toBeGreaterThan(0);
   });
+
+  test('applies native pre-wrap and hides pretext break widgets in print mode', async ({ page }) => {
+    const longParagraph = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. '.repeat(40);
+    await setDoc(page, longParagraph, 0);
+
+    const content = page.locator('.cm-content');
+    await expect(content).toBeVisible();
+
+    // Emulate print media
+    await page.emulateMedia({ media: 'print' });
+
+    const contentStyle = await content.evaluate((el) => window.getComputedStyle(el).whiteSpace);
+    expect(contentStyle).toBe('pre-wrap');
+
+    const firstLine = page.locator('.cm-line').first();
+    const lineStyle = await firstLine.evaluate((el) => window.getComputedStyle(el).whiteSpace);
+    expect(lineStyle).toBe('pre-wrap');
+
+    const breakWidgets = page.locator('.cm-break-widget');
+    const count = await breakWidgets.count();
+    if (count > 0) {
+      const isHidden = await breakWidgets.first().evaluate((el) => window.getComputedStyle(el).display === 'none');
+      expect(isHidden).toBe(true);
+    }
+  });
 });
