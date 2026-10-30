@@ -1,6 +1,8 @@
+@import './fonts.css';
+
 :root {
-  --mono: 'JetBrains Mono'; /* Fuente para bloques de codigo e inputs */
-  --sans: Geist; /* Fuente principal */
+  --mono: 'JetBrains Mono', monospace; /* Fuente para bloques de codigo e inputs */
+  --sans: 'Geist', sans-serif; /* Fuente principal */
   
   --fac: 1.125; /* Factor de reduccion para el tamaño del texto */
   --rem: 1rem;
@@ -89,6 +91,10 @@ body {
 
     background-repeat: repeat;
     background-attachment: fixed;
+}
+
+code, kbd, samp, pre {
+  font-family: var(--mono);
 }
 
 [theme="dark"] body::before { opacity: 0; }

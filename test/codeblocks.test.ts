@@ -121,19 +121,19 @@ test.describe('Codeblocks Decorator & Widgets', () => {
     const pathOpacity = await path.evaluate((el) => window.getComputedStyle(el).opacity);
     expect(Number(pathOpacity)).toBeLessThanOrEqual(0.7);
 
-    // Opening and closing fences are hidden (opacity 0)
-    const openingFence = page.locator('.cm-codeblock-opening-fence');
-    const closingFence = page.locator('.cm-codeblock-closing-fence');
-    expect(await openingFence.evaluate((el) => window.getComputedStyle(el).opacity)).toBe('0');
-    expect(await closingFence.evaluate((el) => window.getComputedStyle(el).opacity)).toBe('0');
+    // Opening and closing marks are hidden (opacity 0)
+    const markings = page.locator('.cm-codeblock-marking');
+    const codeinfo = page.locator('.cm-codeblock-codeinfo');
+    expect(await markings.first().evaluate((el) => window.getComputedStyle(el).opacity)).toBe('0');
+    expect(await codeinfo.evaluate((el) => window.getComputedStyle(el).opacity)).toBe('0');
 
     // Now place cursor inside codeblock (line 3)
     await setCursor(page, 3, 2);
 
     // Header should disappear and marks become visible
     await expect(header).not.toBeVisible();
-    expect(await openingFence.evaluate((el) => window.getComputedStyle(el).opacity)).toBe('1');
-    expect(await closingFence.evaluate((el) => window.getComputedStyle(el).opacity)).toBe('1');
+    expect(await markings.first().evaluate((el) => window.getComputedStyle(el).opacity)).toBe('1');
+    expect(await codeinfo.evaluate((el) => window.getComputedStyle(el).opacity)).toBe('1');
   });
 
   test('header and copy button remain stationary during horizontal scroll', async ({ page }) => {

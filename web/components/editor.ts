@@ -45,10 +45,10 @@ export const Editor = ({
                 outline: "unset"
               },
                 "& .cm-line": {
-                    fontFamily: "Geist, Times New Roman, serif !important",
+                    fontFamily: "'Geist', var(--sans), sans-serif !important",
                 },
-                "& .cm-line .cm-codeblock-content": {
-                    fontFamily: "Jetbrains Mono, monospace !important",
+                "& .cm-line .cm-codeblock-content, & .cm-codeblock-scroller, & .cm-codeblock-header, & .cm-inline-code": {
+                    fontFamily: "'JetBrains Mono', var(--mono), monospace !important",
                 }
             }, { dark: true }),
         ],
