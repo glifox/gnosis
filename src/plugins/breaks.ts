@@ -2,7 +2,7 @@ import { Line, StateEffect, StateField, Range, Transaction, EditorState } from "
 import { Decoration, EditorView, ViewPlugin, ViewUpdate, WidgetType, type DecorationSet } from "@codemirror/view";
 import { prepare, clearCache } from '@chenglou/pretext';
 import { syntaxTree } from "@codemirror/language";
-import { materializeRichInlineLineRange, prepareRichInline, walkRichInlineLineRanges, type RichInlineItem } from "@chenglou/pretext/rich-inline";
+import { materializeRichInlineLineRange, prepareRichInline, walkRichInlineLineRanges, type RichInlineFragment, type RichInlineItem } from "@chenglou/pretext/rich-inline";
 
 // Widget for the line breaks
 class BreakWidget extends WidgetType {
@@ -124,40 +124,112 @@ export function mesureOffset(offset: string, font: string): number {
   return nonSpacesWidth + (spaceCount * spaceWidth);
 }
 
-function getLineBreaks(line: Lines[number], width: number): Range<Decoration>[] {
-  const decorations: Range<Decoration>[] = []
+function reconstrucLine(
+  line_fragments: RichInlineFragment[],
+  full_pieces: RichInlineItem[],
+  cursor: { lastIndex: number; lastEnd: number },
+  isFirstLine: boolean
+): [string, { lastIndex: number; lastEnd: number }, number] {
+  let line = "";
+  let { lastIndex, lastEnd } = cursor;
+  let skippedBreakSpaces = 0;
 
-  const text_offset_width = mesureOffset(line.line.text.slice(0, line.offset.amount), line.offset.font)
+  for (let i = 0; i < line_fragments.length; i++) {
+    const { itemIndex, sourceStart, sourceEnd } = line_fragments[i]!;
+
+    if (itemIndex < lastIndex) {
+      throw Error(
+        `[breaks::reconstrucLine::badIndex] The item index should not be less than the cursor index '${itemIndex}'<'${lastIndex}'`
+      );
+    }
+
+    // Recolectar todo el texto en full_pieces desde (lastIndex, lastEnd) hasta (itemIndex, sourceStart)
+    let gap = "";
+    while (lastIndex < itemIndex) {
+      gap += full_pieces[lastIndex]!.text.slice(lastEnd);
+      lastIndex++;
+      lastEnd = 0;
+    }
+    gap += full_pieces[itemIndex]!.text.slice(lastEnd, sourceStart);
+
+    // Si estamos en el primer fragmento de una línea que NO es la primera (es decir, tras un line break),
+    // el espacio de separación entre la línea anterior y esta palabra es el espacio que causó el break.
+    if (i === 0 && !isFirstLine) {
+      skippedBreakSpaces = gap.length;
+    } else {
+      line += gap;
+    }
+
+    // Tomar el texto directo de full_pieces[itemIndex] garantiza fidelidad 1:1
+    line += full_pieces[itemIndex]!.text.slice(sourceStart, sourceEnd);
+
+    lastIndex = itemIndex;
+    lastEnd = sourceEnd;
+
+    if (lastEnd >= full_pieces[itemIndex]!.text.length) {
+      lastIndex = itemIndex + 1;
+      lastEnd = 0;
+    }
+  }
+
+  return [line, { lastIndex, lastEnd }, skippedBreakSpaces];
+}
+
+function getLineBreaks(line: Lines[number], width: number): Range<Decoration>[] {
+  const decorations: Range<Decoration>[] = [];
+
+  const text_offset_width = mesureOffset(
+    line.line.text.slice(0, line.offset.amount),
+    line.offset.font
+  );
   const prep = prepareRichInline(line.rich);
-  // console.info("prep:", prep.itemsBySourceItemIndex.map(s => s?.prepared/*.segments */));
   let offset = line.line.from + line.offset.amount;
-  
-  walkRichInlineLineRanges(prep, width - 20 - text_offset_width, range => {
-    const line_ = materializeRichInlineLineRange(prep, range)
-    
-    const line_text = line_.fragments
-      .map(curr => `${curr.gapBefore === 0 ? '' : ' '}${curr.text}`)
-      .join('');
+
+  let cursor = { lastIndex: 0, lastEnd: 0 };
+  let isFirstLine = true;
+
+  walkRichInlineLineRanges(prep, width - 20 - text_offset_width, (range) => {
+    const line_ = materializeRichInlineLineRange(prep, range);
+
+    const [line_text, nextCursor, skippedBreakSpaces] = reconstrucLine(
+      line_.fragments,
+      line.rich,
+      cursor,
+      isFirstLine
+    );
+    cursor = nextCursor;
+
+    // Si no es la primera línea, sumamos los espacios que quedaron en el break anterior
+    // y ponemos allí la decoración del salto de línea anterior
+    if (!isFirstLine) {
+      offset += skippedBreakSpaces;
+      decorations.push(Decoration.widget({ widget }).range(offset));
+      decorations.push(
+        Decoration.widget({ widget: new Spacer(text_offset_width), side: 10000 }).range(offset)
+      );
+    }
+    isFirstLine = false;
+
     const line_length = line_text.length;
-    const absolute_pos = line_length + offset;
+    const absolute_pos = offset + line_length;
 
     if (true) {
-      const pretext_line = line_text.replaceAll('\u2005', ' ')
-      const real_line = line.line.text.slice(offset - line.line.from, absolute_pos - line.line.from)
+      const pretext_line = line_text.replaceAll("\u2005", " ");
+      const real_line = line.line.text.slice(
+        offset - line.line.from,
+        absolute_pos - line.line.from
+      );
       console.assert(
         pretext_line === real_line,
-        '[gnosis:breaks] Perhaps the line is not reconstructed correctly:\n' + `-> rl: '${real_line}'\n-> pl: '${pretext_line}'`)
+        "[gnosis:breaks] Perhaps the line is not reconstructed correctly:\n" +
+          `-> rl: '${real_line}'\n-> pl: '${pretext_line}'`
+      );
     }
-    
-    // Solución: Inspeccionar el caracter exacto en el texto original
-    const charAtBreak = transformSpaces(line.line.text)[absolute_pos - line.line.from];
-    offset = absolute_pos + (charAtBreak === ' ' ? 1 : 0);
-    
-    decorations.push(Decoration.widget({ widget }).range(offset));
-    decorations.push(Decoration.widget({ widget: new Spacer(text_offset_width), side: 10000 }).range(offset));
-  })
-  
-  return decorations.slice(0, -2)
+
+    offset = absolute_pos;
+  });
+
+  return decorations;
 }
 
 type State = {
