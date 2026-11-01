@@ -3,6 +3,7 @@ import { Editor, gutterCompartment, defaultGutterExtensions } from "./editor";
 const defaultText = "# Write here...\n\n";
 const STORAGE_KEY = "[gnosis:example]";
 const WIDTH_KEY = "[gnosis:example:width]";
+const SLIDER_KEY = "[gnosis:example:slider]";
 const GUTTER_KEY = "[gnosis:example:gutter]";
 
 const savedGutter = localStorage.getItem(GUTTER_KEY);
@@ -31,45 +32,86 @@ function applyWidth(value: string | number | null, persist = true) {
   if (value === null || value === "full" || value === "") {
     editorContainer.style.width = "100%";
     const currentPx = Math.round(editorContainer.getBoundingClientRect().width);
-    if (sliderWidth) sliderWidth.value = String(currentPx);
-    if (inputWidth) inputWidth.value = String(currentPx);
+    const savedSlider = localStorage.getItem(SLIDER_KEY);
+    const displayVal = savedSlider ? savedSlider : String(currentPx);
+    if (sliderWidth) sliderWidth.value = displayVal;
+    if (inputWidth) inputWidth.value = displayVal;
     fullWidthBtn?.classList.add("active");
-    if (persist) localStorage.setItem(WIDTH_KEY, "full");
+    if (persist) {
+      localStorage.setItem(WIDTH_KEY, "full");
+    }
   } else {
     const px = Math.max(320, Math.round(Number(value)));
     editorContainer.style.width = `${px}px`;
     if (sliderWidth) sliderWidth.value = String(px);
     if (inputWidth) inputWidth.value = String(px);
     fullWidthBtn?.classList.remove("active");
-    if (persist) localStorage.setItem(WIDTH_KEY, String(px));
+    if (persist) {
+      localStorage.setItem(WIDTH_KEY, String(px));
+      localStorage.setItem(SLIDER_KEY, String(px));
+    }
   }
 
   view.requestMeasure();
 }
 
 updateSliderBounds();
+const savedSlider = localStorage.getItem(SLIDER_KEY);
 const savedWidth = localStorage.getItem(WIDTH_KEY);
-applyWidth(savedWidth ?? "full", false);
+
+if (savedSlider) {
+  if (sliderWidth) sliderWidth.value = savedSlider;
+  if (inputWidth) inputWidth.value = savedSlider;
+}
+
+if (savedWidth === "full") {
+  applyWidth("full", false);
+} else if (savedWidth !== null) {
+  applyWidth(savedWidth, false);
+} else if (savedSlider !== null) {
+  applyWidth(savedSlider, false);
+} else {
+  applyWidth(sliderWidth?.value || "900", false);
+}
 
 window.addEventListener("resize", () => {
   updateSliderBounds();
-  if (localStorage.getItem(WIDTH_KEY) === "full" || !localStorage.getItem(WIDTH_KEY)) {
+  if (localStorage.getItem(WIDTH_KEY) === "full") {
     applyWidth("full", false);
   }
 });
 
 sliderWidth?.addEventListener("input", () => {
-  applyWidth(sliderWidth.value);
+  applyWidth(sliderWidth.value, true);
+});
+
+sliderWidth?.addEventListener("change", () => {
+  applyWidth(sliderWidth.value, true);
 });
 
 inputWidth?.addEventListener("input", () => {
   if (inputWidth.value) {
-    applyWidth(inputWidth.value);
+    applyWidth(inputWidth.value, true);
+  }
+});
+
+inputWidth?.addEventListener("change", () => {
+  if (inputWidth.value) {
+    applyWidth(inputWidth.value, true);
   }
 });
 
 fullWidthBtn?.addEventListener("click", () => {
-  applyWidth("full");
+  const isFull = fullWidthBtn.classList.contains("active");
+  if (isFull) {
+    const targetWidth = localStorage.getItem(SLIDER_KEY) || sliderWidth?.value || "900";
+    applyWidth(targetWidth, true);
+  } else {
+    if (sliderWidth?.value) {
+      localStorage.setItem(SLIDER_KEY, sliderWidth.value);
+    }
+    applyWidth("full", true);
+  }
 });
 
 function updateGutterUI() {
