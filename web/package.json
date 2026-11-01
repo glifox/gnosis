@@ -9,7 +9,7 @@
     "devDependencies": {
         "vite": "^8.3.5"
     },
-    "packageManager": "pnpm@11.0.9",
+    "packageManager": "pnpm@12.16.1",
     "dependencies": {
         "@chenglou/pretext": "^1.0.0",
         "@codemirror/lang-markdown": "^6.5.2",

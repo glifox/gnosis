@@ -53,7 +53,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "packageManager": "pnpm@11.0.9",
+  "packageManager": "pnpm@12.16.1",
   "peerDependencies": {
     "@chenglou/pretext": "^1.0.0",
     "@codemirror/lang-markdown": "^6.5.0",
